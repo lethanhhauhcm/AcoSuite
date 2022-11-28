@@ -1,0 +1,121 @@
+USE [Mktg_MIDT]
+GO
+/****** Object:  StoredProcedure [dbo].[sp_ImportMITD]    Script Date: 08/19/2014 10:34:58 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+ALTER PROC [dbo].[sp_ImportMITD]
+@flag VARCHAR(1) = '0',
+@Year_b VARCHAR(10)  ='0',
+@Month_b  VARCHAR(10) = '0',
+@GDS   varchar (2)= '',
+@Carries   VARCHAR(10) = '0',
+@NetBkg   nvarchar (50) = '',
+@City   varchar (3) = '',
+@Class   varchar (1) = '',
+@AgentName   varchar (16)  = '',
+@Org_City   varchar (3)  = '',
+@Org_Country   varchar (2)  = '',
+@Des_City   varchar (3) = '',
+@Des_Area   varchar (3) = '',
+@Des_Country   varchar (2) = '',
+@Org_area   varchar (2) = '',
+@Date_b   smalldatetime  = '',
+@CRSCode   varchar (16) = '',
+@ARCIATA   varchar (10) = '',
+@accountName   nvarchar (50) = '',
+@content VARCHAR(30) = '',
+@whereBy VARCHAR(30) = ''
+AS 
+BEGIN
+	IF(@flag = '1')
+	BEGIN
+		INSERT INTO  MIDT_Raw ( GDS, Carrier, NetBkg, City, Class, AgentName, Org_City, Org_Country, 
+					Des_City,Des_Area, Des_Country, Org_area, Date_b, CRSCode, ARCIATA, accountName) 
+       VALUES( @GDS, @Carries, @NetBkg, @City, @Class, @AgentName, @Org_City, @Org_Country, 
+       @Des_City, @Des_Area, @Des_Country, @Org_area, @Date_b, @CRSCode, @ARCIATA, @accountName )
+	END
+	
+	IF(@flag = '2')
+	BEGIN
+				--update MIDT_Raw 
+				--SET MIDT_Raw.AgentName = M.AgentName
+				--	From MIDT_Raw
+				--	Inner Join (select crscode, AgentName from oldmidtRaw
+				--	Group By AgentName, crscode) as M On midt_rawn.crscode = M.crscode
+				--WHERE CONVERT(VARCHAR(10), MIDT_Raw.Date_b, 112) = CONVERT(VARCHAR(10), @Date_b, 112)
+			  
+                update MIDT_Raw 
+                SET MIDT_Raw.des_country = citycode.country
+					From MIDT_Raw
+					Inner Join citycode On  MIDT_Raw.des_city = citycode.airport
+				--WHERE CONVERT(VARCHAR(10), MIDT_Raw.Date_b, 112) = CONVERT(VARCHAR(10), @Date_b, 112)
+
+				update MIDT_Raw 
+				SET MIDT_Raw.des_area = citycode.area
+					From MIDT_Raw Inner Join citycode On  MIDT_Raw.des_city = citycode.airport
+				--WHERE CONVERT(VARCHAR(10), MIDT_Raw.Date_b, 112) = CONVERT(VARCHAR(10), @Date_b, 112)
+
+				update MIDT_Raw 
+				Set MIDT_Raw.org_country = citycode.country
+					From MIDT_Raw Inner Join citycode On  MIDT_Raw.org_city = citycode.airport
+				--WHERE CONVERT(VARCHAR(10), MIDT_Raw.Date_b, 112) = CONVERT(VARCHAR(10), @Date_b, 112)
+
+				update MIDT_Raw 
+				Set MIDT_Raw.org_area = citycode.area
+					From MIDT_Raw Inner Join citycode On  MIDT_Raw.org_city = citycode.airport
+			--	WHERE CONVERT(VARCHAR(10), MIDT_Raw.Date_b, 112) = CONVERT(VARCHAR(10), @Date_b, 112)
+                
+	END
+	
+	IF(@flag = '3')
+	BEGIN
+		SELECT TOP 1 1 FROM  MIDT_Raw 
+		WHERE CONVERT(VARCHAR(10), MIDT_Raw.Date_b, 112) = CONVERT(VARCHAR(10), @Date_b, 112)
+		
+		SELECT TOP 1 1 FROM  MIDT_Raw
+		WHERE CONVERT(VARCHAR(10), MIDT_Raw.Date_b, 112) = CONVERT(VARCHAR(10), @Date_b, 112)
+		
+	END
+	
+	IF(@flag = '4')
+	BEGIN
+		DELETE FROM  MIDT_Raw
+		WHERE CONVERT(VARCHAR(10), MIDT_Raw.Date_b, 112) = CONVERT(VARCHAR(10), @Date_b, 112)
+	END
+	
+	IF(@flag = '5')
+	BEGIN
+		SELECT distinct mrn.city, mrn.CRSCode, mrn.AgentName, mrn.accountName 
+		FROM  MIDT_Raw mrn
+		WHERE mrn.agentname='' or mrn.agentname='?' 
+	END
+	
+	IF(@flag = '6')
+	BEGIN
+		SELECT distinct Name 
+		FROM sys.columns 
+		WHERE object_id = OBJECT_ID('dbo.MIDT_Raw') and Name='CrsCode' or name='city' or name='accountname'	
+	END
+	
+	IF(@flag = '7')
+	BEGIN
+		Update  MIDT_Raw 
+		Set AgentName = @content  
+		WHERE CRSCode = @whereBy
+	
+	END
+	
+	IF(@flag = 8)
+	BEGIN
+		UPDATE MIDT_Raw
+		SET AgentName = @AgentName
+		WHERE CRSCode = @CRSCode AND City = @City AND accountName = @accountName
+	END
+
+END
+
+

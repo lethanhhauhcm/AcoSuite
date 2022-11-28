@@ -1,0 +1,1180 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{E3199412-283C-458B-BFC4-F453877D87C0}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <StartupObject>AcoSuite.My.MyApplication</StartupObject>
+    <RootNamespace>AcoSuite</RootNamespace>
+    <AssemblyName>AcoSuite</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MyType>WindowsForms</MyType>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>AcoSuite.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>AcoSuite.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionExplicit>On</OptionExplicit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionCompare>Binary</OptionCompare>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionStrict>Off</OptionStrict>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionInfer>On</OptionInfer>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ExcelDataReader, Version=3.6.0.0, Culture=neutral, PublicKeyToken=93517dbe6a4012fa, processorArchitecture=MSIL">
+      <HintPath>..\packages\ExcelDataReader.3.6.0\lib\net20\ExcelDataReader.dll</HintPath>
+    </Reference>
+    <Reference Include="ExcelDataReader.DataSet, Version=3.6.0.0, Culture=neutral, PublicKeyToken=93517dbe6a4012fa, processorArchitecture=MSIL">
+      <HintPath>..\packages\ExcelDataReader.DataSet.3.6.0\lib\net20\ExcelDataReader.DataSet.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>bin\Debug\Dll\Microsoft.Office.Interop.Excel.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Office.Interop.Outlook, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>X:\RAS2K7\Microsoft.Office.Interop.Outlook.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MSDN.HtmlEditorControl">
+      <HintPath>..\ACO SUITE6\ImportMIDT\bin\Debug\MSDN.HtmlEditorControl.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net20\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="SharedFunctions12">
+      <HintPath>..\..\CounterTools\CwtPnrTools\bin\Debug\SharedFunctions12.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="k1aHostConstantsLib" />
+    <Import Include="k1aHostInterface" />
+    <Import Include="k1aHostToolKit" />
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Drawing" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AdhocPoint.designer.vb">
+      <DependentUpon>AdhocPoint.vb</DependentUpon>
+    </Compile>
+    <Compile Include="AdhocPoint.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Agent.Designer.vb">
+      <DependentUpon>Agent.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Agent.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AllstatUpload.designer.vb">
+      <DependentUpon>AllstatUpload.vb</DependentUpon>
+    </Compile>
+    <Compile Include="AllstatUpload.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="clsCustomer.vb" />
+    <Compile Include="clsFareLine.vb" />
+    <Compile Include="clsFqd.vb" />
+    <Compile Include="clsJgd1A.vb" />
+    <Compile Include="clsMiscField.vb" />
+    <Compile Include="clsROE.vb" />
+    <Compile Include="clsTvcs.vb" />
+    <Compile Include="clsUser.vb" />
+    <Compile Include="CommonVariable.vb" />
+    <Compile Include="CongNoKhach.designer.vb">
+      <DependentUpon>CongNoKhach.vb</DependentUpon>
+    </Compile>
+    <Compile Include="CongNoKhach.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Crd_Ctrl.vb" />
+    <Compile Include="CreateUser.designer.vb">
+      <DependentUpon>CreateUser.vb</DependentUpon>
+    </Compile>
+    <Compile Include="CreateUser.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CSTM1.Designer.vb">
+      <DependentUpon>CSTM1.vb</DependentUpon>
+    </Compile>
+    <Compile Include="CSTM1.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CSTMn.Designer.vb">
+      <DependentUpon>CSTMn.vb</DependentUpon>
+    </Compile>
+    <Compile Include="CSTMn.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DangNhap.designer.vb">
+      <DependentUpon>DangNhap.vb</DependentUpon>
+    </Compile>
+    <Compile Include="DangNhap.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DoiMatKhau.designer.vb">
+      <DependentUpon>DoiMatKhau.vb</DependentUpon>
+    </Compile>
+    <Compile Include="DoiMatKhau.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmAgentEdit.Designer.vb">
+      <DependentUpon>frmAgentEdit.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmAgentEdit.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmAgentList.Designer.vb">
+      <DependentUpon>frmAgentList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmAgentList.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmAllstats.designer.vb">
+      <DependentUpon>frmAllstats.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmAllstats.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmBalance.Designer.vb">
+      <DependentUpon>frmBalance.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmBalance.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmBillingInfoEdit.Designer.vb">
+      <DependentUpon>frmBillingInfoEdit.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmBillingInfoEdit.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmBypassSecoCheck.designer.vb">
+      <DependentUpon>frmBypassSecoCheck.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmBypassSecoCheck.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCalcPrice.Designer.vb">
+      <DependentUpon>frmCalcPrice.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmCalcPrice.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmChangeCustomer.Designer.vb">
+      <DependentUpon>frmChangeCustomer.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmChangeCustomer.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmChangeData.designer.vb">
+      <DependentUpon>frmChangeData.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmChangeData.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmChangePassword.Designer.vb">
+      <DependentUpon>frmChangePassword.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmChangePassword.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCloneWzNewValidity.Designer.vb">
+      <DependentUpon>frmCloneWzNewValidity.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmCloneWzNewValidity.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmContactEdit.Designer.vb">
+      <DependentUpon>frmContactEdit.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmContactEdit.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmContacts.Designer.vb">
+      <DependentUpon>frmContacts.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmContacts.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCostRelatedReports.Designer.vb">
+      <DependentUpon>frmCostRelatedReports.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmCostRelatedReports.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCustomerEdit.Designer.vb">
+      <DependentUpon>frmCustomerEdit.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmCustomerEdit.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCustomerList.Designer.vb">
+      <DependentUpon>frmCustomerList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmCustomerList.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCustomerSelection.Designer.vb">
+      <DependentUpon>frmCustomerSelection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmCustomerSelection.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCustSegmentation.Designer.vb">
+      <DependentUpon>frmCustSegmentation.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmCustSegmentation.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmDataGridView.Designer.vb">
+      <DependentUpon>frmDataGridView.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmDataGridView.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmDeductBkgRuleEdit.Designer.vb">
+      <DependentUpon>frmDeductBkgRuleEdit.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmDeductBkgRuleEdit.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmDeductBkgRuleList.Designer.vb">
+      <DependentUpon>frmDeductBkgRuleList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmDeductBkgRuleList.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmDefineGrpTkt.Designer.vb">
+      <DependentUpon>frmDefineGrpTkt.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmDefineGrpTkt.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmDeleteCustomer.Designer.vb">
+      <DependentUpon>frmDeleteCustomer.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmDeleteCustomer.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmDouble.Designer.vb">
+      <DependentUpon>frmDouble.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmDouble.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmFareBatchEdit.Designer.vb">
+      <DependentUpon>frmFareBatchEdit.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmFareBatchEdit.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmFinalizeAllStats.Designer.vb">
+      <DependentUpon>frmFinalizeAllStats.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmFinalizeAllStats.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmGdsSkills.Designer.vb">
+      <DependentUpon>frmGdsSkills.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmGdsSkills.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmGetRewardsUser.Designer.vb">
+      <DependentUpon>frmGetRewardsUser.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmGetRewardsUser.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmGiftDefinition.Designer.vb">
+      <DependentUpon>frmGiftDefinition.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmGiftDefinition.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmGiftDefinitionEdit.Designer.vb">
+      <DependentUpon>frmGiftDefinitionEdit.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmGiftDefinitionEdit.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmGiftInOutItemEdit.Designer.vb">
+      <DependentUpon>frmGiftInOutItemEdit.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmGiftInOutItemEdit.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmGiftInOutList.Designer.vb">
+      <DependentUpon>frmGiftInOutList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmGiftInOutList.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmIataCodes.Designer.vb">
+      <DependentUpon>frmIataCodes.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmIataCodes.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmImportMIDT.Designer.vb">
+      <DependentUpon>frmImportMIDT.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmImportMIDT.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmIncentiveAdhoc.Designer.vb">
+      <DependentUpon>frmIncentiveAdhoc.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmIncentiveAdhoc.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmIncentiveAdhocEdit.Designer.vb">
+      <DependentUpon>frmIncentiveAdhocEdit.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmIncentiveAdhocEdit.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmIncentiveCalc.Designer.vb">
+      <DependentUpon>frmIncentiveCalc.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmIncentiveCalc.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmIncentiveFOP.Designer.vb">
+      <DependentUpon>frmIncentiveFOP.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmIncentiveFOP.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmIncentiveFormula.Designer.vb">
+      <DependentUpon>frmIncentiveFormula.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmIncentiveFormula.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmIncentiveFormulaEdit.Designer.vb">
+      <DependentUpon>frmIncentiveFormulaEdit.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmIncentiveFormulaEdit.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmIncentiveOffer.Designer.vb">
+      <DependentUpon>frmIncentiveOffer.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmIncentiveOffer.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmIncentiveOfferCopy2Other.Designer.vb">
+      <DependentUpon>frmIncentiveOfferCopy2Other.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmIncentiveOfferCopy2Other.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmIncentiveReport.Designer.vb">
+      <DependentUpon>frmIncentiveReport.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmIncentiveReport.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmIncentiveReportSummary.Designer.vb">
+      <DependentUpon>frmIncentiveReportSummary.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmIncentiveReportSummary.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmLocations.Designer.vb">
+      <DependentUpon>frmLocations.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmLocations.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmMIDTDaily.Designer.vb">
+      <DependentUpon>FrmMIDTDaily.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmMIDTDaily.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmMiscList.Designer.vb">
+      <DependentUpon>frmMiscList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmMiscList.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmMiscUpdate.Designer.vb">
+      <DependentUpon>frmMiscUpdate.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmMiscUpdate.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmOfficeIDs.Designer.vb">
+      <DependentUpon>frmOfficeIDs.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmOfficeIDs.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmPayment.Designer.vb">
+      <DependentUpon>frmPayment.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmPayment.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmPayment2Customers.Designer.vb">
+      <DependentUpon>frmPayment2Customers.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmPayment2Customers.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmPaymentInfo.Designer.vb">
+      <DependentUpon>frmPaymentInfo.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmPaymentInfo.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmPriceList.Designer.vb">
+      <DependentUpon>frmPriceList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmPriceList.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmPricePerUser.Designer.vb">
+      <DependentUpon>frmPricePerUser.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmPricePerUser.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmProductBillingCalc4SECO.Designer.vb">
+      <DependentUpon>frmProductBillingCalc4SECO.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmProductBillingCalc4SECO.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmProductChargeFollowUp.Designer.vb">
+      <DependentUpon>frmProductChargeFollowUp.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmProductChargeFollowUp.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmProductCostEdit.Designer.vb">
+      <DependentUpon>frmProductCostEdit.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmProductCostEdit.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmProductCosts.Designer.vb">
+      <DependentUpon>frmProductCosts.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmProductCosts.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmProductEdit.Designer.vb">
+      <DependentUpon>frmProductEdit.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmProductEdit.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmProductList.Designer.vb">
+      <DependentUpon>frmProductList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmProductList.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmProductOffer.Designer.vb">
+      <DependentUpon>frmProductOffer.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmProductOffer.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmProductOfferEdit.Designer.vb">
+      <DependentUpon>frmProductOfferEdit.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmProductOfferEdit.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmProductPackageEdit.Designer.vb">
+      <DependentUpon>frmProductPackageEdit.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmProductPackageEdit.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmProductPackages.Designer.vb">
+      <DependentUpon>frmProductPackages.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmProductPackages.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmProductRightEdit.Designer.vb">
+      <DependentUpon>frmProductRightEdit.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmProductRightEdit.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmProductRights.Designer.vb">
+      <DependentUpon>frmProductRights.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmProductRights.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmProductUsage.Designer.vb">
+      <DependentUpon>frmProductUsage.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmProductUsage.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmProgress.Designer.vb">
+      <DependentUpon>frmProgress.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmProgress.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmReportContacts.Designer.vb">
+      <DependentUpon>frmReportContacts.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmReportContacts.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmRewards.designer.vb">
+      <DependentUpon>frmRewards.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmRewards.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmRewardsAdhocPointReport.Designer.vb">
+      <DependentUpon>frmRewardsAdhocPointReport.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmRewardsAdhocPointReport.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmRewardsUserEdit.Designer.vb">
+      <DependentUpon>frmRewardsUserEdit.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmRewardsUserEdit.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmIncentiveOfferEdit.Designer.vb">
+      <DependentUpon>frmIncentiveOfferEdit.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmIncentiveOfferEdit.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSecoFOP.Designer.vb">
+      <DependentUpon>frmSecoFOP.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmSecoFOP.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSecoInfo.Designer.vb">
+      <DependentUpon>frmSecoInfo.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmSecoInfo.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSecoOffer.Designer.vb">
+      <DependentUpon>frmSecoOffer.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmSecoOffer.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSelectCustomer.Designer.vb">
+      <DependentUpon>frmSelectCustomer.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmSelectCustomer.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSelectDateRange.Designer.vb">
+      <DependentUpon>frmSelectDateRange.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmSelectDateRange.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSelectIncentiveFormula.Designer.vb">
+      <DependentUpon>frmSelectIncentiveFormula.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmSelectIncentiveFormula.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSelectMonthYear.Designer.vb">
+      <DependentUpon>frmSelectMonthYear.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmSelectMonthYear.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSelectProduct.Designer.vb">
+      <DependentUpon>frmSelectProduct.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmSelectProduct.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSelectProductPrice.Designer.vb">
+      <DependentUpon>frmSelectProductPrice.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmSelectProductPrice.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmShowMessage.Designer.vb">
+      <DependentUpon>frmShowMessage.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmShowMessage.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmShowTableContent.Designer.vb">
+      <DependentUpon>frmShowTableContent.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmShowTableContent.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSignIn.designer.vb">
+      <DependentUpon>frmSignIn.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmSignIn.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSignIn1A.Designer.vb">
+      <DependentUpon>frmSignIn1A.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmSignIn1A.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmMiscDate4OffcId.Designer.vb">
+      <DependentUpon>frmMiscDate4OffcId.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmMiscDate4OffcId.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSingle.Designer.vb">
+      <DependentUpon>frmSingle.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmSingle.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmUnitPrice.Designer.vb">
+      <DependentUpon>frmUnitPrice.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmUnitPrice.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmUserEdit.Designer.vb">
+      <DependentUpon>frmUserEdit.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmUserEdit.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmUserManagement.Designer.vb">
+      <DependentUpon>frmUserManagement.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmUserManagement.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmUserRights.Designer.vb">
+      <DependentUpon>frmUserRights.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmUserRights.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmGiftManager.designer.vb">
+      <DependentUpon>frmGiftManager.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmGiftManager.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="IncentiveCalc.Designer.vb">
+      <DependentUpon>IncentiveCalc.vb</DependentUpon>
+    </Compile>
+    <Compile Include="IncentiveCalc.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LibStr.vb" />
+    <Compile Include="Lib\BienPublic.vb" />
+    <Compile Include="Lib\cpublic.vb" />
+    <Compile Include="Lib\thuvien.vb" />
+    <Compile Include="Management.Designer.vb">
+      <DependentUpon>Management.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Management.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="mdlDeclare.vb" />
+    <Compile Include="mdlProducts.vb" />
+    <Compile Include="mdlScalar.vb" />
+    <Compile Include="mdlSubAndFunc.vb" />
+    <Compile Include="mdlTextTools.vb" />
+    <Compile Include="MIDTData.designer.vb">
+      <DependentUpon>MIDTData.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MIDTData.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="NewsUpdater.designer.vb">
+      <DependentUpon>NewsUpdater.vb</DependentUpon>
+    </Compile>
+    <Compile Include="NewsUpdater.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmOrderHandler.designer.vb">
+      <DependentUpon>frmOrderHandler.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmOrderHandler.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PromoManager.designer.vb">
+      <DependentUpon>PromoManager.vb</DependentUpon>
+    </Compile>
+    <Compile Include="PromoManager.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="QuickView.designer.vb">
+      <DependentUpon>QuickView.vb</DependentUpon>
+    </Compile>
+    <Compile Include="QuickView.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSaleLog.designer.vb">
+      <DependentUpon>frmSaleLog.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmSaleLog.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DateTimeReport.Designer.vb">
+      <DependentUpon>DateTimeReport.vb</DependentUpon>
+    </Compile>
+    <Compile Include="DateTimeReport.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UserMapping.designer.vb">
+      <DependentUpon>UserMapping.vb</DependentUpon>
+    </Compile>
+    <Compile Include="UserMapping.vb">
+      <SubType>Form</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="AdhocPoint.resx">
+      <DependentUpon>AdhocPoint.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Agent.resx">
+      <DependentUpon>Agent.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AllstatUpload.resx">
+      <DependentUpon>AllstatUpload.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CongNoKhach.resx">
+      <DependentUpon>CongNoKhach.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CreateUser.resx">
+      <DependentUpon>CreateUser.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CSTM1.resx">
+      <DependentUpon>CSTM1.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CSTMn.resx">
+      <DependentUpon>CSTMn.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DangNhap.resx">
+      <DependentUpon>DangNhap.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DoiMatKhau.resx">
+      <DependentUpon>DoiMatKhau.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmAgentEdit.resx">
+      <DependentUpon>frmAgentEdit.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmAgentList.resx">
+      <DependentUpon>frmAgentList.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmAllstats.resx">
+      <DependentUpon>frmAllstats.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmBalance.resx">
+      <DependentUpon>frmBalance.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmBillingInfoEdit.resx">
+      <DependentUpon>frmBillingInfoEdit.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmBypassSecoCheck.resx">
+      <DependentUpon>frmBypassSecoCheck.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmCalcPrice.resx">
+      <DependentUpon>frmCalcPrice.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmChangeCustomer.resx">
+      <DependentUpon>frmChangeCustomer.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmChangeData.resx">
+      <DependentUpon>frmChangeData.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmChangePassword.resx">
+      <DependentUpon>frmChangePassword.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmCloneWzNewValidity.resx">
+      <DependentUpon>frmCloneWzNewValidity.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmContactEdit.resx">
+      <DependentUpon>frmContactEdit.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmContacts.resx">
+      <DependentUpon>frmContacts.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmCostRelatedReports.resx">
+      <DependentUpon>frmCostRelatedReports.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmCustomerEdit.resx">
+      <DependentUpon>frmCustomerEdit.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmCustomerList.resx">
+      <DependentUpon>frmCustomerList.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmCustomerSelection.resx">
+      <DependentUpon>frmCustomerSelection.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmCustSegmentation.resx">
+      <DependentUpon>frmCustSegmentation.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmDataGridView.resx">
+      <DependentUpon>frmDataGridView.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmDeductBkgRuleEdit.resx">
+      <DependentUpon>frmDeductBkgRuleEdit.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmDeductBkgRuleList.resx">
+      <DependentUpon>frmDeductBkgRuleList.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmDefineGrpTkt.resx">
+      <DependentUpon>frmDefineGrpTkt.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmDeleteCustomer.resx">
+      <DependentUpon>frmDeleteCustomer.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmDouble.resx">
+      <DependentUpon>frmDouble.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmFareBatchEdit.resx">
+      <DependentUpon>frmFareBatchEdit.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmFinalizeAllStats.resx">
+      <DependentUpon>frmFinalizeAllStats.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmGdsSkills.resx">
+      <DependentUpon>frmGdsSkills.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmGetRewardsUser.resx">
+      <DependentUpon>frmGetRewardsUser.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmGiftDefinition.resx">
+      <DependentUpon>frmGiftDefinition.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmGiftDefinitionEdit.resx">
+      <DependentUpon>frmGiftDefinitionEdit.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmGiftInOutItemEdit.resx">
+      <DependentUpon>frmGiftInOutItemEdit.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmGiftInOutList.resx">
+      <DependentUpon>frmGiftInOutList.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmIataCodes.resx">
+      <DependentUpon>frmIataCodes.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmImportMIDT.resx">
+      <DependentUpon>frmImportMIDT.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmIncentiveAdhoc.resx">
+      <DependentUpon>frmIncentiveAdhoc.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmIncentiveAdhocEdit.resx">
+      <DependentUpon>frmIncentiveAdhocEdit.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmIncentiveCalc.resx">
+      <DependentUpon>frmIncentiveCalc.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmIncentiveFOP.resx">
+      <DependentUpon>frmIncentiveFOP.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmIncentiveFormula.resx">
+      <DependentUpon>frmIncentiveFormula.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmIncentiveFormulaEdit.resx">
+      <DependentUpon>frmIncentiveFormulaEdit.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmIncentiveOffer.resx">
+      <DependentUpon>frmIncentiveOffer.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmIncentiveOfferCopy2Other.resx">
+      <DependentUpon>frmIncentiveOfferCopy2Other.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmIncentiveReport.resx">
+      <DependentUpon>frmIncentiveReport.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmIncentiveReportSummary.resx">
+      <DependentUpon>frmIncentiveReportSummary.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmLocations.resx">
+      <DependentUpon>frmLocations.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmMIDTDaily.resx">
+      <DependentUpon>FrmMIDTDaily.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmMiscList.resx">
+      <DependentUpon>frmMiscList.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmMiscUpdate.resx">
+      <DependentUpon>frmMiscUpdate.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmOfficeIDs.resx">
+      <DependentUpon>frmOfficeIDs.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmPayment.resx">
+      <DependentUpon>frmPayment.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmPayment2Customers.resx">
+      <DependentUpon>frmPayment2Customers.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmPaymentInfo.resx">
+      <DependentUpon>frmPaymentInfo.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmPriceList.resx">
+      <DependentUpon>frmPriceList.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmPricePerUser.resx">
+      <DependentUpon>frmPricePerUser.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmProductBillingCalc4SECO.resx">
+      <DependentUpon>frmProductBillingCalc4SECO.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmProductChargeFollowUp.resx">
+      <DependentUpon>frmProductChargeFollowUp.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmProductCostEdit.resx">
+      <DependentUpon>frmProductCostEdit.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmProductCosts.resx">
+      <DependentUpon>frmProductCosts.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmProductEdit.resx">
+      <DependentUpon>frmProductEdit.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmProductList.resx">
+      <DependentUpon>frmProductList.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmProductOffer.resx">
+      <DependentUpon>frmProductOffer.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmProductOfferEdit.resx">
+      <DependentUpon>frmProductOfferEdit.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmProductPackageEdit.resx">
+      <DependentUpon>frmProductPackageEdit.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmProductPackages.resx">
+      <DependentUpon>frmProductPackages.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmProductRightEdit.resx">
+      <DependentUpon>frmProductRightEdit.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmProductRights.resx">
+      <DependentUpon>frmProductRights.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmProductUsage.resx">
+      <DependentUpon>frmProductUsage.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmProgress.resx">
+      <DependentUpon>frmProgress.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmReportContacts.resx">
+      <DependentUpon>frmReportContacts.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmRewards.resx">
+      <DependentUpon>frmRewards.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmRewardsAdhocPointReport.resx">
+      <DependentUpon>frmRewardsAdhocPointReport.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmRewardsUserEdit.resx">
+      <DependentUpon>frmRewardsUserEdit.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmIncentiveOfferEdit.resx">
+      <DependentUpon>frmIncentiveOfferEdit.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSecoFOP.resx">
+      <DependentUpon>frmSecoFOP.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSecoInfo.resx">
+      <DependentUpon>frmSecoInfo.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSecoOffer.resx">
+      <DependentUpon>frmSecoOffer.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSelectCustomer.resx">
+      <DependentUpon>frmSelectCustomer.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSelectDateRange.resx">
+      <DependentUpon>frmSelectDateRange.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSelectIncentiveFormula.resx">
+      <DependentUpon>frmSelectIncentiveFormula.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSelectMonthYear.resx">
+      <DependentUpon>frmSelectMonthYear.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSelectProduct.resx">
+      <DependentUpon>frmSelectProduct.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSelectProductPrice.resx">
+      <DependentUpon>frmSelectProductPrice.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmShowMessage.resx">
+      <DependentUpon>frmShowMessage.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmShowTableContent.resx">
+      <DependentUpon>frmShowTableContent.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSignIn.resx">
+      <DependentUpon>frmSignIn.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSignIn1A.resx">
+      <DependentUpon>frmSignIn1A.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmMiscDate4OffcId.resx">
+      <DependentUpon>frmMiscDate4OffcId.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSingle.resx">
+      <DependentUpon>frmSingle.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmUnitPrice.resx">
+      <DependentUpon>frmUnitPrice.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmUserEdit.resx">
+      <DependentUpon>frmUserEdit.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmUserManagement.resx">
+      <DependentUpon>frmUserManagement.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmUserRights.resx">
+      <DependentUpon>frmUserRights.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmGiftManager.resx">
+      <DependentUpon>frmGiftManager.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="IncentiveCalc.resx">
+      <DependentUpon>IncentiveCalc.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Management.resx">
+      <DependentUpon>Management.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MIDTData.resx">
+      <DependentUpon>MIDTData.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NewsUpdater.resx">
+      <DependentUpon>NewsUpdater.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmOrderHandler.resx">
+      <DependentUpon>frmOrderHandler.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PromoManager.resx">
+      <DependentUpon>PromoManager.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="QuickView.resx">
+      <DependentUpon>QuickView.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSaleLog.resx">
+      <DependentUpon>frmSaleLog.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DateTimeReport.resx">
+      <DependentUpon>DateTimeReport.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserMapping.resx">
+      <DependentUpon>UserMapping.vb</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Image\log.ico" />
+    <None Include="packages.config" />
+    <None Include="Resources\nen app.jpg" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
