@@ -34,6 +34,7 @@ Public Class frmCustomerEdit
             'txtFullNameVN.Enabled = False
             mstrOldPIC = cboPIC.Text
             txtDataApiToken.Text = drCustomer.Cells("DataApiToken").Value
+            chkPPD.Checked = drCustomer.Cells("PPD").Value  '^_^20230112 add by 7643
         Else
 
             Select Case pobjUser.City
@@ -94,6 +95,7 @@ Public Class frmCustomerEdit
 
     Private Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
         Dim lstQuerries As New List(Of String)
+        Dim mPPD As Integer  '^_^20230112 add by 7643
         If Not CheckInputValues() Then
             Exit Sub
         End If
@@ -110,16 +112,31 @@ Public Class frmCustomerEdit
         '                & "','" & txtDataApiToken.Text & "')")
         '^_^20221021 mark by 7643 -e-
         '^_^20221021 modi by 7643 -b-
+        '^_^20230112 mark by 7643 -b-
+        'lstQuerries.Add("insert into DATA1A_Customers ( AccountNameGB, AccountNameVN, ShortName, Province, Region" _
+        '                & ", PIC, Web, AccountStatus,AccountTypes, MarketSize, AmadeusSize, Comments" _
+        '                & ", Status, FstUser,DataApiToken, CustAddress, CustTaxCode, Email) values ('" _
+        '                & txtAccountNameGB.Text & "',N'" & txtAccountNameVN.Text & "','" & txtShortName.Text _
+        '                & "','" & cboProvince.Text & "','" & cboRegion.Text & "','" & cboPIC.Text _
+        '                & "','" & txtWeb.Text & "','" & cboAccountStatus.Text & "','" & ConvertGroupbox2Str(grbAccountTypes) _
+        '                & "','" & cboMarketSize.Text _
+        '                & "','" & cboAmadeusSize.Text & "',N'" & txtComments.Text _
+        '                & "','OK','" & pobjUser.UserName _
+        '                & "','" & txtDataApiToken.Text & "', '" & txtCustAddress.Text & "', '" & txtCustTaxCode.Text & "', '" & txtEmail.Text & "')")
+        '^_^20230112 mark by 7643 -e-
+        '^_^20230112 modi by 7643 -b-
+        mPPD = IIf(chkPPD.Checked, 1, 0)
         lstQuerries.Add("insert into DATA1A_Customers ( AccountNameGB, AccountNameVN, ShortName, Province, Region" _
                         & ", PIC, Web, AccountStatus,AccountTypes, MarketSize, AmadeusSize, Comments" _
-                        & ", Status, FstUser,DataApiToken, CustAddress, CustTaxCode, Email) values ('" _
+                        & ", Status, FstUser,DataApiToken, CustAddress, CustTaxCode, Email,PPD) values ('" _
                         & txtAccountNameGB.Text & "',N'" & txtAccountNameVN.Text & "','" & txtShortName.Text _
                         & "','" & cboProvince.Text & "','" & cboRegion.Text & "','" & cboPIC.Text _
                         & "','" & txtWeb.Text & "','" & cboAccountStatus.Text & "','" & ConvertGroupbox2Str(grbAccountTypes) _
                         & "','" & cboMarketSize.Text _
                         & "','" & cboAmadeusSize.Text & "',N'" & txtComments.Text _
                         & "','OK','" & pobjUser.UserName _
-                        & "','" & txtDataApiToken.Text & "', '" & txtCustAddress.Text & "', '" & txtCustTaxCode.Text & "', '" & txtEmail.Text & "')")
+                        & "','" & txtDataApiToken.Text & "', '" & txtCustAddress.Text & "', '" & txtCustTaxCode.Text & "', '" & txtEmail.Text & "'," & mPPD & ")")
+        '^_^20230112 modi by 7643 -e-
         '^_^20221021 modi by 7643 -e-
         If txtRecId.Text <> "" Then
             lstQuerries.Add("Update DATA1A_Customers set Status='XX', LstUpdate=getdate() where RecId=" & txtRecId.Text)

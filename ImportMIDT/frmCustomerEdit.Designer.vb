@@ -61,6 +61,7 @@ Partial Class frmCustomerEdit
         Me.lblCustTaxCode = New System.Windows.Forms.Label()
         Me.txtEmail = New System.Windows.Forms.TextBox()
         Me.lblEmail = New System.Windows.Forms.Label()
+        Me.chkPPD = New System.Windows.Forms.CheckBox()
         Me.grbAccountTypes.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -409,11 +410,22 @@ Partial Class frmCustomerEdit
         Me.lblEmail.TabIndex = 143
         Me.lblEmail.Text = "Email"
         '
+        'chkPPD
+        '
+        Me.chkPPD.AutoSize = True
+        Me.chkPPD.Location = New System.Drawing.Point(566, 164)
+        Me.chkPPD.Name = "chkPPD"
+        Me.chkPPD.Size = New System.Drawing.Size(48, 17)
+        Me.chkPPD.TabIndex = 144
+        Me.chkPPD.Text = "PPD"
+        Me.chkPPD.UseVisualStyleBackColor = True
+        '
         'frmCustomerEdit
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(691, 430)
+        Me.Controls.Add(Me.chkPPD)
         Me.Controls.Add(Me.txtEmail)
         Me.Controls.Add(Me.lblEmail)
         Me.Controls.Add(Me.txtCustTaxCode)
@@ -497,4 +509,5 @@ Partial Class frmCustomerEdit
     Friend WithEvents lblCustTaxCode As Label
     Friend WithEvents txtEmail As TextBox
     Friend WithEvents lblEmail As Label
+    Friend WithEvents chkPPD As CheckBox
 End Class

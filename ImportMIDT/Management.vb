@@ -14,9 +14,6 @@ Public Class Management
 #End Region
 #Region "Events"
     Private Sub Management_Load(sender As Object, e As EventArgs) Handles Me.Load
-        Dim mFile, mArrStr() As String  '20220513 add by 7643
-        Dim i As Integer  '20220518 add by 7643
-
         'Dim arrParameters() As String = Environment.GetCommandLineArgs()
         'If Environment.GetCommandLineArgs.Length > 0 AndAlso UCase(Environment.GetCommandLineArgs(1)) = "R" Then
         '    blnRemoteAccess = True
@@ -31,6 +28,13 @@ Public Class Management
             MsgBox("Unable to connect Sql 1A")
             GoTo Quit
         End If
+
+        '^_^20221007 add by 7643 -b-
+        If My.Computer.Name = "7-111" Then
+            frmSignIn.txtStaffId.Text = "7643"
+            frmSignIn.txtPassword.Text = "kehuydiet"
+        End If
+        '^_^20221007 add by 7643
 
         If frmSignIn.ShowDialog <> Windows.Forms.DialogResult.OK Then
             GoTo Quit
@@ -56,7 +60,8 @@ Public Class Management
         '    barUserManager.Enabled = True
         'End If
 
-        Me.Text = Me.Text & "-" & pobjUser.UserName & "-" & pobjUser.City & "-" & pobjUser.StaffId
+        'Me.Text = Me.Text & "-" & pobjUser.UserName & "-" & pobjUser.City & "-" & pobjUser.StaffId  '^_^20221207 mark by 7643
+        Me.Text = Me.Text & "-" & pobjUser.UserName & "-" & pobjUser.City & "-" & pobjUser.StaffId & "-" & System.Windows.Forms.Application.ProductVersion  '^_^20221207 modi by 7643
 
         If pobjUser.UserName = "khanhnm" Then
             barDeleteCustomer.Visible = True
@@ -1191,5 +1196,30 @@ Quit:
 
     Private Sub barSecoPerCust_Click(sender As Object, e As EventArgs) Handles barSecoPerCust.Click
         Process.Start(Application.StartupPath & "\SecoPerCus.xltm")  '^_^20221125 add by 7643
+    End Sub
+
+    Private Sub barAtcOffer_Click(sender As Object, e As EventArgs) Handles barAtcOffer.Click
+        '^_^20221219 add by 7643 -b-
+        Dim mForm As New frmAtcOffer
+        mForm.Show()
+        '^_^20221219 add by 7643 -e-
+    End Sub
+
+    Private Sub BarAtcCalcPrice_Click(sender As Object, e As EventArgs) Handles BarAtcCalcPrice.Click
+        '^_^20221219 add by 7643 -b-
+        Dim mForm As New frmAtcCalcPrice
+        mForm.Show()
+        '^_^20221219 add by 7643 -e-
+    End Sub
+
+    Private Sub barATC2_Click(sender As Object, e As EventArgs) Handles barATC2.Click
+        Process.Start(Application.StartupPath & "\ATCBilling2.xltm")  '^_^20230110 add by 7643
+    End Sub
+
+    Private Sub barSecoPpd_Click(sender As Object, e As EventArgs) Handles barSecoPpd.Click
+        '^_^20230112 add by 7643 -b-
+        Dim mSecoPpd As New frmSecoPpd
+        mSecoPpd.Show()
+        '^_^20230112 add by 7643 -e-
     End Sub
 End Class

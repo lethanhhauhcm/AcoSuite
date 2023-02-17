@@ -402,7 +402,7 @@ Partial Class frmSecoOffer
         Me.lstCustomer.ScrollAlwaysVisible = True
         Me.lstCustomer.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
         Me.lstCustomer.Size = New System.Drawing.Size(130, 134)
-        Me.lstCustomer.TabIndex = 58
+        Me.lstCustomer.TabIndex = 5
         Me.lstCustomer.Visible = False
         '
         'dgvIDetail
@@ -416,7 +416,7 @@ Partial Class frmSecoOffer
         Me.dgvIDetail.Location = New System.Drawing.Point(6, 212)
         Me.dgvIDetail.Name = "dgvIDetail"
         Me.dgvIDetail.Size = New System.Drawing.Size(1012, 150)
-        Me.dgvIDetail.TabIndex = 57
+        Me.dgvIDetail.TabIndex = 6
         '
         'lblExpDate
         '
@@ -435,7 +435,7 @@ Partial Class frmSecoOffer
         Me.dtpExpDate.Name = "dtpExpDate"
         Me.dtpExpDate.ShowUpDown = True
         Me.dtpExpDate.Size = New System.Drawing.Size(80, 20)
-        Me.dtpExpDate.TabIndex = 12
+        Me.dtpExpDate.TabIndex = 3
         '
         'lblEffDate
         '
@@ -454,7 +454,7 @@ Partial Class frmSecoOffer
         Me.dtpEffDate.Name = "dtpEffDate"
         Me.dtpEffDate.ShowUpDown = True
         Me.dtpEffDate.Size = New System.Drawing.Size(80, 20)
-        Me.dtpEffDate.TabIndex = 11
+        Me.dtpEffDate.TabIndex = 2
         '
         'cboCustomer
         '
@@ -462,7 +462,7 @@ Partial Class frmSecoOffer
         Me.cboCustomer.Location = New System.Drawing.Point(361, 45)
         Me.cboCustomer.Name = "cboCustomer"
         Me.cboCustomer.Size = New System.Drawing.Size(130, 21)
-        Me.cboCustomer.TabIndex = 9
+        Me.cboCustomer.TabIndex = 7
         '
         'lblCustomer
         '
@@ -478,7 +478,7 @@ Partial Class frmSecoOffer
         Me.txtNote.Location = New System.Drawing.Point(361, 19)
         Me.txtNote.Name = "txtNote"
         Me.txtNote.Size = New System.Drawing.Size(300, 20)
-        Me.txtNote.TabIndex = 10
+        Me.txtNote.TabIndex = 4
         '
         'txtPriceID
         '
@@ -486,7 +486,7 @@ Partial Class frmSecoOffer
         Me.txtPriceID.Name = "txtPriceID"
         Me.txtPriceID.ReadOnly = True
         Me.txtPriceID.Size = New System.Drawing.Size(80, 20)
-        Me.txtPriceID.TabIndex = 8
+        Me.txtPriceID.TabIndex = 1
         '
         'txtRecID
         '
@@ -494,7 +494,7 @@ Partial Class frmSecoOffer
         Me.txtRecID.Name = "txtRecID"
         Me.txtRecID.ReadOnly = True
         Me.txtRecID.Size = New System.Drawing.Size(40, 20)
-        Me.txtRecID.TabIndex = 7
+        Me.txtRecID.TabIndex = 0
         '
         'lblNote
         '

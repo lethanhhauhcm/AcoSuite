@@ -197,13 +197,6 @@ Public Class frmSecoOffer
                     MsgBox("NumOfUser is duplicate!")
                     Return False
                 End If
-
-                If dgvIDetail.Rows(i).Cells("PricePerUser").Value = dgvIDetail.Rows(j).Cells("PricePerUser").Value And
-                    dgvIDetail.Rows(i).Cells("PriceCombo").Value = dgvIDetail.Rows(j).Cells("PriceCombo").Value And
-                    dgvIDetail.Rows(j).Cells("ToTheUser").Value <> 9999 Then
-                    MsgBox("Price is duplicate!")
-                    Return False
-                End If
             Next
         Next
 
@@ -293,7 +286,7 @@ Public Class frmSecoOffer
                                "insert into DATA1A_PriceListDetail(FstDate,FstUser,Status,PriceID,FromTheUser," &
                                                                       "ToTheUser,PricePerUser,PriceCombo,City,ChangeNum) " & vbLf &
                                "values('" & FDate & "','" & pobjUser.UserName & "','OK','" & xPriceID & "'," & mFromTheUser & "," &
-                                      "9999," & FPrice & "," & mPriceCombo & ",'" & pobjUser.City & "'," &
+                                      "9999," & FPrice & ",0,'" & pobjUser.City & "'," &
                                       "" & FChangeNum.ToString & ")"
         End If
 
@@ -326,8 +319,10 @@ Public Class frmSecoOffer
         End If
 
         For i = 0 To mRow
-            If xDgv.Rows(i).Cells("RecID").Value <> vbNull Then mRecID &= IIf(mRecID <> "", ",", "") &
-                                                                               xDgv.Rows(i).Cells("RecID").Value.ToString
+            Try
+                mRecID &= IIf(mRecID <> "", ",", "") & CStr(xDgv.Rows(i).Cells("RecID").Value)
+            Catch
+            End Try
         Next
 
         If mRecID <> "" Then
@@ -361,9 +356,9 @@ Public Class frmSecoOffer
                         "from DATA1A_CalcPrice CP " &
                           "left join DATA1A_CalcPriceDetail CPD on CP.CPID=CPD.CPID And CPD.status='OK' " &
                             "and CPD.City ='" & pobjUser.City & "' " & vbLf &
-                        "where CP.status='OK' and CP.City='" & pobjUser.City & "' and CP.ConfirmStatus='Y' " &
+                        "where CP.status='OK' and CP.City='" & pobjUser.City & "' " &
                           "And (format(CP.CPMonth,'yyyyMM') between '" & mEffDate & "' And '" & mExpDate & "') " &
-                          "And CPD.Customer='" & dgvMain.CurrentRow.Cells("Customer").Value & "' and CPD.ErrDesc=''"
+                          "And CPD.Customer='" & dgvMain.CurrentRow.Cells("Customer").Value & "'"
                 FDeletePower = pobjSql.GetScalarAsString(mSQL) = ""
             End If
         End If
@@ -406,6 +401,7 @@ Public Class frmSecoOffer
         ElseIf xAction = FAction.Edit Then
             DefaultControl(tpInput, dgvMain)
             cboCustomer.Enabled = False
+            cboCustomer.Text = dgvMain.CurrentRow.Cells("Customer").Value
             lstCustomer.Visible = False  '^_^20220815 add by 7643
             If Not FDeletePower Then
                 mCustomer = dgvMain.CurrentRow.Cells("Customer").Value
@@ -449,10 +445,9 @@ Public Class frmSecoOffer
 
     Private Sub AddDgvCbo(xDgv As DataGridView)
         Dim mSQL As String
-        Dim mCboPricePerUser As DataGridViewComboBoxColumn
+        Dim mCboPricePerUser As New DataGridViewComboBoxColumn
         Dim mDt As DataTable
 
-        mCboPricePerUser = New DataGridViewComboBoxColumn
         mCboPricePerUser.HeaderText = "PricePerUser"
         mCboPricePerUser.Name = "PricePerUser"
         mCboPricePerUser.DefaultCellStyle.Format = "N0"
@@ -482,20 +477,22 @@ Public Class frmSecoOffer
         '^_^20220826 mark by 7643 -e-
         '"where pl.EffDate<='" & Strings.Left(dtpExpDate.Value.ToString("yyyyMM"), 6) & "' " &
         '^_^20220826 modi by 7643 -b-
-        mSQL = "select distinct c.ShortName value " &
-               "from MKTG_MIDT..DATA1A_Customers c " &
-               "where c.status<>'XX' and c.Region='" & pobjUser.Region & "' and c.ShortName<>'' " &
-                 IIf(pobjUser.Role <> "Admin", "and c.PIC='" & pobjUser.UserName & "' ", "") &
-               "except " &
-               "select pl.Customer " &
-               "from DATA1A_PriceList pl " &
-               "where pl.EffDate<='" & Format(dtpExpDate.Value, "01-MMM-yyyy") & "' " &
-                 "and pl.ExpDate>='" & Format(dtpEffDate.Value, "01-MMM-yyyy") & "' and pl.status ='OK' and pl.City ='" & pobjUser.City & "' " &
-                 "and pl.RecID <>'" & txtRecID.Text & "' " &
-               "order by value"
-        '^_^20220826 modi by 7643 -e-
-        pobjSql.LoadCombo(cboCustomer, mSQL)
-        pobjSql.LoadListbox(lstCustomer, mSQL)  '^_^20220815 add by 7643
+        '^_^20230130 mark by 7643 -b-
+        'mSQL = "select distinct c.ShortName value " &
+        '       "from MKTG_MIDT..DATA1A_Customers c " &
+        '       "where c.status<>'XX' and c.Region='" & pobjUser.Region & "' and c.ShortName<>'' " &
+        '         IIf(pobjUser.Role <> "Admin", "and c.PIC='" & pobjUser.UserName & "' ", "") &
+        '       "except " &
+        '       "select pl.Customer " &
+        '       "from DATA1A_PriceList pl " &
+        '       "where pl.EffDate<='" & Format(dtpExpDate.Value, "01-MMM-yyyy") & "' " &
+        '         "and pl.ExpDate>='" & Format(dtpEffDate.Value, "01-MMM-yyyy") & "' and pl.status ='OK' and pl.City ='" & pobjUser.City & "' " &
+        '         "and pl.RecID <>'" & txtRecID.Text & "' " &
+        '       "order by value"
+        ''^_^20220826 modi by 7643 -e-
+        'pobjSql.LoadCombo(cboCustomer, mSQL)
+        'pobjSql.LoadListbox(lstCustomer, mSQL)  '^_^20220815 add by 7643
+        '^_^20230130 mark by 7643 -e-
 
         mSQL = "select distinct c.ShortName value " &
                "from MKTG_MIDT..DATA1A_Customers c " &
@@ -535,16 +532,17 @@ Public Class frmSecoOffer
         cmd.Connection = pobjSql.Connection
     End Sub
 
-    Private Sub dgvMain_SelectionChanged(sender As Object, e As EventArgs) Handles dgvMain.SelectionChanged
+    Private Sub dgvMain_SelectionChanged(sender As Object, e As EventArgs) 
         ButtomState()
     End Sub
 
-    Private Sub llbAdd_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles llbAdd.LinkClicked
+    Private Sub llbAdd_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) 
         TabPageChange(tpInput)
+        LoadCustomer(True)
         DefaultValue(FAction.Add)
     End Sub
 
-    Private Sub llbOK_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles llbOK.LinkClicked
+    Private Sub llbOK_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) 
         Dim mPriceID As String,
             i As Integer
 
@@ -622,21 +620,144 @@ Public Class frmSecoOffer
         LoadDgv(dgvMain)
     End Sub
 
-    Private Sub dgvIDetail_EditingControlShowing(sender As Object, e As DataGridViewEditingControlShowingEventArgs) Handles dgvIDetail.EditingControlShowing
+    Private Sub dgvIDetail_EditingControlShowing(sender As Object, e As DataGridViewEditingControlShowingEventArgs) 
         AddHandler e.Control.KeyPress, AddressOf cell_KeyDown
     End Sub
 
-    Private Sub llbCancel_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles llbCancel.LinkClicked, llbBack.LinkClicked
+    Private Sub llbCancel_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) 
         TabPageChange(tpLst)
     End Sub
 
-    Private Sub llbEdit_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles llbEdit.LinkClicked
-        If Not FDeletePower AndAlso MsgBox("This row had used in CalcPrice, will be add new stage!", vbYesNo) = vbNo Then Exit Sub
-        TabPageChange(tpInput)
-        DefaultValue(FAction.Edit)
+    Private Sub llbEdit_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) 
+        '^_^20230203 add by 7643 -b-
+        Dim mMultiEdit As New frmSecoOffer_MultiEdit
+        Dim i, j, t As Integer
+        Dim mDetail As SqlClient.SqlDataReader
+        Dim mSQL, mDetailRecIDs, mMainPara(), mDetailPara(), mCPMonth, mCust, mCusts, mStr As String
+        Dim mReturn As New DataTable
+        Dim mFound As Boolean
+        '^_^20230203 add by 7643 -e-
+
+        If dgvMain.SelectedRows.Count < 2 Then  '^_^20230203 add by 7643 -e-
+            If Not FDeletePower AndAlso MsgBox("This row had used in CalcPrice, will be add new stage!", vbYesNo) = vbNo Then Exit Sub
+            TabPageChange(tpInput)
+            DefaultValue(FAction.Edit)
+            '^_^20230203 add by 7643 -b-
+        Else
+            mMultiEdit.FdgvTemp = dgvMain
+            mMultiEdit.FLstCalcPrice.Clear()
+            For i = 0 To dgvMain.SelectedRows.Count - 1
+                mCust = dgvMain.SelectedRows(i).Cells("Customer").Value
+                mSQL = String.Format("select cpd.RecID,cp.CPMonth " &
+                                     "from DATA1A_CalcPriceDetail cpd left join DATA1A_CalcPrice cp on cpd.CPID=cp.CPID And cp.Status='OK' and cp.City=cpd.City " &
+                                     "where cpd.Status='OK' and cpd.City='{0}' and cpd.Customer='{1}' and cp.CPMonth between '{2}' and '{3}'",
+                                     {pobjUser.City, mCust, Format(dgvMain.SelectedRows(i).Cells("EffDate").Value, "yyyyMMdd"),
+                                        Format(dgvMain.SelectedRows(i).Cells("ExpDate").Value, "yyyyMMdd")})
+                mReturn = GetDataTable(mSQL, pobjSql.Connection)
+                For j = 0 To mReturn.Rows.Count - 1
+                    mFound = False
+                    mCPMonth = Format(mReturn.Rows(j)("CPMonth"), "yyyyMMdd")
+                    For t = 0 To mMultiEdit.FLstCalcPrice.Count - 1
+                        If mMultiEdit.FLstCalcPrice(t).Split(vbTab)(0) = mCPMonth Then
+                            mMultiEdit.FLstCalcPrice(t) = mMultiEdit.FLstCalcPrice(t) & "," & mCust
+                            mFound = True
+                            Exit For
+                        End If
+                    Next
+
+                    If Not mFound Then mMultiEdit.FLstCalcPrice.Add(mCPMonth & vbTab & mCust)
+                Next
+            Next
+            mMultiEdit.FLstCalcPrice.Sort()
+
+            mCusts = ""
+            For i = 0 To mMultiEdit.FLstCalcPrice.Count - 1
+                mStr = mMultiEdit.FLstCalcPrice(i).Split(vbTab)(1)
+                For j = 0 To mStr.Split(",").Length - 1
+                    mCust = mStr.Split(",")(j)
+                    If Not mCusts.Contains(mCust) Then mCusts &= IIf(mCusts <> "", ",", "") & mCust
+                Next
+            Next
+            If mCusts <> "" Then
+                MsgBox(mCusts & " has been calculated price, can not edit SecoOfferDetail!")
+                mMultiEdit.dgvDetail.Visible = False
+            End If
+
+            mMultiEdit.ShowDialog()
+            If mMultiEdit.DialogResult = DialogResult.OK Then
+                Try
+                    BeginTrans()
+
+                    ReDim mMainPara(11)
+                    ReDim mDetailPara(11)
+                    For i = 0 To dgvMain.SelectedRows.Count - 1
+                        'Edit main
+                        cmd.CommandText = String.Format("update DATA1A_PriceList set Status='MO' where RecID={0}",
+                                                        {CStr(dgvMain.SelectedRows(i).Cells("RecID").Value)})
+                        cmd.ExecuteNonQuery()
+
+                        mMainPara(0) = Format(dgvMain.SelectedRows(i).Cells("FstDate").Value, "yyyyMMdd hh:mm:ss")
+                        mMainPara(1) = dgvMain.SelectedRows(i).Cells("FstUser").Value
+                        mMainPara(2) = Format(Now, "yyyyMMdd hh:mm:ss")
+                        mMainPara(3) = pobjUser.UserName
+                        mMainPara(4) = CStr(dgvMain.SelectedRows(i).Cells("PriceID").Value)
+                        mMainPara(5) = dgvMain.SelectedRows(i).Cells("Customer").Value
+                        mMainPara(6) = mMultiEdit.txtNote.Text
+                        mMainPara(7) = pobjUser.City
+                        mMainPara(8) = mMultiEdit.FEffDate
+                        mMainPara(9) = mMultiEdit.FExpDate
+                        mMainPara(10) = CStr(dgvMain.SelectedRows(i).Cells("ChangeNum").Value + 1)
+                        cmd.CommandText = String.Format("insert into DATA1A_PriceList(FstDate,FstUser,LstDate,LstUser,PriceID,Customer,Note,City,EffDate,ExpDate," &
+                                                            "ChangeNum) " &
+                                                        "values('{0}','{1}','{2}','{3}',{4},'{5}','{6}','{7}','{8}','{9}',{10})", mMainPara)
+                        cmd.ExecuteNonQuery()
+
+                        'Edit detail
+                        If mMultiEdit.FLstCalcPrice.Count = 0 Then
+                            cmd.CommandText = String.Format("select RecID from DATA1A_PriceListDetail where Status='OK' and PriceID={0} and City='{1}'",
+                                                    {CStr(dgvMain.SelectedRows(i).Cells("PriceID").Value), pobjUser.City})
+                            mDetail = cmd.ExecuteReader
+
+                            mDetailRecIDs = ""
+                            While mDetail.Read
+                                mDetailRecIDs &= IIf(mDetailRecIDs = "", "", ",") & mDetail(0)
+                            End While
+                            mDetail.Close()
+                            cmd.CommandText = String.Format("update DATA1A_PriceListDetail set Status='MO' where RecID in ({0})", {mDetailRecIDs})
+                            cmd.ExecuteNonQuery()
+
+                            For j = 0 To mMultiEdit.dgvDetail.Rows.Count - 2
+                                mDetailPara(0) = mMainPara(0)
+                                mDetailPara(1) = mMainPara(1)
+                                mDetailPara(2) = mMainPara(2)
+                                mDetailPara(3) = mMainPara(3)
+                                mDetailPara(4) = mMainPara(4)
+                                mDetailPara(5) = CStr(CInt(mMultiEdit.dgvDetail.Rows(j).Cells(0).Value))
+                                mDetailPara(6) = CStr(CInt(mMultiEdit.dgvDetail.Rows(j).Cells(1).Value))
+                                mDetailPara(7) = CStr(CInt(mMultiEdit.dgvDetail.Rows(j).Cells(2).Value))
+                                mDetailPara(8) = CStr(CInt(mMultiEdit.dgvDetail.Rows(j).Cells(3).Value))
+                                mDetailPara(9) = mMainPara(7)
+                                mDetailPara(10) = mMainPara(10)
+                                cmd.CommandText = String.Format("insert into DATA1A_PriceListDetail(FstDate,FstUser,LstDate,LstUser,PriceID,FromTheUser,ToTheUser," &
+                                                                    "PricePerUser,PriceCombo,City,ChangeNum) " &
+                                                                "values('{0}','{1}','{2}','{3}',{4},{5},{6},{7},{8},'{9}',{10})", mDetailPara)
+                                cmd.ExecuteNonQuery()
+                            Next
+                        End If
+                    Next
+
+                    CommitTrans()
+                    LoadDgv(dgvMain)
+                Catch ex As Exception
+                    MsgBox(ex.Message)
+                    RollbackTrans()
+                End Try
+            End If
+        End If
+        '^_^20230203 add by 7643 -e-
     End Sub
 
-    Private Sub llbDelete_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles llbDelete.LinkClicked
+    Private Sub llbDelete_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) 
         If MsgBox("Delete this row?", vbYesNo) = vbNo Then Exit Sub
         FDate = Format(Now, "yyyyMMdd hh:mm:ss")
 
@@ -655,7 +776,7 @@ Public Class frmSecoOffer
         LoadDgv(dgvMain)
     End Sub
 
-    Private Sub cboEffDate_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboEffDate.SelectedIndexChanged
+    Private Sub cboEffDate_SelectedIndexChanged(sender As Object, e As EventArgs) 
         If cboEffDate.Text <> "" Then
             dtpEffDate_2.Enabled = True
         Else
@@ -663,7 +784,7 @@ Public Class frmSecoOffer
         End If
     End Sub
 
-    Private Sub cboExpDate_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboExpDate.SelectedIndexChanged
+    Private Sub cboExpDate_SelectedIndexChanged(sender As Object, e As EventArgs) 
         If cboExpDate.Text <> "" Then
             dtpExpDate_2.Enabled = True
         Else
@@ -671,19 +792,29 @@ Public Class frmSecoOffer
         End If
     End Sub
 
-    Private Sub llbSearch_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles llbSearch.LinkClicked
+    Private Sub llbSearch_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) 
         LoadDgv(dgvMain)
     End Sub
 
-    Private Sub dgvHMain_SelectionChanged(sender As Object, e As EventArgs) Handles dgvHMain.SelectionChanged
+    Private Sub dgvHMain_SelectionChanged(sender As Object, e As EventArgs) 
         LoadDgv(dgvHDetail, dgvHMain.CurrentRow.Cells("PriceID").Value, dgvHMain.CurrentRow.Cells("ChangeNum").Value)
     End Sub
 
-    Private Sub dgvHMain_DataSourceChanged(sender As Object, e As EventArgs) Handles dgvHMain.DataSourceChanged
+    Private Sub dgvHMain_DataSourceChanged(sender As Object, e As EventArgs) 
         LoadDgv(dgvHDetail, dgvHMain.CurrentRow.Cells("PriceID").Value, dgvHMain.CurrentRow.Cells("ChangeNum").Value)
     End Sub
 
-    Private Sub dtpEffDate_ValueChanged(sender As Object, e As EventArgs) Handles dtpEffDate.ValueChanged, dtpExpDate_2.ValueChanged, dtpExpDate.ValueChanged, dtpEffDate_2.ValueChanged
+    Private Sub dgvMain_DataSourceChanged(sender As Object, e As EventArgs) 
+        ButtomState()
+    End Sub
+
+    Private Sub llbReset_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) 
+        DefaultControl(tpLst)
+        cboUser.SelectedValue = pobjUser.UserName
+        LoadDgv(dgvMain)
+    End Sub
+
+    Private Sub dtpEffDate_Validated(sender As Object, e As EventArgs) 
         Dim mSQL As String  '^_^20220826 add by 7643
 
         sender.Value = New DateTime(sender.Value.Year, sender.Value.Month, 1)
@@ -707,32 +838,49 @@ Public Class frmSecoOffer
         '^_^20220826 add by 7643 -e-
     End Sub
 
-    Private Sub dgvMain_DataSourceChanged(sender As Object, e As EventArgs) Handles dgvMain.DataSourceChanged
-        ButtomState()
+    Private Sub LoadCustomer(xAdd As Boolean)
+        '^_^20230130 add by 7643 -b-
+        Dim mSQL As String
+
+        If tcMain.TabPages(0).Name.ToLower = "tpinput" Then
+            mSQL = "select distinct c.ShortName value " &
+               "from MKTG_MIDT..DATA1A_Customers c " &
+               "where c.status<>'XX' and c.Region='" & pobjUser.Region & "' and c.ShortName<>'' " &
+                 IIf(pobjUser.Role <> "Admin", "and c.PIC='" & pobjUser.UserName & "' ", "")
+            If xAdd Then
+                mSQL &= "except " &
+                   "select pl.Customer " &
+                   "from DATA1A_PriceList pl " &
+                   "where pl.EffDate<='" & Format(dtpExpDate.Value, "01-MMM-yyyy") & "' " &
+                     "and pl.ExpDate>='" & Format(dtpEffDate.Value, "01-MMM-yyyy") & "' and pl.status ='OK' and pl.City ='" & pobjUser.City & "' " &
+                     "and pl.RecID <>'" & txtRecID.Text & "' "
+            End If
+            mSQL &= "order by value"
+            pobjSql.LoadCombo(cboCustomer, mSQL)
+            pobjSql.LoadListbox(lstCustomer, mSQL)
+        End If
+        '^_^20230130 add by 7643 -e-
     End Sub
 
-    Private Sub llbReset_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles llbReset.LinkClicked
-        DefaultControl(tpLst)
-        cboUser.SelectedValue = pobjUser.UserName
-        LoadDgv(dgvMain)
+    Private Sub dgvDetail_SortCompare(sender As Object, e As DataGridViewSortCompareEventArgs) 
+        dgvIntSort(e)
     End Sub
 
-    Private Sub llbCopy_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles llbCopy.LinkClicked
+    Private Sub llbCopy_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) 
         TabPageChange(tpInput)
+        LoadCustomer(True)
         DefaultValue(FAction.Copy)
     End Sub
 
-    Private Sub llbHistory_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles llbHistory.LinkClicked
+    Private Sub llbHistory_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) 
         TabPageChange(tpHistory)
         LoadDgv(dgvHMain, dgvMain.CurrentRow.Cells("PriceID").Value, dgvMain.CurrentRow.Cells("ChangeNum").Value)
     End Sub
 
-    Private Sub dgvIDetail_RowValidating(sender As Object, e As DataGridViewCellCancelEventArgs) Handles dgvIDetail.RowValidating
-        Dim i, mFromTheUser, mToTheUser, mCurFromTheUser, mCurToTheUser As Integer
-
+    Private Sub dgvIDetail_RowValidating(sender As Object, e As DataGridViewCellCancelEventArgs) 
         If dgvIDetail.CurrentRow.IsNewRow Then Exit Sub
 
-        If dgvIDetail.CurrentRow.Cells("FromTheUser").Value.ToString = "" Then dgvIDetail.CurrentRow.Cells("FromTheUser").Value = 1
+        If dgvIDetail.CurrentRow.Cells("FromTheUser").Value.ToString = "" OrElse dgvIDetail.CurrentRow.Cells("FromTheUser").Value = 0 Then dgvIDetail.CurrentRow.Cells("FromTheUser").Value = 1
         If dgvIDetail.CurrentRow.Cells("ToTheUser").Value.ToString = "" Then dgvIDetail.CurrentRow.Cells("ToTheUser").Value = 1
         If dgvIDetail.CurrentRow.Cells("PricePerUser").Value.ToString = "" Then dgvIDetail.CurrentRow.Cells("PricePerUser").Value = 0
         If dgvIDetail.CurrentRow.Cells("PriceCombo").Value.ToString = "" Then dgvIDetail.CurrentRow.Cells("PriceCombo").Value = 0

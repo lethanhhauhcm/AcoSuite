@@ -131,7 +131,7 @@ Public Class frmDC_Pax
                 "left join DATA1A_Customers cust on cpd.Customer=cust.ShortName and cust.Status='OK' and cust.Region='" & pobjUser.Region & "' " &
                 "left join DATA1A_CalcPrice cp on cpd.CPID=cp.CPID and cp.Status='OK' and cpd.City=cp.City " &
             "where (cust.RecID={2} or {2}=0) and f.Status='OK' and f.FstUpdate>'" & CutOverDatePSP & "' and f.FOP='" & xFOP & "' and f.profid=0 " &
-                "And f.fstupdate >'{3}' and f.Source='SECO'", Format(Me.txtInvoiceDate.Value, "dd-MMM-yy"),
+                "And f.fstupdate >'{3}' and f.Source in ('SECO','ATC')", Format(Me.txtInvoiceDate.Value, "dd-MMM-yy"),
             Format(Me.txtInvoiceDate.Value, "dd-MMM-yy"), xCustID, CutOverDatePSP)
     End Function
 
@@ -474,7 +474,7 @@ Public Class frmDC_Pax
     End Sub
     Private Function GetROEatPurchase(ByVal TRX As String, ByVal pNguon As String, ByVal xCust As String) As Decimal
         Dim KQ As Decimal
-        If pNguon = "SECO" Then KQ = ScalarToDec("DATA1A_CalcPriceDetail", "ROE", "CPID='" & TRX & "' and Customer='" & xCust & "' and status <>'XX'", pobjSql.Connection)
+        If pNguon = "SECO" OrElse pNguon = "ATC" Then KQ = ScalarToDec("DATA1A_CalcPriceDetail", "ROE", "CPID='" & TRX & "' and Customer='" & xCust & "' and status <>'XX'", pobjSql.Connection)
         Return KQ
     End Function
     Private Function XDTiGiaNego(ByVal parFrm1 As String, ByVal ParTo1 As String) As Decimal
@@ -618,7 +618,7 @@ Public Class frmDC_Pax
         Me.BarDeleteThisPayment.Enabled = True
         Dim strSQL As String
         strSQL = String.Format("select RecID, DebDocs as OrgDocs, ApplyDate as PmtDate, AmtInDebCurr, Currency as PmtCurr," &
-            "ROE as PmtROE, AmtInPmtCurr, Note from applypayment where KhachTraID={0} order by RecID", Me.GridDungTienNao.Item("recID", e.RowIndex).Value)
+            "ROE as PmtROE, AmtInPmtCurr, Note from DATA1A_applypayment where KhachTraID={0} order by RecID", Me.GridDungTienNao.Item("recID", e.RowIndex).Value)
         Me.GridTraChoKhoanNao.Columns.Clear()
         Me.GridTraChoKhoanNao.DataSource = GetDataTable(strSQL)
         resizeGridTraChoKhoanNao()
@@ -736,7 +736,7 @@ Public Class frmDC_Pax
         '^_^20221126 add by 7643 -b-
         Dim i, mUserNum As Integer
         Dim mIsSeco As Boolean
-        Dim mUsers, mPeriods As String
+        Dim mUsers, mPeriods, mTo, mTable As String
         Dim mAmt As Double
         '^_^20221126 add by 7643 -e-
         Me.CmdQuickInvUSD.Enabled = False
@@ -759,37 +759,39 @@ Public Class frmDC_Pax
             End If
         Next
 
-        If mIsSeco Then SendSecoINV(mUsers, mPeriods, mAmt)
+        mTable = "(select distinct trim(BusinessEmail) BusinessEmail from DATA1A_Contacts " &
+                  "where Status='OK' and CustShortName='" & CmbCustomer.Text & "' and ReceiveINV=1)x"
+        mTo = ScalarToString(mTable, "isnull(STRING_AGG(BusinessEmail,'; '),'') BusinessEmail", "where 1=1", pobjSql.Connection)
+
+        If mIsSeco And mTo <> "" Then SendSecoINV(mUsers, mPeriods, mAmt, mTo)
         '^_^20221126 add by 7643 -e-
 
         LoadGridNo()
     End Sub
 
-    Private Sub SendSecoINV(xUsers As String, xPeriods As String, xAmt As Double)
+    Private Sub SendSecoINV(xUsers As String, xPeriods As String, xAmt As Double, xTo As String)
         '^_^20221126 add by 7643 -b-
         Dim mOL As New Microsoft.Office.Interop.Outlook.Application
         Dim mItem As Microsoft.Office.Interop.Outlook.MailItem
-        Dim mTo, mTable As String
 
         mItem = mOL.CreateItemFromTemplate(Application.StartupPath & "\SecoINV.oft")
-        mTable = "(select distinct trim(BusinessEmail) BusinessEmail from DATA1A_Contacts " &
-                  "where Status='OK' and CustShortName='" & CmbCustomer.Text & "' and ReceiveINV=1)x"
-        mTo = ScalarToString(mTable, "STRING_AGG(BusinessEmail,'; ') BusinessEmail", "where 1=1", pobjSql.Connection)
-        mItem.Recipients.Add(mTo)
+
+        mItem.Recipients.Add(xTo)
         mItem.Recipients.ResolveAll()
 
         mItem.HTMLBody = Replace(mItem.HTMLBody, "xCustomer", txtCustFullName.Text)
         mItem.HTMLBody = Replace(mItem.HTMLBody, "xUsers", xUsers)
         mItem.HTMLBody = Replace(mItem.HTMLBody, "xPeriods", xPeriods)
-        mItem.HTMLBody = Replace(mItem.HTMLBody, "xAmountNoVat", xAmt)
-        mItem.HTMLBody = Replace(mItem.HTMLBody, "xAmount", xAmt * 1.08)
+        mItem.HTMLBody = Replace(mItem.HTMLBody, "xAmountNoVat", Format(xAmt, "##,##0.##"))
+        mItem.HTMLBody = Replace(mItem.HTMLBody, "xAmount", Format(xAmt * 1.08, "##,##0.##"))
+        mItem.HTMLBody = Replace(mItem.HTMLBody, "xExpDate", Format(DateAdd(DateInterval.Day, 7, Now), "dd/MM/yyyy"))  '^_^20221207 add by 7643
 
         mItem.Display()
         '^_^20221126 add by 7643 -e-
     End Sub
 
     Private Sub txtUpto_ValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtUpto.ValueChanged
-        Dim InvUpto As Date = Format(Me.txtUpto.Value, "ThenThendd-MMM-yy") & " 23:59"
+        Dim InvUpto As Date = Format(Me.txtUpto.Value, "dd-MMM-yy") & " 23:59"
         Dim cmd As SqlClient.SqlCommand = pobjSql.Connection.CreateCommand
         For i As Int16 = 0 To Me.GridNo.RowCount - 1
             If Me.GridNo.Item("OrgDate", i).Value < InvUpto Then
@@ -830,8 +832,8 @@ ErrHandler:
         If pmtID = vbNo Then Exit Sub
         pmtID = Me.GridDungTienNao.CurrentRow.Cells("RecID").Value
         StrSQL = ChangeStatus_ByID("DATA1A_KhachTra", "XX", pmtID) &
-            ";" & ChangeStatus_ByDK("ApplyPayment", "XX", "KhachTraID=" & pmtID)
-        dTable = GetDataTable("select GhiNoID, AmtInDebCurr from applypayment where KhachTraID=" & pmtID & " And status='OK' order by GhiNoID")
+            ";" & ChangeStatus_ByDK("DATA1A_ApplyPayment", "XX", "KhachTraID=" & pmtID)
+        dTable = GetDataTable("select GhiNoID, AmtInDebCurr from DATA1A_applypayment where KhachTraID=" & pmtID & " And status='OK' order by GhiNoID")
         For i As Int16 = 0 To dTable.Rows.Count - 1
             GhiNoID = dTable.Rows(i)("GhiNoID")
             RollBackAmt = dTable.Rows(i)("AmtInDebCurr")
@@ -854,10 +856,10 @@ ErrHandler:
         If InvID = vbNo Then Exit Sub
         InvID = Me.GridTraChoKhoanNao.CurrentRow.Cells("RecID").Value
 
-        strSQL = ChangeStatus_ByDK("ApplyPayment", "XX", "GhiNoID=" & InvID) &
+        strSQL = ChangeStatus_ByDK("DATA1A_ApplyPayment", "XX", "GhiNoID=" & InvID) &
              String.Format("; Update DATA1A_GhiNoKhach set lstUser='{0}', LstUpdate=getdate(), Note=Note +'{0} |RVRTPMT', paid=0 where recid={1}",
              pobjUser.UserName, InvID)
-        dTable = GetDataTable("select KhachTraID, AmtInPmtCurr from applypayment where ghiNoID=" & InvID & " and status='OK' order by KhachTraID")
+        dTable = GetDataTable("select KhachTraID, AmtInPmtCurr from DATA1A_applypayment where ghiNoID=" & InvID & " and status='OK' order by KhachTraID")
         For i As Int16 = 0 To dTable.Rows.Count - 1
             KhachTraID = dTable.Rows(i)("KhachTraID")
             RollBackAmt = dTable.Rows(i)("AmtInPmtCurr")

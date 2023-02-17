@@ -1223,6 +1223,7 @@ Public Class clsTvcs
 
     End Function
     '^_^20220815 add by 7643 -e-
+
     '^_^20221021 add by 7643 -b-
     Public Sub LoadCmb_MSC(ByVal cmb As ComboBox, ByVal pCat As String)
         Dim dTable As DataTable
@@ -1239,4 +1240,35 @@ Public Class clsTvcs
         If cmb.Items.Count > 0 Then cmb.Text = cmb.Items(0).ToString
     End Sub
     '^_^20221021 add by 7643 -e-
+
+    '^_^20221219 add by 7643 -b-
+    Public Function LoadListboxVal(ByRef lstInput As ListBox, ByVal strQuerry As String) As ListBox
+        Dim daConditions As SqlClient.SqlDataAdapter
+        Dim dsConditions As New DataSet
+
+        daConditions = New SqlClient.SqlDataAdapter(strQuerry, mcnxConnection)
+        daConditions.Fill(dsConditions, "RESULT")
+        lstInput.DataSource = dsConditions.Tables("RESULT")
+        lstInput.DisplayMember = "Display"
+        lstInput.ValueMember = "Value"
+        LoadListboxVal = lstInput
+        dsConditions.Dispose()
+        daConditions.Dispose()
+    End Function
+
+    Public Function LoaddgvCombo(ByRef cboInput As DataGridViewComboBoxColumn, ByVal strQuerry As String) As DataGridViewComboBoxColumn
+        Dim daConditions As SqlClient.SqlDataAdapter
+        Dim dsConditions As New DataSet
+
+        daConditions = New SqlClient.SqlDataAdapter(strQuerry, mcnxConnection)
+        daConditions.Fill(dsConditions, "RESULT")
+        cboInput.DataSource = dsConditions.Tables("RESULT")
+        cboInput.DisplayMember = "Value"
+        cboInput.ValueMember = "Value"
+        LoaddgvCombo = cboInput
+        dsConditions.Dispose()
+        daConditions.Dispose()
+
+    End Function
+    '^_^20221219 add by 7643 -e-
 End Class

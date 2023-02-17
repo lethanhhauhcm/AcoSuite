@@ -22,7 +22,7 @@ Public Class AllstatUpload
             cmd.ExecuteNonQuery()
         Next
         tblUserMap.Dispose()
-        cmd_Web.CommandText = "selec top 1 RecID from point_D where Cat in ('Allstat','StarBonus','DOBBonus','Promo') and " & pDKDate
+        cmd_Web.CommandText = "select top 1 RecID from point_D where Cat in ('Allstat','StarBonus','DOBBonus','Promo') and " & pDKDate
         RecNO = cmd.ExecuteScalar
         If RecNO > 0 Then
             RecNO = MsgBox("Data Have Been Uploaded for Selected Dates. Wanna Quit?", MsgBoxStyle.Information Or MsgBoxStyle.YesNo, msgTitle)
@@ -67,12 +67,15 @@ Public Class AllstatUpload
         cmd_Web.Parameters.Add("@UserID", SqlDbType.Int)
         cmd_Web.Parameters.Add("@Point", SqlDbType.Int)
         cmd_Web.Parameters.Add("@fstUser", SqlDbType.VarChar)
+        cmd_Web.Parameters.Add("@ExpDate", SqlDbType.Date)  '^_^20221129 add by 7643
         For i As Int32 = 0 To tblPoint.Rows.Count - 1
-            cmd_Web.CommandText = "insert Point_D (BookDate, userID, Point, fstUser) values (@BookDate, @UserID, @Point, @fstUser)"
+            'cmd_Web.CommandText = "insert Point_D (BookDate, userID, Point, fstUser) values (@BookDate, @UserID, @Point, @fstUser)"  '^_^20221129 mark by 7643
+            cmd_Web.CommandText = "insert Point_D (BookDate, userID, Point, fstUser,ExpDate) values (@BookDate, @UserID, @Point, @fstUser,@ExpDate)"  '^_^20221129 modi by 7643
             cmd_Web.Parameters("@BookDate").Value = tblPoint.Rows(i)("Bookdate")
             cmd_Web.Parameters("@UserID").Value = tblPoint.Rows(i)("UserID")
             cmd_Web.Parameters("@Point").Value = tblPoint.Rows(i)("Point")
             cmd_Web.Parameters("@fstUser").Value = pobjUser.UserName
+            cmd_Web.Parameters("@ExpDate").Value = IIf(cmd_Web.Parameters("@Point").Value > 0, DateAdd("yyyy", 2, cmd_Web.Parameters("@BookDate").Value), DBNull.Value)  '^_^20221129 add by 7643 
 
             cmd_Web.ExecuteNonQuery()
         Next
@@ -107,9 +110,17 @@ Public Class AllstatUpload
         Do While Not d > pTo
             If Not d < tblPromo.Rows(0)("Frm") And Not d > tblPromo.Rows(0)("Thru") Then
                 DKBookDate = "and BookDate='" & Format(d, "dd-MMM-yy") & "'" & strDK
-                cmd_Web.CommandText = "Insert Point_D (BookDate, userID, Cat, Point, FstUser, RMK) select BookDate, UserID, 'Promo'," & _
-                    "sum(Point)*" & HeSo & ", fstUser,'" & tblPromo.Rows(0)("Campaign") & "'  from Point_D" & _
-                    " where point >0 and " & DKBookDate & " group by UserID, BookDate, FstUser"
+                '^_^20221129 mark by 7643 -b-
+                'cmd_Web.CommandText = "Insert Point_D (BookDate, userID, Cat, Point, FstUser, RMK) select BookDate, UserID, 'Promo'," &
+                '    "sum(Point)*" & HeSo & ", fstUser,'" & tblPromo.Rows(0)("Campaign") & "'  from Point_D" &
+                '    " where point >0 and " & DKBookDate & " group by UserID, BookDate, FstUser"
+                '^_^20221129 mark by 7643 -e-
+                '^_^20221129 modi by 7643 -b-
+                cmd_Web.CommandText = "Insert Point_D (BookDate, userID, Cat, Point, FstUser, RMK,ExpDate) select BookDate, UserID, 'Promo'," &
+                    "sum(Point)*" & HeSo & ", fstUser,'" & tblPromo.Rows(0)("Campaign") & "'," &
+                    "case when sum(Point)*" & HeSo & ">0 then dateadd(yy,2,BookDate) else null end ExpDate  from Point_D" &
+                    " where point >0 And " & DKBookDate & " group by UserID, BookDate, FstUser"
+                '^_^20221129 modi by 7643 -e-
                 cmd_Web.ExecuteNonQuery()
             End If
             d = DateAdd(DateInterval.Day, 1, d)
@@ -122,6 +133,7 @@ Public Class AllstatUpload
         cmd_Web.Parameters.Add("@UserID", SqlDbType.Int)
         cmd_Web.Parameters.Add("@HeSo", SqlDbType.Int)
         cmd_Web.Parameters.Add("@BookDate", SqlDbType.DateTime)
+        cmd_Web.Parameters.Add("@HeSo2", SqlDbType.Int) '^_^20221129 add by 7643
         Do While Not tmpDate > pTo
             strSQL = String.Format("select RecID as UserID from tblUser where status='OK' and month(Birthday)={0} and day(birthday)={1}", _
                 tmpDate.Month, tmpDate.Day)
@@ -130,8 +142,16 @@ Public Class AllstatUpload
                 cmd_Web.Parameters("@UserID").Value = tblBDay.Rows(i)("UserID")
                 cmd_Web.Parameters("@HeSo").Value = pHeSo
                 cmd_Web.Parameters("@BookDate").Value = tmpDate
-                cmd_Web.CommandText = "Insert Point_D (BookDate, userID, Cat, Point) select BookDate, UserID, 'BDayBonus', Point*@HeSo " & _
-                    " from Point_D where UserID=@UserID and BookDate=@BookDate"
+                '^_^20221129 mark by 7643 -b-
+                'cmd_Web.CommandText = "Insert Point_D (BookDate, userID, Cat, Point) select BookDate, UserID, 'BDayBonus', Point*@HeSo " &
+                '    " from Point_D where UserID=@UserID and BookDate=@BookDate"
+                '^_^20221129 mark by 7643 -e-
+                '^_^20221129 modi by 7643 -b-
+                cmd_Web.Parameters("@HeSo2").Value = cmd_Web.Parameters("@HeSo").Value
+                cmd_Web.CommandText = "Insert Point_D (BookDate, userID, Cat, Point,ExpDate) select BookDate, UserID, 'BDayBonus', Point*@HeSo," &
+                    "case when Point*@HeSo2>0 then dateadd(yy,2,BookDate) else null end ExpDate " &
+                    " from Point_D where UserID=@UserID And BookDate=@BookDate"
+                '^_^20221129 modi by 7643 -e-
                 cmd_Web.ExecuteNonQuery()
             Next
             tmpDate = DateAdd(DateInterval.Day, 1, tmpDate)
@@ -144,11 +164,20 @@ Public Class AllstatUpload
         cmd_Web.Parameters.Clear()
         cmd_Web.Parameters.Add("@UserID", SqlDbType.Int)
         cmd_Web.Parameters.Add("@HeSo", SqlDbType.Int)
+        cmd_Web.Parameters.Add("@HeSo2", SqlDbType.Int)  '^_^20221129 add by 7643
         For i As Int16 = 0 To tblSao.Rows.Count - 1
             cmd_Web.Parameters("@UserID").Value = tblSao.Rows(i)("UserID")
             cmd_Web.Parameters("@HeSo").Value = tblSao.Rows(i)("CurrentStar")
-            cmd_Web.CommandText = "Insert Point_D (BookDate, userID, Cat, Point, FstUser) select BookDate, UserID, 'StarBonus', sum(Point)*@HeSo, fstUser from Point_D" & _
-                " where UserID=@UserID and point >0 and " & pDKDate & " group by UserID,BookDate, FstUser"
+            '^_^20221129 mark by 7643 -b-
+            'cmd_Web.CommandText = "Insert Point_D (BookDate, userID, Cat, Point, FstUser) select BookDate, UserID, 'StarBonus', sum(Point)*@HeSo, fstUser from Point_D" &
+            '    " where UserID=@UserID and point >0 and " & pDKDate & " group by UserID,BookDate, FstUser"
+            '^_^20221129 mark by 7643 -e-
+            '^_^20221129 modi by 7643 -b-
+            cmd_Web.Parameters("@HeSo2").Value = cmd_Web.Parameters("@HeSo").Value
+            cmd_Web.CommandText = "Insert Point_D (BookDate, userID, Cat, Point, FstUser,ExpDate) select BookDate, UserID, 'StarBonus', sum(Point)*@HeSo, fstUser," &
+                "case when sum(Point)*@HeSo2>0 then dateadd(yy,2,BookDate) else null end ExpDate from Point_D" &
+                " where UserID=@UserID And point >0 And " & pDKDate & " group by UserID,BookDate, FstUser"
+            '^_^20221129 modi by 7643 -e-
             cmd_Web.ExecuteNonQuery()
         Next
         tblSao.Dispose()

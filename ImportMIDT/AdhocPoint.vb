@@ -43,13 +43,15 @@ Public Class AdhocPoint
         End Try
         If Me.txtRMK.Text = "" Or tmpPoint = 0 Then Exit Sub
         cmd.Parameters.Clear()
-        cmd.CommandText = "insert Point_D (BookDate, userID, Cat, RMK, Point, FstUser) values (@BookDate, @UserID, @Cat, @RMK, @Point, @FstUser)"
+        'cmd.CommandText = "insert Point_D (BookDate, userID, Cat, RMK, Point, FstUser) values (@BookDate, @UserID, @Cat, @RMK, @Point, @FstUser)"  '^_^20221129 mark by 7643
+        cmd.CommandText = "insert Point_D (BookDate, userID, Cat, RMK, Point, FstUser,ExpDate) values (@BookDate, @UserID, @Cat, @RMK, @Point, @FstUser,@ExpDate)"  '^_^20221129 modi by 7643
         cmd.Parameters.Add("@BookDate", SqlDbType.DateTime).Value = Me.txtBookDate.Value.Date
         cmd.Parameters.Add("@UserID", SqlDbType.Int).Value = Me.GridInfor.Item("RecID", 0).Value
         cmd.Parameters.Add("@Point", SqlDbType.Int).Value = tmpPoint
         cmd.Parameters.Add("@Cat", SqlDbType.VarChar).Value = Me.CmbCat.Text
         cmd.Parameters.Add("@RMK", SqlDbType.VarChar).Value = Me.txtRMK.Text
         cmd.Parameters.Add("@FstUser", SqlDbType.VarChar).Value = pobjUser.UserName
+        cmd.Parameters.Add("@ExpDate", SqlDbType.Date).Value = IIf(cmd.Parameters("@Point").Value > 0, DateAdd("yyyy", 2, cmd.Parameters("@BookDate").Value), DBNull.Value)  '^_^20221129 add by 7643
         cmd.ExecuteNonQuery()
         LoadGridPoint()
     End Sub

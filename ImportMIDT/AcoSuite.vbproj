@@ -181,6 +181,30 @@
     <Compile Include="frmAllstats.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="frmAtcCalcPrice.Designer.vb">
+      <DependentUpon>frmAtcCalcPrice.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmAtcCalcPrice.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmAtcCalcPriceEdit.Designer.vb">
+      <DependentUpon>frmAtcCalcPriceEdit.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmAtcCalcPriceEdit.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmAtcOffer.Designer.vb">
+      <DependentUpon>frmAtcOffer.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmAtcOffer.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmAtcOfferEdit.Designer.vb">
+      <DependentUpon>frmAtcOfferEdit.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmAtcOfferEdit.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmBalance.Designer.vb">
       <DependentUpon>frmBalance.vb</DependentUpon>
     </Compile>
@@ -571,6 +595,12 @@
     <Compile Include="frmProgress.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="frmReissueTicketPriceDetail.Designer.vb">
+      <DependentUpon>frmReissueTicketPriceDetail.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmReissueTicketPriceDetail.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmReportContacts.Designer.vb">
       <DependentUpon>frmReportContacts.vb</DependentUpon>
     </Compile>
@@ -617,6 +647,18 @@
       <DependentUpon>frmSecoOffer.vb</DependentUpon>
     </Compile>
     <Compile Include="frmSecoOffer.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSecoOffer_MultiEdit.Designer.vb">
+      <DependentUpon>frmSecoOffer_MultiEdit.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmSecoOffer_MultiEdit.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSecoPpd.Designer.vb">
+      <DependentUpon>frmSecoPpd.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmSecoPpd.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmSelectCustomer.Designer.vb">
@@ -844,6 +886,18 @@
     <EmbeddedResource Include="frmAllstats.resx">
       <DependentUpon>frmAllstats.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="frmAtcCalcPrice.resx">
+      <DependentUpon>frmAtcCalcPrice.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmAtcCalcPriceEdit.resx">
+      <DependentUpon>frmAtcCalcPriceEdit.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmAtcOffer.resx">
+      <DependentUpon>frmAtcOffer.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmAtcOfferEdit.resx">
+      <DependentUpon>frmAtcOfferEdit.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmBalance.resx">
       <DependentUpon>frmBalance.vb</DependentUpon>
     </EmbeddedResource>
@@ -1039,6 +1093,9 @@
     <EmbeddedResource Include="frmProgress.resx">
       <DependentUpon>frmProgress.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="frmReissueTicketPriceDetail.resx">
+      <DependentUpon>frmReissueTicketPriceDetail.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmReportContacts.resx">
       <DependentUpon>frmReportContacts.vb</DependentUpon>
     </EmbeddedResource>
@@ -1062,6 +1119,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmSecoOffer.resx">
       <DependentUpon>frmSecoOffer.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSecoOffer_MultiEdit.resx">
+      <DependentUpon>frmSecoOffer_MultiEdit.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSecoPpd.resx">
+      <DependentUpon>frmSecoPpd.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmSelectCustomer.resx">
       <DependentUpon>frmSelectCustomer.vb</DependentUpon>

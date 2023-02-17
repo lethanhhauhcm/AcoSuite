@@ -20,7 +20,7 @@ Public Class frmCalcPrice
 #Region "Custom Method"
     Protected Overridable Sub Env()
         FclsTvcs = pobjSql
-        llbEdit.Enabled = False
+        'llbEdit.Enabled = False
         llbDelete.Enabled = False
         Loadmain(False)
         LoadCombo()
@@ -163,8 +163,8 @@ Public Class frmCalcPrice
     Protected Overridable Sub DoMyOK()
         UpdateBody()
 
-        ChangeMainTab(tpList)
         UpdateMain()
+        ChangeMainTab(tpList)
         Loadmain()
 
         DefaultBody()
@@ -180,19 +180,19 @@ Public Class frmCalcPrice
             FID = dgvMain.CurrentRow.Cells("CPID").Value
         End If
 
-        llbEdit.Enabled = True
+        'llbEdit.Enabled = True
         llbDelete.Enabled = True
 
         LoadBody(FID)
         DefaultControl(pnFoot, dgvMain)
 
         If dgvMain.CurrentRow.Cells("ConfirmStatus").Value = "Y" Then
-            llbEdit.Enabled = False
+            'llbEdit.Enabled = False
             llbDelete.Enabled = False
             llbConfirm.Enabled = False
             llbUnConfirm.Enabled = FPower
         Else
-            llbEdit.Enabled = FPower
+            'llbEdit.Enabled = FPower
             llbDelete.Enabled = FPower
             llbConfirm.Enabled = FPower
             llbUnConfirm.Enabled = False
@@ -462,19 +462,20 @@ Public Class frmCalcPrice
                         mToTheUser = mReturn2.Rows(j)("ToTheUser")
                         mPricePerUser = mReturn2.Rows(j)("PricePerUser")
                         mPriceCombo = mReturn2.Rows(j)("PriceCombo")
+                        mFromTheUser = mFromTheUser + 1
 
                         If mUserNum >= mToTheUser Then
                             If mPriceCombo <> 0 Then
                                 mAmount += mPriceCombo
                             Else
-                                mAmount += (mToTheUser - mFromTheUser) * mPricePerUser
+                                mAmount += (mToTheUser - mFromTheUser + 1) * mPricePerUser
                                 If mPricePerUser = 0 Then mFreeUser += mToTheUser - mFromTheUser  '^_^20221123 add by 7643
                             End If
                         Else
                             If mPriceCombo <> 0 Then
                                 mAmount += mPriceCombo
                             Else
-                                mAmount += (mUserNum - mFromTheUser) * mPricePerUser
+                                mAmount += (mUserNum - mFromTheUser + 1) * mPricePerUser
                                 If mPricePerUser = 0 Then mFreeUser += mUserNum - mFromTheUser  '^_^20221123 add by 7643
                             End If
 
@@ -538,8 +539,8 @@ Public Class frmCalcPrice
         End If
     End Sub
 
-    Private Sub AmountDetail()
-        Dim mSQL, mShortName, mColumns(), mFormat(), mCPMonth As String
+    Private Sub AmountDetail(xCPMonth As String)
+        Dim mSQL, mShortName, mColumns(), mFormat() As String
         Dim mUserNum, i, mToTheUser, mFromTheUser, mUserNum2 As Integer
         Dim mReturn As New DataTable
         Dim mAmount, mPricePerUser, mPriceCombo As Double
@@ -554,14 +555,13 @@ Public Class frmCalcPrice
         mShortName = dgvBody.CurrentRow.Cells("Customer").Value
         mFromTheUser = 0
         mEnd = False
-        mCPMonth = dtpCPMonth.Value.ToString("yyyyMM")
 
         mSQL = "select ToTheUser,PricePerUser,PriceCombo " &
                 "from DATA1A_PriceListDetail PLD " &
                     "left join DATA1A_PriceList PL on PLD.PriceID=PL.PriceID and PL.status='OK' " &
                 "where PL.Customer='" & mShortName & "' " &
-                    "and format(PL.EffDate,'yyyyMM')<='" & mCPMonth & "' " &
-                    "and format(PL.ExpDate,'yyyyMM')>='" & mCPMonth & "' and PLD.status='OK' " &
+                    "and format(PL.EffDate,'yyyyMM')<='" & xCPMonth & "' " &
+                    "and format(PL.ExpDate,'yyyyMM')>='" & xCPMonth & "' and PLD.status='OK' " &
                     "and PL.City='" & pobjUser.City & "' " &
                 "order by ToTheUser"
         mReturn = pobjSql.GetDataTable(mSQL)
@@ -569,9 +569,10 @@ Public Class frmCalcPrice
             mToTheUser = mReturn.Rows(i)("ToTheUser")
             mPricePerUser = mReturn.Rows(i)("PricePerUser")
             mPriceCombo = mReturn.Rows(i)("PriceCombo")
+            mFromTheUser = mFromTheUser + 1
 
             If mUserNum >= mToTheUser Then
-                mUserNum2 = mToTheUser - mFromTheUser
+                mUserNum2 = mToTheUser - mFromTheUser + 1
 
                 If mPriceCombo <> 0 Then
                     mAmount = mPriceCombo
@@ -579,7 +580,7 @@ Public Class frmCalcPrice
                     mAmount = mUserNum2 * mPricePerUser
                 End If
             Else
-                mUserNum2 = mUserNum - mFromTheUser
+                mUserNum2 = mUserNum - mFromTheUser + 1
 
                 If mPriceCombo <> 0 Then
                     mAmount = mPriceCombo
@@ -616,10 +617,10 @@ Public Class frmCalcPrice
         DoMyOK()
     End Sub
 
-    Private Sub llbEdit_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles llbEdit.LinkClicked
-        ChangeMainTab(tpInput)
-        DefaultValue(dgvMain)
-    End Sub
+    'Private Sub llbEdit_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs)
+    '    ChangeMainTab(tpInput)
+    '    DefaultValue(dgvMain)
+    'End Sub
 
     Private Sub llbDelete_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles llbDelete.LinkClicked
         If MsgBox("Delete this row?", vbYesNo) = vbNo Then
@@ -899,11 +900,11 @@ Public Class frmCalcPrice
         mSQL = "select RecID " &
                "from DATA1A_CalcPrice " &
                "where status='OK' and City='" & pobjUser.City & "' and RecID<>'" & txtRecID.Text & "' and format(CPMonth,'yyyyMM')='" & mCPMonth & "'"
-        If pobjSql.GetScalarAsString(mSQL) <> "" Then
-            MsgBox(dtpCPMonth.Value.ToString("MM/yyyy") & " already exist!")
-            dtpCPMonth.Select()
-            Exit Sub
-        End If
+        'If pobjSql.GetScalarAsString(mSQL) <> "" Then
+        '    MsgBox(dtpCPMonth.Value.ToString("MM/yyyy") & " already exist!")
+        '    dtpCPMonth.Select()
+        '    Exit Sub
+        'End If
 
         If FCPMonth <> mCPMonth Then
             If dgvBody.Rows.Count > 0 Then
@@ -918,10 +919,26 @@ Public Class frmCalcPrice
     End Sub
 
     Private Sub llbAmountDetail_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles llbAmountDetail.LinkClicked
-        AmountDetail()
+        AmountDetail(dtpCPMonth.Value.ToString("yyyyMM"))
     End Sub
 
     Private Sub llbAmountDetail2_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles llbAmountDetail2.LinkClicked
-        AmountDetail()
+        AmountDetail(Format(dgvMain.CurrentRow.Cells("CPMonth").Value, "yyyyMM"))
+        'Dim mForm As New frmReissueTicketPriceDetail
+        'Dim mSQL As String
+        'Dim mReturn As New DataTable
+
+        'mForm.Text = "AmountDetail"
+        'mSQL = String.Format("select NumberOfUser,PricePerUser,Amount " &
+        '                     "from DATA1A_CalcPriceDetail_D " &
+        '                     "where CalcPriceDetailID={0} And Status='OK' and City='{1}' " &
+        '                     "order by RecID",
+        '                     {dgvBody.CurrentRow.Cells("RecID").Value, pobjUser.City})
+        'mReturn = pobjSql.GetDataTable(mSQL)
+        'For i = 0 To mReturn.Rows.Count - 1
+        '    mForm.dgvReissueTicketPriceDetail.Rows.Add(mReturn.Rows(i)("NumberOfUser"), mReturn.Rows(i)("PricePerUser"), mReturn.Rows(i)("Amount"))
+        'Next
+
+        'mForm.ShowDialog()
     End Sub
 End Class

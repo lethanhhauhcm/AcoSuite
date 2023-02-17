@@ -63,6 +63,7 @@ Partial Class Management
         Me.barMP = New System.Windows.Forms.ToolStripMenuItem()
         Me.barSeco = New System.Windows.Forms.ToolStripMenuItem()
         Me.barATC = New System.Windows.Forms.ToolStripMenuItem()
+        Me.barATC2 = New System.Windows.Forms.ToolStripMenuItem()
         Me.barWBS = New System.Windows.Forms.ToolStripMenuItem()
         Me.barAgency = New System.Windows.Forms.ToolStripMenuItem()
         Me.barMIDT = New System.Windows.Forms.ToolStripMenuItem()
@@ -74,7 +75,9 @@ Partial Class Management
         Me.barMissingProductOffer = New System.Windows.Forms.ToolStripMenuItem()
         Me.BarProductAccess = New System.Windows.Forms.ToolStripMenuItem()
         Me.barSeatHunterActivities = New System.Windows.Forms.ToolStripMenuItem()
+        Me.barSecoBillingReport = New System.Windows.Forms.ToolStripMenuItem()
         Me.barSecoCharges = New System.Windows.Forms.ToolStripMenuItem()
+        Me.barSecoPerCust = New System.Windows.Forms.ToolStripMenuItem()
         Me.SecoUserListToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.CheckErrorToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.UserListToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -144,19 +147,20 @@ Partial Class Management
         Me.barPayment2Customers = New System.Windows.Forms.ToolStripMenuItem()
         Me.barProductChargeFollowUp = New System.Windows.Forms.ToolStripMenuItem()
         Me.barNMK = New System.Windows.Forms.ToolStripMenuItem()
-        Me.tsmiSecoPrice = New System.Windows.Forms.ToolStripMenuItem()
+        Me.barSeco2 = New System.Windows.Forms.ToolStripMenuItem()
         Me.barCalcPrice = New System.Windows.Forms.ToolStripMenuItem()
         Me.barSecoOffer = New System.Windows.Forms.ToolStripMenuItem()
         Me.barUnitPrice = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
-        Me.barSecoBillingReport = New System.Windows.Forms.ToolStripMenuItem()
-        Me.barSecoPerCust = New System.Windows.Forms.ToolStripMenuItem()
+        Me.pacAtcFunc = New System.Windows.Forms.ToolStripMenuItem()
+        Me.barAtcOffer = New System.Windows.Forms.ToolStripMenuItem()
+        Me.BarAtcCalcPrice = New System.Windows.Forms.ToolStripMenuItem()
+        Me.barSecoPpd = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
         'MenuStrip1
         '
-        Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.pacSystem, Me.pacReport, Me.pacIncentive, Me.padRewards, Me.pacSales, Me.pacCustomerManagerment, Me.pacProducts, Me.pacCustomerSupport, Me.pacAccounting, Me.barNMK, Me.tsmiSecoPrice})
+        Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.pacSystem, Me.pacReport, Me.pacIncentive, Me.padRewards, Me.pacSales, Me.pacCustomerManagerment, Me.pacProducts, Me.pacCustomerSupport, Me.pacAccounting, Me.barNMK, Me.barSeco2, Me.pacAtcFunc})
         Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
         Me.MenuStrip1.Name = "MenuStrip1"
         Me.MenuStrip1.Size = New System.Drawing.Size(914, 24)
@@ -241,20 +245,20 @@ Partial Class Management
         'barAllstats
         '
         Me.barAllstats.Name = "barAllstats"
-        Me.barAllstats.Size = New System.Drawing.Size(180, 22)
+        Me.barAllstats.Size = New System.Drawing.Size(164, 22)
         Me.barAllstats.Text = "Allstats"
         '
         'barBspTicket
         '
         Me.barBspTicket.Name = "barBspTicket"
-        Me.barBspTicket.Size = New System.Drawing.Size(180, 22)
+        Me.barBspTicket.Size = New System.Drawing.Size(164, 22)
         Me.barBspTicket.Text = "BspTicket"
         '
         'barContactList
         '
         Me.barContactList.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.barALL, Me.barAllWzSignIn, Me.barFromSignInList, Me.barNoContactSignIn})
         Me.barContactList.Name = "barContactList"
-        Me.barContactList.Size = New System.Drawing.Size(180, 22)
+        Me.barContactList.Size = New System.Drawing.Size(164, 22)
         Me.barContactList.Text = "ContactList"
         '
         'barALL
@@ -285,7 +289,7 @@ Partial Class Management
         '
         Me.barCustomerReport.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.barBillingInfo, Me.barCustomerList, Me.barIataCode, Me.barLocation, Me.barPaymentInfo, Me.barSegmentation})
         Me.barCustomerReport.Name = "barCustomerReport"
-        Me.barCustomerReport.Size = New System.Drawing.Size(180, 22)
+        Me.barCustomerReport.Size = New System.Drawing.Size(164, 22)
         Me.barCustomerReport.Text = "Customer"
         '
         'barBillingInfo
@@ -328,7 +332,7 @@ Partial Class Management
         '
         Me.barGiftManagementReport.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.barGiftInReport, Me.barGiftOutReport, Me.barAvailableStock})
         Me.barGiftManagementReport.Name = "barGiftManagementReport"
-        Me.barGiftManagementReport.Size = New System.Drawing.Size(180, 22)
+        Me.barGiftManagementReport.Size = New System.Drawing.Size(164, 22)
         Me.barGiftManagementReport.Text = "GiftManagement"
         '
         'barGiftInReport
@@ -353,7 +357,7 @@ Partial Class Management
         '
         Me.barIncentiveReport.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.barBreakdown, Me.barSummary, Me.BarOfferList})
         Me.barIncentiveReport.Name = "barIncentiveReport"
-        Me.barIncentiveReport.Size = New System.Drawing.Size(180, 22)
+        Me.barIncentiveReport.Size = New System.Drawing.Size(164, 22)
         Me.barIncentiveReport.Text = "Incentive"
         '
         'barBreakdown
@@ -377,57 +381,63 @@ Partial Class Management
         'barInsuranceReport
         '
         Me.barInsuranceReport.Name = "barInsuranceReport"
-        Me.barInsuranceReport.Size = New System.Drawing.Size(180, 22)
+        Me.barInsuranceReport.Size = New System.Drawing.Size(164, 22)
         Me.barInsuranceReport.Text = "Insurance"
         '
         'barLocations
         '
         Me.barLocations.Name = "barLocations"
-        Me.barLocations.Size = New System.Drawing.Size(180, 22)
+        Me.barLocations.Size = New System.Drawing.Size(164, 22)
         Me.barLocations.Text = "Locations"
         '
         'barMasterPricer
         '
-        Me.barMasterPricer.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.barMP, Me.barSeco, Me.barATC, Me.barWBS, Me.barAgency})
+        Me.barMasterPricer.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.barMP, Me.barSeco, Me.barATC, Me.barATC2, Me.barWBS, Me.barAgency})
         Me.barMasterPricer.Name = "barMasterPricer"
-        Me.barMasterPricer.Size = New System.Drawing.Size(180, 22)
+        Me.barMasterPricer.Size = New System.Drawing.Size(164, 22)
         Me.barMasterPricer.Text = "Billing"
         '
         'barMP
         '
         Me.barMP.Name = "barMP"
-        Me.barMP.Size = New System.Drawing.Size(180, 22)
+        Me.barMP.Size = New System.Drawing.Size(140, 22)
         Me.barMP.Text = "MasterPricer"
         '
         'barSeco
         '
         Me.barSeco.Name = "barSeco"
-        Me.barSeco.Size = New System.Drawing.Size(180, 22)
+        Me.barSeco.Size = New System.Drawing.Size(140, 22)
         Me.barSeco.Text = "Seco"
         '
         'barATC
         '
         Me.barATC.Name = "barATC"
-        Me.barATC.Size = New System.Drawing.Size(180, 22)
+        Me.barATC.Size = New System.Drawing.Size(140, 22)
         Me.barATC.Text = "ATC"
+        '
+        'barATC2
+        '
+        Me.barATC2.Name = "barATC2"
+        Me.barATC2.Size = New System.Drawing.Size(140, 22)
+        Me.barATC2.Text = "ATC2"
         '
         'barWBS
         '
         Me.barWBS.Name = "barWBS"
-        Me.barWBS.Size = New System.Drawing.Size(180, 22)
+        Me.barWBS.Size = New System.Drawing.Size(140, 22)
         Me.barWBS.Text = "WBS"
         '
         'barAgency
         '
         Me.barAgency.Name = "barAgency"
-        Me.barAgency.Size = New System.Drawing.Size(180, 22)
+        Me.barAgency.Size = New System.Drawing.Size(140, 22)
         Me.barAgency.Text = "Agency"
         '
         'barMIDT
         '
         Me.barMIDT.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.barMIDTMonthly, Me.barMIDTDaily})
         Me.barMIDT.Name = "barMIDT"
-        Me.barMIDT.Size = New System.Drawing.Size(180, 22)
+        Me.barMIDT.Size = New System.Drawing.Size(164, 22)
         Me.barMIDT.Text = "MIDT Report"
         '
         'barMIDTMonthly
@@ -446,7 +456,7 @@ Partial Class Management
         '
         Me.barProduct.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.barAtcBySignIn, Me.barAtcReissue, Me.barMissingProductOffer, Me.BarProductAccess, Me.barSeatHunterActivities, Me.barSecoBillingReport, Me.barSecoCharges, Me.barSecoPerCust, Me.SecoUserListToolStripMenuItem, Me.MasterPricerToolStripMenuItem, Me.WebServicesToolStripMenuItem})
         Me.barProduct.Name = "barProduct"
-        Me.barProduct.Size = New System.Drawing.Size(180, 22)
+        Me.barProduct.Size = New System.Drawing.Size(164, 22)
         Me.barProduct.Text = "Product"
         '
         'barAtcBySignIn
@@ -479,12 +489,24 @@ Partial Class Management
         Me.barSeatHunterActivities.Size = New System.Drawing.Size(184, 22)
         Me.barSeatHunterActivities.Text = "SeatHunterActivities"
         '
+        'barSecoBillingReport
+        '
+        Me.barSecoBillingReport.Name = "barSecoBillingReport"
+        Me.barSecoBillingReport.Size = New System.Drawing.Size(184, 22)
+        Me.barSecoBillingReport.Text = "SecoBillingReport"
+        '
         'barSecoCharges
         '
         Me.barSecoCharges.Name = "barSecoCharges"
         Me.barSecoCharges.Size = New System.Drawing.Size(184, 22)
         Me.barSecoCharges.Text = "SecoCharges"
         Me.barSecoCharges.Visible = False
+        '
+        'barSecoPerCust
+        '
+        Me.barSecoPerCust.Name = "barSecoPerCust"
+        Me.barSecoPerCust.Size = New System.Drawing.Size(184, 22)
+        Me.barSecoPerCust.Text = "SecoPerCust"
         '
         'SecoUserListToolStripMenuItem
         '
@@ -540,7 +562,7 @@ Partial Class Management
         '
         Me.barRewards.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.barRewardsAdhocPoint, Me.barRewardsAgencyOwner, Me.barRewardsGiftAccepted, Me.barRewardsUserList})
         Me.barRewards.Name = "barRewards"
-        Me.barRewards.Size = New System.Drawing.Size(180, 22)
+        Me.barRewards.Size = New System.Drawing.Size(164, 22)
         Me.barRewards.Text = "Rewards"
         '
         'barRewardsAdhocPoint
@@ -570,13 +592,13 @@ Partial Class Management
         'barCostRelated
         '
         Me.barCostRelated.Name = "barCostRelated"
-        Me.barCostRelated.Size = New System.Drawing.Size(180, 22)
+        Me.barCostRelated.Size = New System.Drawing.Size(164, 22)
         Me.barCostRelated.Text = "CostRelated"
         '
         'barOfficeIDs
         '
         Me.barOfficeIDs.Name = "barOfficeIDs"
-        Me.barOfficeIDs.Size = New System.Drawing.Size(180, 22)
+        Me.barOfficeIDs.Size = New System.Drawing.Size(164, 22)
         Me.barOfficeIDs.Text = "OfficeIDs"
         '
         'pacIncentive
@@ -918,12 +940,12 @@ Partial Class Management
         Me.barNMK.Text = "NMK"
         Me.barNMK.Visible = False
         '
-        'tsmiSecoPrice
+        'barSeco2
         '
-        Me.tsmiSecoPrice.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.barCalcPrice, Me.barSecoOffer, Me.barUnitPrice, Me.ToolStripSeparator1})
-        Me.tsmiSecoPrice.Name = "tsmiSecoPrice"
-        Me.tsmiSecoPrice.Size = New System.Drawing.Size(73, 20)
-        Me.tsmiSecoPrice.Text = "Seco Price"
+        Me.barSeco2.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.barCalcPrice, Me.barSecoOffer, Me.barSecoPpd, Me.barUnitPrice})
+        Me.barSeco2.Name = "barSeco2"
+        Me.barSeco2.Size = New System.Drawing.Size(44, 20)
+        Me.barSeco2.Text = "Seco"
         '
         'barCalcPrice
         '
@@ -943,22 +965,30 @@ Partial Class Management
         Me.barUnitPrice.Size = New System.Drawing.Size(180, 22)
         Me.barUnitPrice.Text = "UnitPrice"
         '
-        'ToolStripSeparator1
+        'pacAtcFunc
         '
-        Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
-        Me.ToolStripSeparator1.Size = New System.Drawing.Size(177, 6)
+        Me.pacAtcFunc.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.barAtcOffer, Me.BarAtcCalcPrice})
+        Me.pacAtcFunc.Name = "pacAtcFunc"
+        Me.pacAtcFunc.Size = New System.Drawing.Size(63, 20)
+        Me.pacAtcFunc.Text = "AtcFunc"
         '
-        'barSecoBillingReport
+        'barAtcOffer
         '
-        Me.barSecoBillingReport.Name = "barSecoBillingReport"
-        Me.barSecoBillingReport.Size = New System.Drawing.Size(184, 22)
-        Me.barSecoBillingReport.Text = "SecoBillingReport"
+        Me.barAtcOffer.Name = "barAtcOffer"
+        Me.barAtcOffer.Size = New System.Drawing.Size(141, 22)
+        Me.barAtcOffer.Text = "AtcOffer"
         '
-        'barSecoPerCust
+        'BarAtcCalcPrice
         '
-        Me.barSecoPerCust.Name = "barSecoPerCust"
-        Me.barSecoPerCust.Size = New System.Drawing.Size(184, 22)
-        Me.barSecoPerCust.Text = "SecoPerCust"
+        Me.BarAtcCalcPrice.Name = "BarAtcCalcPrice"
+        Me.BarAtcCalcPrice.Size = New System.Drawing.Size(141, 22)
+        Me.BarAtcCalcPrice.Text = "AtcCalcPrice"
+        '
+        'barSecoPpd
+        '
+        Me.barSecoPpd.Name = "barSecoPpd"
+        Me.barSecoPpd.Size = New System.Drawing.Size(180, 22)
+        Me.barSecoPpd.Text = "SecoPpd"
         '
         'Management
         '
@@ -1096,15 +1126,19 @@ Partial Class Management
     Friend WithEvents barWBS As ToolStripMenuItem
     Friend WithEvents barAgency As ToolStripMenuItem
     Friend WithEvents barStopIncentive4Carrier As ToolStripMenuItem
-    Friend WithEvents tsmiSecoPrice As ToolStripMenuItem
+    Friend WithEvents barSeco2 As ToolStripMenuItem
     Friend WithEvents barSecoOffer As ToolStripMenuItem
     Friend WithEvents barUnitPrice As ToolStripMenuItem
     Friend WithEvents barCalcPrice As ToolStripMenuItem
-    Friend WithEvents ToolStripSeparator1 As ToolStripSeparator
     Friend WithEvents pacBO_DC_Cust As ToolStripMenuItem
     Friend WithEvents BarQuickInvoicing As ToolStripMenuItem
     Friend WithEvents BarApplyPayments As ToolStripMenuItem
     Friend WithEvents BarPaymentFollowUp As ToolStripMenuItem
     Friend WithEvents barSecoBillingReport As ToolStripMenuItem
     Friend WithEvents barSecoPerCust As ToolStripMenuItem
+    Friend WithEvents pacAtcFunc As ToolStripMenuItem
+    Friend WithEvents barAtcOffer As ToolStripMenuItem
+    Friend WithEvents BarAtcCalcPrice As ToolStripMenuItem
+    Friend WithEvents barATC2 As ToolStripMenuItem
+    Friend WithEvents barSecoPpd As ToolStripMenuItem
 End Class

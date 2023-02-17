@@ -9,6 +9,7 @@ Module mdlSubAndFunc
     Private strSQL As String
     Public CutOverDatePSP As Date
     '^_^20221109 add by 7643 -e-
+    Dim FTrans As SqlClient.SqlTransaction  '^_^20230112 add by 7643
 
     Public Sub PressInteger(e As KeyPressEventArgs)
         If Not (Char.IsDigit(e.KeyChar) Or e.KeyChar = Convert.ToChar(Keys.Back)) Then e.Handled = True
@@ -202,7 +203,7 @@ Module mdlSubAndFunc
 
     Public Function Insert_ApplyPayment(ByVal SQL_Exec As String, ByVal GhiNoID As Integer, ByVal KhachTraID As Integer, ByVal AmtInDebCurr As Decimal, ByVal Curr As String, ByVal ROE As Decimal, ByVal CrdDoc As String, ByVal Note As String) As String
         Dim KQ As Integer
-        strSQL = "insert into ApplyPayment (GhiNoID, KhachTraID,  AmtInDebCurr, Currency, ROE, CrdDocs, Note, FstUser) Values ("
+        strSQL = "insert into DATA1A_ApplyPayment (GhiNoID, KhachTraID,  AmtInDebCurr, Currency, ROE, CrdDocs, Note, FstUser) Values ("
         strSQL = strSQL & GhiNoID & ","
         strSQL = strSQL & KhachTraID & ","
         strSQL = strSQL & AmtInDebCurr & ",'"
@@ -590,4 +591,98 @@ CloseXLS:
             & "','" & strUser & "','" & strCity & "')"
         Return pobjSql.ExecuteNonQuerry(strQuerry)
     End Function
+
+    '^_^20230112 add by 7643 -b-
+    Public Sub FormatNumber(xDgv As DataGridView, xCols As List(Of String))
+        Dim i As Integer
+
+        For i = 0 To xCols.Count - 1
+            xDgv.Columns(xCols(i)).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
+            xDgv.Columns(xCols(i)).DefaultCellStyle.Format = "N0"
+        Next
+    End Sub
+
+    Public Sub SelectPage(xTab As TabControl, xPage As TabPage)
+        xTab.TabPages.Clear()
+        xTab.TabPages.Add(xPage)
+    End Sub
+
+    Public Sub LoadDataGridView2(ByRef dgInput As DataGridView, ByVal strQuerry As String, ByRef xSda As SqlClient.SqlDataAdapter, ByRef xDs As DataSet)
+        xDs = New DataSet
+        xSda = New SqlClient.SqlDataAdapter(strQuerry, pobjSql.Connection)
+        xSda.Fill(xDs, "Result")
+        dgInput.DataSource = xDs.Tables("Result")
+        xDs.Dispose()
+        xSda.Dispose()
+    End Sub
+
+    Public Sub BeginTrans()
+        cmd.Connection = pobjSql.Connection
+        FTrans = pobjSql.Connection.BeginTransaction
+        cmd.Transaction = FTrans
+    End Sub
+
+    Public Sub CommitTrans()
+        FTrans.Commit()
+    End Sub
+
+    Public Sub RollbackTrans()
+        FTrans.Rollback()
+    End Sub
+
+    Public Sub dgvIntSort(e As DataGridViewSortCompareEventArgs)
+        e.SortResult = CInt(e.CellValue1).CompareTo(CInt(e.CellValue2))
+        e.Handled = True
+    End Sub
+    '^_^20230112 add by 7643 -e-
+
+    '^_^20230209 add by 7643 -b-
+    Public Function cboValidated(xCbo As ComboBox) As Boolean
+        If xCbo.Items.Count = 0 Then
+            xCbo.Text = ""
+            Return False
+        End If
+
+        xCbo.SelectedIndex = IIf(xCbo.Text = "" Or xCbo.FindString(xCbo.Text) = -1, 0, xCbo.FindString(xCbo.Text))
+
+        Return True
+    End Function
+
+    Public Sub FormatDgvNumber(xDgv As DataGridView, xCols() As String)
+        Dim i As Integer
+
+        For i = 0 To xCols.Length - 1
+            xDgv.Columns(xCols(i)).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
+            xDgv.Columns(xCols(i)).DefaultCellStyle.Format = "N0"
+        Next
+    End Sub
+
+    Public Sub DefaultControldvalue(xParent As Object, xDgv As DataGridView, Optional xDgv2 As DataGridView = Nothing)
+        Dim i, j, t As Integer
+        Dim mControl As Control
+        Dim mArrObj() As Object
+        Dim mtest As String
+
+        For i = 0 To CType(xParent, Control).Controls.Count - 1
+            mControl = New Control
+            mControl = CType(xParent, Control).Controls(i)
+            If TypeOf mControl Is TextBox Then
+                mControl.Text = xDgv.CurrentRow.Cells(Split(mControl.Name, "txt")(1)).Value
+            ElseIf TypeOf mControl Is ComboBox Then
+                mtest = xDgv.CurrentRow.Cells(Split(mControl.Name, "cbo")(1)).Value
+                CType(mControl, ComboBox).SelectedValue = xDgv.CurrentRow.Cells(Split(mControl.Name, "cbo")(1)).Value
+            ElseIf TypeOf mControl Is DateTimePicker Then
+                CType(mControl, DateTimePicker).Value = xDgv.CurrentRow.Cells(Split(mControl.Name, "dtp")(1)).Value
+            ElseIf TypeOf mControl Is DataGridView Then
+                ReDim mArrObj(CType(mControl, DataGridView).Columns.GetColumnCount(0) - 1)
+                For j = 0 To xDgv2.Rows.Count - 1
+                    For t = 0 To CType(mControl, DataGridView).Columns.GetColumnCount(0) - 1
+                        mArrObj(t) = xDgv2.Rows(j).Cells(CType(mControl, DataGridView).Columns(t).Name).Value
+                    Next
+                    CType(mControl, DataGridView).Rows.Add(mArrObj)
+                Next
+            End If
+        Next
+    End Sub
+    '^_^20230209 add by 7643 -e-
 End Module

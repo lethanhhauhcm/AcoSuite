@@ -28,27 +28,13 @@ Partial Class frmCalcPrice
         Me.pnGrid = New System.Windows.Forms.Panel()
         Me.dgvMain = New System.Windows.Forms.DataGridView()
         Me.pnMenu = New System.Windows.Forms.Panel()
-        Me.llbEdit = New System.Windows.Forms.LinkLabel()
+        Me.llbAmountDetail2 = New System.Windows.Forms.LinkLabel()
+        Me.llbUnConfirm = New System.Windows.Forms.LinkLabel()
+        Me.llbConfirm = New System.Windows.Forms.LinkLabel()
         Me.llbDelete = New System.Windows.Forms.LinkLabel()
         Me.llbSearch = New System.Windows.Forms.LinkLabel()
         Me.llbAdd = New System.Windows.Forms.LinkLabel()
         Me.tpInput = New System.Windows.Forms.TabPage()
-        Me.llbCancel = New System.Windows.Forms.LinkLabel()
-        Me.llbOK = New System.Windows.Forms.LinkLabel()
-        Me.tpSearch = New System.Windows.Forms.TabPage()
-        Me.llbReset = New System.Windows.Forms.LinkLabel()
-        Me.llbCancel_2 = New System.Windows.Forms.LinkLabel()
-        Me.llbSearch_2 = New System.Windows.Forms.LinkLabel()
-        Me.pnBody = New System.Windows.Forms.Panel()
-        Me.dgvBody = New System.Windows.Forms.DataGridView()
-        Me.pnFoot = New System.Windows.Forms.Panel()
-        Me.llbAmountDetail2 = New System.Windows.Forms.LinkLabel()
-        Me.llbUnConfirm = New System.Windows.Forms.LinkLabel()
-        Me.llbConfirm = New System.Windows.Forms.LinkLabel()
-        Me.txtTotalAmount = New System.Windows.Forms.TextBox()
-        Me.txtTotalUser = New System.Windows.Forms.TextBox()
-        Me.lblTotalAmount = New System.Windows.Forms.Label()
-        Me.lblTotalUser = New System.Windows.Forms.Label()
         Me.txtCPID = New System.Windows.Forms.TextBox()
         Me.txtRecID = New System.Windows.Forms.TextBox()
         Me.llbAmountDetail = New System.Windows.Forms.LinkLabel()
@@ -59,6 +45,9 @@ Partial Class frmCalcPrice
         Me.dtpCPDate = New System.Windows.Forms.DateTimePicker()
         Me.lblCPID = New System.Windows.Forms.Label()
         Me.lblRecID = New System.Windows.Forms.Label()
+        Me.llbCancel = New System.Windows.Forms.LinkLabel()
+        Me.llbOK = New System.Windows.Forms.LinkLabel()
+        Me.tpSearch = New System.Windows.Forms.TabPage()
         Me.txtCPID_2 = New System.Windows.Forms.TextBox()
         Me.txtRecID_2 = New System.Windows.Forms.TextBox()
         Me.chkConfirmStaff = New System.Windows.Forms.CheckBox()
@@ -75,6 +64,16 @@ Partial Class frmCalcPrice
         Me.dtpCPDate_2 = New System.Windows.Forms.DateTimePicker()
         Me.lblCPID_2 = New System.Windows.Forms.Label()
         Me.Label4 = New System.Windows.Forms.Label()
+        Me.llbReset = New System.Windows.Forms.LinkLabel()
+        Me.llbCancel_2 = New System.Windows.Forms.LinkLabel()
+        Me.llbSearch_2 = New System.Windows.Forms.LinkLabel()
+        Me.pnBody = New System.Windows.Forms.Panel()
+        Me.dgvBody = New System.Windows.Forms.DataGridView()
+        Me.pnFoot = New System.Windows.Forms.Panel()
+        Me.txtTotalAmount = New System.Windows.Forms.TextBox()
+        Me.txtTotalUser = New System.Windows.Forms.TextBox()
+        Me.lblTotalAmount = New System.Windows.Forms.Label()
+        Me.lblTotalUser = New System.Windows.Forms.Label()
         Me.pnMain.SuspendLayout()
         Me.tcMain.SuspendLayout()
         Me.tpList.SuspendLayout()
@@ -148,7 +147,6 @@ Partial Class frmCalcPrice
         Me.pnMenu.Controls.Add(Me.llbAmountDetail2)
         Me.pnMenu.Controls.Add(Me.llbUnConfirm)
         Me.pnMenu.Controls.Add(Me.llbConfirm)
-        Me.pnMenu.Controls.Add(Me.llbEdit)
         Me.pnMenu.Controls.Add(Me.llbDelete)
         Me.pnMenu.Controls.Add(Me.llbSearch)
         Me.pnMenu.Controls.Add(Me.llbAdd)
@@ -158,22 +156,44 @@ Partial Class frmCalcPrice
         Me.pnMenu.Size = New System.Drawing.Size(786, 24)
         Me.pnMenu.TabIndex = 5
         '
-        'llbEdit
+        'llbAmountDetail2
         '
-        Me.llbEdit.AutoSize = True
-        Me.llbEdit.Enabled = False
-        Me.llbEdit.Location = New System.Drawing.Point(37, 5)
-        Me.llbEdit.Name = "llbEdit"
-        Me.llbEdit.Size = New System.Drawing.Size(25, 13)
-        Me.llbEdit.TabIndex = 5
-        Me.llbEdit.TabStop = True
-        Me.llbEdit.Text = "Edit"
+        Me.llbAmountDetail2.AutoSize = True
+        Me.llbAmountDetail2.Enabled = False
+        Me.llbAmountDetail2.Location = New System.Drawing.Point(440, 6)
+        Me.llbAmountDetail2.Name = "llbAmountDetail2"
+        Me.llbAmountDetail2.Size = New System.Drawing.Size(70, 13)
+        Me.llbAmountDetail2.TabIndex = 59
+        Me.llbAmountDetail2.TabStop = True
+        Me.llbAmountDetail2.Text = "AmountDetail"
+        '
+        'llbUnConfirm
+        '
+        Me.llbUnConfirm.AutoSize = True
+        Me.llbUnConfirm.Enabled = False
+        Me.llbUnConfirm.Location = New System.Drawing.Point(315, 6)
+        Me.llbUnConfirm.Name = "llbUnConfirm"
+        Me.llbUnConfirm.Size = New System.Drawing.Size(56, 13)
+        Me.llbUnConfirm.TabIndex = 58
+        Me.llbUnConfirm.TabStop = True
+        Me.llbUnConfirm.Text = "UnConfirm"
+        '
+        'llbConfirm
+        '
+        Me.llbConfirm.AutoSize = True
+        Me.llbConfirm.Enabled = False
+        Me.llbConfirm.Location = New System.Drawing.Point(267, 6)
+        Me.llbConfirm.Name = "llbConfirm"
+        Me.llbConfirm.Size = New System.Drawing.Size(42, 13)
+        Me.llbConfirm.TabIndex = 57
+        Me.llbConfirm.TabStop = True
+        Me.llbConfirm.Text = "Confirm"
         '
         'llbDelete
         '
         Me.llbDelete.AutoSize = True
         Me.llbDelete.Enabled = False
-        Me.llbDelete.Location = New System.Drawing.Point(68, 5)
+        Me.llbDelete.Location = New System.Drawing.Point(63, 5)
         Me.llbDelete.Name = "llbDelete"
         Me.llbDelete.Size = New System.Drawing.Size(38, 13)
         Me.llbDelete.TabIndex = 6
@@ -183,7 +203,7 @@ Partial Class frmCalcPrice
         'llbSearch
         '
         Me.llbSearch.AutoSize = True
-        Me.llbSearch.Location = New System.Drawing.Point(145, 5)
+        Me.llbSearch.Location = New System.Drawing.Point(140, 5)
         Me.llbSearch.Name = "llbSearch"
         Me.llbSearch.Size = New System.Drawing.Size(41, 13)
         Me.llbSearch.TabIndex = 7
@@ -195,10 +215,10 @@ Partial Class frmCalcPrice
         Me.llbAdd.AutoSize = True
         Me.llbAdd.Location = New System.Drawing.Point(5, 5)
         Me.llbAdd.Name = "llbAdd"
-        Me.llbAdd.Size = New System.Drawing.Size(26, 13)
+        Me.llbAdd.Size = New System.Drawing.Size(52, 13)
         Me.llbAdd.TabIndex = 4
         Me.llbAdd.TabStop = True
-        Me.llbAdd.Text = "Add"
+        Me.llbAdd.Text = "CalcPrice"
         '
         'tpInput
         '
@@ -221,191 +241,6 @@ Partial Class frmCalcPrice
         Me.tpInput.Size = New System.Drawing.Size(792, 212)
         Me.tpInput.TabIndex = 1
         Me.tpInput.Text = "Input"
-        '
-        'llbCancel
-        '
-        Me.llbCancel.AutoSize = True
-        Me.llbCancel.Location = New System.Drawing.Point(36, 3)
-        Me.llbCancel.Name = "llbCancel"
-        Me.llbCancel.Size = New System.Drawing.Size(40, 13)
-        Me.llbCancel.TabIndex = 1
-        Me.llbCancel.TabStop = True
-        Me.llbCancel.Text = "Cancel"
-        '
-        'llbOK
-        '
-        Me.llbOK.AutoSize = True
-        Me.llbOK.Location = New System.Drawing.Point(8, 3)
-        Me.llbOK.Name = "llbOK"
-        Me.llbOK.Size = New System.Drawing.Size(22, 13)
-        Me.llbOK.TabIndex = 0
-        Me.llbOK.TabStop = True
-        Me.llbOK.Text = "OK"
-        '
-        'tpSearch
-        '
-        Me.tpSearch.BackColor = System.Drawing.SystemColors.Control
-        Me.tpSearch.Controls.Add(Me.txtCPID_2)
-        Me.tpSearch.Controls.Add(Me.txtRecID_2)
-        Me.tpSearch.Controls.Add(Me.chkConfirmStaff)
-        Me.tpSearch.Controls.Add(Me.chkConfirm)
-        Me.tpSearch.Controls.Add(Me.cboConfirmStaff)
-        Me.tpSearch.Controls.Add(Me.cboConfirmDate)
-        Me.tpSearch.Controls.Add(Me.chkConfirmDate)
-        Me.tpSearch.Controls.Add(Me.dtpConfirmDate)
-        Me.tpSearch.Controls.Add(Me.cboCPMonth)
-        Me.tpSearch.Controls.Add(Me.chkCPMonth)
-        Me.tpSearch.Controls.Add(Me.dtpCPMonth_2)
-        Me.tpSearch.Controls.Add(Me.cboCPDate)
-        Me.tpSearch.Controls.Add(Me.chkCPDate)
-        Me.tpSearch.Controls.Add(Me.dtpCPDate_2)
-        Me.tpSearch.Controls.Add(Me.lblCPID_2)
-        Me.tpSearch.Controls.Add(Me.Label4)
-        Me.tpSearch.Controls.Add(Me.llbReset)
-        Me.tpSearch.Controls.Add(Me.llbCancel_2)
-        Me.tpSearch.Controls.Add(Me.llbSearch_2)
-        Me.tpSearch.Location = New System.Drawing.Point(4, 22)
-        Me.tpSearch.Name = "tpSearch"
-        Me.tpSearch.Padding = New System.Windows.Forms.Padding(3)
-        Me.tpSearch.Size = New System.Drawing.Size(792, 212)
-        Me.tpSearch.TabIndex = 2
-        Me.tpSearch.Text = "Search"
-        '
-        'llbReset
-        '
-        Me.llbReset.AutoSize = True
-        Me.llbReset.Location = New System.Drawing.Point(153, 3)
-        Me.llbReset.Name = "llbReset"
-        Me.llbReset.Size = New System.Drawing.Size(35, 13)
-        Me.llbReset.TabIndex = 2
-        Me.llbReset.TabStop = True
-        Me.llbReset.Text = "Reset"
-        '
-        'llbCancel_2
-        '
-        Me.llbCancel_2.AutoSize = True
-        Me.llbCancel_2.Location = New System.Drawing.Point(53, 3)
-        Me.llbCancel_2.Name = "llbCancel_2"
-        Me.llbCancel_2.Size = New System.Drawing.Size(40, 13)
-        Me.llbCancel_2.TabIndex = 1
-        Me.llbCancel_2.TabStop = True
-        Me.llbCancel_2.Text = "Cancel"
-        '
-        'llbSearch_2
-        '
-        Me.llbSearch_2.AutoSize = True
-        Me.llbSearch_2.Location = New System.Drawing.Point(6, 3)
-        Me.llbSearch_2.Name = "llbSearch_2"
-        Me.llbSearch_2.Size = New System.Drawing.Size(41, 13)
-        Me.llbSearch_2.TabIndex = 0
-        Me.llbSearch_2.TabStop = True
-        Me.llbSearch_2.Text = "Search"
-        '
-        'pnBody
-        '
-        Me.pnBody.Controls.Add(Me.dgvBody)
-        Me.pnBody.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.pnBody.Location = New System.Drawing.Point(0, 238)
-        Me.pnBody.Name = "pnBody"
-        Me.pnBody.Size = New System.Drawing.Size(800, 175)
-        Me.pnBody.TabIndex = 3
-        '
-        'dgvBody
-        '
-        Me.dgvBody.AllowUserToAddRows = False
-        Me.dgvBody.AllowUserToDeleteRows = False
-        Me.dgvBody.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.dgvBody.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.dgvBody.Location = New System.Drawing.Point(0, 0)
-        Me.dgvBody.Name = "dgvBody"
-        Me.dgvBody.ReadOnly = True
-        Me.dgvBody.Size = New System.Drawing.Size(800, 175)
-        Me.dgvBody.TabIndex = 0
-        '
-        'pnFoot
-        '
-        Me.pnFoot.Controls.Add(Me.txtTotalAmount)
-        Me.pnFoot.Controls.Add(Me.txtTotalUser)
-        Me.pnFoot.Controls.Add(Me.lblTotalAmount)
-        Me.pnFoot.Controls.Add(Me.lblTotalUser)
-        Me.pnFoot.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.pnFoot.Location = New System.Drawing.Point(0, 413)
-        Me.pnFoot.Name = "pnFoot"
-        Me.pnFoot.Size = New System.Drawing.Size(800, 37)
-        Me.pnFoot.TabIndex = 4
-        '
-        'llbAmountDetail2
-        '
-        Me.llbAmountDetail2.AutoSize = True
-        Me.llbAmountDetail2.Enabled = False
-        Me.llbAmountDetail2.Location = New System.Drawing.Point(445, 6)
-        Me.llbAmountDetail2.Name = "llbAmountDetail2"
-        Me.llbAmountDetail2.Size = New System.Drawing.Size(70, 13)
-        Me.llbAmountDetail2.TabIndex = 59
-        Me.llbAmountDetail2.TabStop = True
-        Me.llbAmountDetail2.Text = "AmountDetail"
-        '
-        'llbUnConfirm
-        '
-        Me.llbUnConfirm.AutoSize = True
-        Me.llbUnConfirm.Enabled = False
-        Me.llbUnConfirm.Location = New System.Drawing.Point(320, 6)
-        Me.llbUnConfirm.Name = "llbUnConfirm"
-        Me.llbUnConfirm.Size = New System.Drawing.Size(56, 13)
-        Me.llbUnConfirm.TabIndex = 58
-        Me.llbUnConfirm.TabStop = True
-        Me.llbUnConfirm.Text = "UnConfirm"
-        '
-        'llbConfirm
-        '
-        Me.llbConfirm.AutoSize = True
-        Me.llbConfirm.Enabled = False
-        Me.llbConfirm.Location = New System.Drawing.Point(272, 6)
-        Me.llbConfirm.Name = "llbConfirm"
-        Me.llbConfirm.Size = New System.Drawing.Size(42, 13)
-        Me.llbConfirm.TabIndex = 57
-        Me.llbConfirm.TabStop = True
-        Me.llbConfirm.Text = "Confirm"
-        '
-        'txtTotalAmount
-        '
-        Me.txtTotalAmount.Location = New System.Drawing.Point(295, 6)
-        Me.txtTotalAmount.Name = "txtTotalAmount"
-        Me.txtTotalAmount.ReadOnly = True
-        Me.txtTotalAmount.RightToLeft = System.Windows.Forms.RightToLeft.Yes
-        Me.txtTotalAmount.Size = New System.Drawing.Size(100, 20)
-        Me.txtTotalAmount.TabIndex = 73
-        Me.txtTotalAmount.TabStop = False
-        Me.txtTotalAmount.Text = "0"
-        '
-        'txtTotalUser
-        '
-        Me.txtTotalUser.Location = New System.Drawing.Point(78, 6)
-        Me.txtTotalUser.Name = "txtTotalUser"
-        Me.txtTotalUser.ReadOnly = True
-        Me.txtTotalUser.RightToLeft = System.Windows.Forms.RightToLeft.Yes
-        Me.txtTotalUser.Size = New System.Drawing.Size(100, 20)
-        Me.txtTotalUser.TabIndex = 72
-        Me.txtTotalUser.TabStop = False
-        Me.txtTotalUser.Text = "0"
-        '
-        'lblTotalAmount
-        '
-        Me.lblTotalAmount.AutoSize = True
-        Me.lblTotalAmount.Location = New System.Drawing.Point(222, 10)
-        Me.lblTotalAmount.Name = "lblTotalAmount"
-        Me.lblTotalAmount.Size = New System.Drawing.Size(67, 13)
-        Me.lblTotalAmount.TabIndex = 71
-        Me.lblTotalAmount.Text = "TotalAmount"
-        '
-        'lblTotalUser
-        '
-        Me.lblTotalUser.AutoSize = True
-        Me.lblTotalUser.Location = New System.Drawing.Point(19, 10)
-        Me.lblTotalUser.Name = "lblTotalUser"
-        Me.lblTotalUser.Size = New System.Drawing.Size(53, 13)
-        Me.lblTotalUser.TabIndex = 70
-        Me.lblTotalUser.Text = "TotalUser"
         '
         'txtCPID
         '
@@ -503,6 +338,55 @@ Partial Class frmCalcPrice
         Me.lblRecID.Size = New System.Drawing.Size(38, 13)
         Me.lblRecID.TabIndex = 66
         Me.lblRecID.Text = "RecID"
+        '
+        'llbCancel
+        '
+        Me.llbCancel.AutoSize = True
+        Me.llbCancel.Location = New System.Drawing.Point(46, 3)
+        Me.llbCancel.Name = "llbCancel"
+        Me.llbCancel.Size = New System.Drawing.Size(40, 13)
+        Me.llbCancel.TabIndex = 1
+        Me.llbCancel.TabStop = True
+        Me.llbCancel.Text = "Cancel"
+        '
+        'llbOK
+        '
+        Me.llbOK.AutoSize = True
+        Me.llbOK.Location = New System.Drawing.Point(8, 3)
+        Me.llbOK.Name = "llbOK"
+        Me.llbOK.Size = New System.Drawing.Size(32, 13)
+        Me.llbOK.TabIndex = 0
+        Me.llbOK.TabStop = True
+        Me.llbOK.Text = "Save"
+        '
+        'tpSearch
+        '
+        Me.tpSearch.BackColor = System.Drawing.SystemColors.Control
+        Me.tpSearch.Controls.Add(Me.txtCPID_2)
+        Me.tpSearch.Controls.Add(Me.txtRecID_2)
+        Me.tpSearch.Controls.Add(Me.chkConfirmStaff)
+        Me.tpSearch.Controls.Add(Me.chkConfirm)
+        Me.tpSearch.Controls.Add(Me.cboConfirmStaff)
+        Me.tpSearch.Controls.Add(Me.cboConfirmDate)
+        Me.tpSearch.Controls.Add(Me.chkConfirmDate)
+        Me.tpSearch.Controls.Add(Me.dtpConfirmDate)
+        Me.tpSearch.Controls.Add(Me.cboCPMonth)
+        Me.tpSearch.Controls.Add(Me.chkCPMonth)
+        Me.tpSearch.Controls.Add(Me.dtpCPMonth_2)
+        Me.tpSearch.Controls.Add(Me.cboCPDate)
+        Me.tpSearch.Controls.Add(Me.chkCPDate)
+        Me.tpSearch.Controls.Add(Me.dtpCPDate_2)
+        Me.tpSearch.Controls.Add(Me.lblCPID_2)
+        Me.tpSearch.Controls.Add(Me.Label4)
+        Me.tpSearch.Controls.Add(Me.llbReset)
+        Me.tpSearch.Controls.Add(Me.llbCancel_2)
+        Me.tpSearch.Controls.Add(Me.llbSearch_2)
+        Me.tpSearch.Location = New System.Drawing.Point(4, 22)
+        Me.tpSearch.Name = "tpSearch"
+        Me.tpSearch.Padding = New System.Windows.Forms.Padding(3)
+        Me.tpSearch.Size = New System.Drawing.Size(792, 212)
+        Me.tpSearch.TabIndex = 2
+        Me.tpSearch.Text = "Search"
         '
         'txtCPID_2
         '
@@ -669,6 +553,109 @@ Partial Class frmCalcPrice
         Me.Label4.TabIndex = 88
         Me.Label4.Text = "RecID"
         '
+        'llbReset
+        '
+        Me.llbReset.AutoSize = True
+        Me.llbReset.Location = New System.Drawing.Point(153, 3)
+        Me.llbReset.Name = "llbReset"
+        Me.llbReset.Size = New System.Drawing.Size(35, 13)
+        Me.llbReset.TabIndex = 2
+        Me.llbReset.TabStop = True
+        Me.llbReset.Text = "Reset"
+        '
+        'llbCancel_2
+        '
+        Me.llbCancel_2.AutoSize = True
+        Me.llbCancel_2.Location = New System.Drawing.Point(53, 3)
+        Me.llbCancel_2.Name = "llbCancel_2"
+        Me.llbCancel_2.Size = New System.Drawing.Size(40, 13)
+        Me.llbCancel_2.TabIndex = 1
+        Me.llbCancel_2.TabStop = True
+        Me.llbCancel_2.Text = "Cancel"
+        '
+        'llbSearch_2
+        '
+        Me.llbSearch_2.AutoSize = True
+        Me.llbSearch_2.Location = New System.Drawing.Point(6, 3)
+        Me.llbSearch_2.Name = "llbSearch_2"
+        Me.llbSearch_2.Size = New System.Drawing.Size(41, 13)
+        Me.llbSearch_2.TabIndex = 0
+        Me.llbSearch_2.TabStop = True
+        Me.llbSearch_2.Text = "Search"
+        '
+        'pnBody
+        '
+        Me.pnBody.Controls.Add(Me.dgvBody)
+        Me.pnBody.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.pnBody.Location = New System.Drawing.Point(0, 238)
+        Me.pnBody.Name = "pnBody"
+        Me.pnBody.Size = New System.Drawing.Size(800, 175)
+        Me.pnBody.TabIndex = 3
+        '
+        'dgvBody
+        '
+        Me.dgvBody.AllowUserToAddRows = False
+        Me.dgvBody.AllowUserToDeleteRows = False
+        Me.dgvBody.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.dgvBody.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.dgvBody.Location = New System.Drawing.Point(0, 0)
+        Me.dgvBody.Name = "dgvBody"
+        Me.dgvBody.ReadOnly = True
+        Me.dgvBody.Size = New System.Drawing.Size(800, 175)
+        Me.dgvBody.TabIndex = 0
+        '
+        'pnFoot
+        '
+        Me.pnFoot.Controls.Add(Me.txtTotalAmount)
+        Me.pnFoot.Controls.Add(Me.txtTotalUser)
+        Me.pnFoot.Controls.Add(Me.lblTotalAmount)
+        Me.pnFoot.Controls.Add(Me.lblTotalUser)
+        Me.pnFoot.Dock = System.Windows.Forms.DockStyle.Bottom
+        Me.pnFoot.Location = New System.Drawing.Point(0, 413)
+        Me.pnFoot.Name = "pnFoot"
+        Me.pnFoot.Size = New System.Drawing.Size(800, 37)
+        Me.pnFoot.TabIndex = 4
+        '
+        'txtTotalAmount
+        '
+        Me.txtTotalAmount.Location = New System.Drawing.Point(295, 6)
+        Me.txtTotalAmount.Name = "txtTotalAmount"
+        Me.txtTotalAmount.ReadOnly = True
+        Me.txtTotalAmount.RightToLeft = System.Windows.Forms.RightToLeft.Yes
+        Me.txtTotalAmount.Size = New System.Drawing.Size(100, 20)
+        Me.txtTotalAmount.TabIndex = 73
+        Me.txtTotalAmount.TabStop = False
+        Me.txtTotalAmount.Text = "0"
+        '
+        'txtTotalUser
+        '
+        Me.txtTotalUser.Location = New System.Drawing.Point(78, 6)
+        Me.txtTotalUser.Name = "txtTotalUser"
+        Me.txtTotalUser.ReadOnly = True
+        Me.txtTotalUser.RightToLeft = System.Windows.Forms.RightToLeft.Yes
+        Me.txtTotalUser.Size = New System.Drawing.Size(100, 20)
+        Me.txtTotalUser.TabIndex = 72
+        Me.txtTotalUser.TabStop = False
+        Me.txtTotalUser.Text = "0"
+        '
+        'lblTotalAmount
+        '
+        Me.lblTotalAmount.AutoSize = True
+        Me.lblTotalAmount.Location = New System.Drawing.Point(222, 10)
+        Me.lblTotalAmount.Name = "lblTotalAmount"
+        Me.lblTotalAmount.Size = New System.Drawing.Size(67, 13)
+        Me.lblTotalAmount.TabIndex = 71
+        Me.lblTotalAmount.Text = "TotalAmount"
+        '
+        'lblTotalUser
+        '
+        Me.lblTotalUser.AutoSize = True
+        Me.lblTotalUser.Location = New System.Drawing.Point(19, 10)
+        Me.lblTotalUser.Name = "lblTotalUser"
+        Me.lblTotalUser.Size = New System.Drawing.Size(53, 13)
+        Me.lblTotalUser.TabIndex = 70
+        Me.lblTotalUser.Text = "TotalUser"
+        '
         'frmCalcPrice
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -704,7 +691,6 @@ Partial Class frmCalcPrice
     Protected WithEvents pnGrid As Panel
     Protected WithEvents dgvMain As DataGridView
     Protected WithEvents pnMenu As Panel
-    Protected WithEvents llbEdit As LinkLabel
     Protected WithEvents llbDelete As LinkLabel
     Protected WithEvents llbSearch As LinkLabel
     Protected WithEvents llbAdd As LinkLabel

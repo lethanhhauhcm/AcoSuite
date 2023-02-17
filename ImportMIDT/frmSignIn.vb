@@ -21,20 +21,14 @@ Public Class frmSignIn
         txtStaffId.Text = txtStaffId.Text.Trim
         txtPassword.Text = txtPassword.Text.Trim
 
-        '^_^20221007 add by 7643 -b-
-        If My.Computer.Name = "7-111" Then
-            intStaffId = 212
-        Else
-            '^_^20221007 add by 7643 -e-
-            intStaffId = do_Login(txtStaffId.Text, txtPassword.Text)
-        End If  '^_^20221007 add by 7643
+        intStaffId = do_Login(txtStaffId.Text, txtPassword.Text)
         'intStaffId = 7586
 
         'If My.Computer.Name = "5-247" Then  '^_^20221024 mark by 7643
         If My.Computer.Name = "5-247" Or My.Computer.Name = "7-111" Then  '^_^20221024 modi by 7643
             If MsgBox("Use Son.NguyenViet", MsgBoxStyle.YesNo) = vbYes Then
-                'intStaffId = 4029  '^_^20221024 mark by 7643
-                intStaffId = InputBox("Enter StaffID:",, "4029")  '^_^20221024 modi by 7643
+                intStaffId = 4029
+                'intStaffId = 522
                 GoTo ByPassSignIn
             End If
         End If

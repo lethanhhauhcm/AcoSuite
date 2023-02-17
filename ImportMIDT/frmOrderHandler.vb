@@ -56,13 +56,18 @@ Public Class frmOrderHandler
         Dim lstQuerries As New List(Of String)
         Dim strUpdateStatus As String
 
-        strUpdateStatus = "Update amadeusvn.dbo.OrderGift set Status='OK' where Recid=" _
-                            & Me.GridRPT.CurrentRow.Cells("OrderID").Value
+        '^_^20221129 mark by 7643 -b-
+        'strUpdateStatus = "Update amadeusvn.dbo.OrderGift set Status='OK' where Recid=" _
+        '                    & Me.GridRPT.CurrentRow.Cells("OrderID").Value
+        '^_^20221129 mark by 7643 -e-
+        strUpdateStatus = ChangeStatus_ByID("amadeusvn.dbo.OrderGift", "OK", GridRPT.CurrentRow.Cells("OrderID").Value)  '^_^20221129 modi by 7643
 
         If Not pobjSql.ExecuteNonQuerry(strUpdateStatus) Then
             MsgBox("Unable to approve Gift Order")
             Exit Sub
         End If
+
+        pobjSql.ExecuteNonQuerry("update amadeusvn..OrderDetail set RemainingPoint=TotalPoint where OrderID=" & Me.GridRPT.CurrentRow.Cells("OrderID").Value)  '^_^20221129 add by 7643
 
         If pobjUser.City = "HAN" Then
             Dim i As Integer
