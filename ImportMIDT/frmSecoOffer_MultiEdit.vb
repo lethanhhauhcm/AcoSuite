@@ -1,7 +1,6 @@
 ﻿Public Class frmSecoOffer_MultiEdit
     Public FdgvTemp As New DataGridView
     Public FEffDate, FExpDate As String
-    Public FLstCalcPrice As New List(Of String)
     Private Sub frmSecoOffer_MultiEdit_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Dim mSQL As String
         Dim mPricePerUser As DataGridViewComboBoxColumn
@@ -16,8 +15,8 @@
 
     Private Sub frmSecoOffer_MultiEdit_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
         Dim i As Integer
-        Dim mSQL, mCustomer, mCPMonth, mDate As String
-        Dim mReturn As New DataTable
+        Dim mSQL, mCustomer As String
+        Dim mReturn As DataTable
 
         If DialogResult <> DialogResult.OK Then Exit Sub
 
@@ -30,25 +29,7 @@
 
         FEffDate = Format(dtpEffDate.Value, "yyyyMM01")
         FExpDate = Format(dtpExpDate.Value, "yyyyMM" & CStr(Date.DaysInMonth(dtpExpDate.Value.Year, dtpExpDate.Value.Month)))
-
-        If FLstCalcPrice.Count > 0 Then
-            mCPMonth = FLstCalcPrice(0).Split(vbTab)(0)
-            If FEffDate > mCPMonth Then
-                mDate = Format(Date.ParseExact(mCPMonth, "yyyyMMdd", Nothing), "MMM-yyyy")
-                MsgBox(FLstCalcPrice(0).Split(vbTab)(1) & " has calculated price at " & mDate & ", EffDate cannot be later!")
-                e.Cancel = True
-                Exit Sub
-            End If
-
-            mCPMonth = FLstCalcPrice(FLstCalcPrice.Count - 1).Split(vbTab)(0)
-            If FExpDate < mCPMonth Then
-                mDate = Format(Date.ParseExact(mCPMonth, "yyyyMMdd", Nothing), "MMM-yyyy")
-                MsgBox(FLstCalcPrice(0).Split(vbTab)(1) & " has calculated price at " & mDate & ", ExpDate cannot be earlier!")
-                e.Cancel = True
-                Exit Sub
-            End If
-        End If
-
+        mReturn = New DataTable
         mCustomer = ""
         For i = 0 To FdgvTemp.SelectedRows.Count - 1
             mSQL = String.Format("select RecID " &
