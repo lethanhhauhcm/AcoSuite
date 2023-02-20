@@ -1,5 +1,7 @@
 ﻿'20220526 add by 7643
 Imports System.Globalization
+Imports Microsoft.VisualBasic.Devices
+
 Public Class frmSecoOffer
     Private FChangeNum As Integer
     Private FDate, FEffDate, FExpDate As String
@@ -332,7 +334,7 @@ Public Class frmSecoOffer
             End Try
         Next
 
-        If mRecID <> "" Then
+        If mRecID <> "" And FDeletePower Then
             cmd.CommandText = "update DATA1A_PriceListDetail " & vbLf &
                               "set "
             cmd.CommandText &= IIf(xDgv.Name = "dgvDetail", "status='XX',LstDate='" & FDate & "',LstUser='" & pobjUser.UserName & "' ",
@@ -363,9 +365,9 @@ Public Class frmSecoOffer
                         "from DATA1A_CalcPrice CP " &
                           "left join DATA1A_CalcPriceDetail CPD on CP.CPID=CPD.CPID And CPD.status='OK' " &
                             "and CPD.City ='" & pobjUser.City & "' " & vbLf &
-                        "where CP.status='OK' and CP.City='" & pobjUser.City & "' and CP.ConfirmStatus='Y' " &
+                        "where CP.status='OK' and CP.City='" & pobjUser.City & "' " &
                           "And (format(CP.CPMonth,'yyyyMM') between '" & mEffDate & "' And '" & mExpDate & "') " &
-                          "And CPD.Customer='" & dgvMain.CurrentRow.Cells("Customer").Value & "' and CPD.ErrDesc=''"
+                          "And CPD.Customer='" & dgvMain.CurrentRow.Cells("Customer").Value & "' and cpd.PriceID=" & dgvMain.CurrentRow.Cells("PriceID").Value
                 FDeletePower = pobjSql.GetScalarAsString(mSQL) = ""
             End If
         End If
@@ -419,7 +421,8 @@ Public Class frmSecoOffer
                          "left join DATA1A_CalcPriceDetail cpd on cp.CPID=cpd.CPID And cpd.Status='OK' " &
                            "and cpd.City ='" & pobjUser.City & "' " & vbLf &
                        "where cpd.Customer='" & mCustomer & "' and cp.Status='OK' and cp.City='" & pobjUser.City & "' " &
-                         "And format(cp.CPMonth,'yyyyMM') between '" & mEffDate & "' and '" & mExpDate & "'" & vbLf &
+                         "And format(cp.CPMonth,'yyyyMM') between '" & mEffDate & "' and '" & mExpDate & "' " &
+                         "and cpd.PriceID = " & dgvMain.CurrentRow.Cells("PriceID").Value & vbLf &
                        "order by cp.CPMonth desc"
                 mDt = pobjSql.GetDataTable(mSQL)
                 If mDt.Rows.Count > 0 Then
@@ -428,7 +431,7 @@ Public Class frmSecoOffer
                     mMinEffDate = dgvMain.CurrentRow.Cells("EffDate").Value
                 End If
 
-                mEffDate = mMinEffDate.AddMonths(1)
+                mMinEffDate = mMinEffDate.AddMonths(1)
                 dtpEffDate.MinDate = mMinEffDate.Year.ToString & "/" & mMinEffDate.Month.ToString & "/01"
             End If
             LoadDgv(dgvIDetail, dgvMain.CurrentRow.Cells("PriceID").Value, dgvMain.CurrentRow.Cells("ChangeNum").Value)
@@ -459,7 +462,7 @@ Public Class frmSecoOffer
         mCboPricePerUser.HeaderText = "PricePerUser"
         mCboPricePerUser.Name = "PricePerUser"
         mCboPricePerUser.DefaultCellStyle.Format = "N0"
-        mSQL = "select convert(numeric(21,0),cpu.Price) Price " & vbLf &
+        mSQL = "Select convert(numeric(21, 0),cpu.Price) Price " & vbLf &
                "from DATA1A_PricePerUser cpu" & vbLf &
                "where cpu.status='OK' and cpu.City='" & pobjUser.City & "' " & vbLf &
                "order by cpu.Price"
@@ -507,9 +510,7 @@ Public Class frmSecoOffer
                "where c.status<>'XX' and c.Region='" & pobjUser.Region & "' and c.ShortName<>'' " &
                  IIf(pobjUser.Role = "User", "and c.PIC='" & pobjUser.UserName & "' ", "") &
                "order by value"
-        pobjSql.LoadCombo(cboCustomer_2, "select '' value " &
-                                         "union all " &
-                                         mSQL)
+        pobjSql.LoadCombo(cboCustomer_2, "select '' value union all " & mSQL)
 
         mSQL = "select 'All' value " &
                "union all " &
@@ -548,6 +549,7 @@ Public Class frmSecoOffer
         TabPageChange(tpInput)
         LoadCustomer(True)
         DefaultValue(FAction.Add)
+        tpInput.Tag = "Add"
     End Sub
 
     Private Sub llbOK_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles llbOK.LinkClicked
@@ -587,7 +589,7 @@ Public Class frmSecoOffer
             LTrans = pobjSql.Connection.BeginTransaction
             cmd.Transaction = LTrans
             Try
-                InsertMain(mPriceID.ToString, cboCustomer.Text)
+                InsertMain(mPriceID, cboCustomer.Text)
                 If txtRecID.Text <> "" Then UpdateMain()
                 If dgvIDetail.Rows.Count > 1 Then
                     InsertDetail(mPriceID.ToString)
@@ -641,19 +643,73 @@ Public Class frmSecoOffer
         Dim mMultiEdit As frmSecoOffer_MultiEdit
         Dim i, j As Integer
         Dim mDetail As SqlClient.SqlDataReader
-        Dim mSQL, mDetailRecIDs, mMainPara(), mDetailPara() As String
+        Dim mSQL, mDetailRecIDs, mMainPara(), mDetailPara(), mCust, mCPMonth, mCusts, mStr, mDate, mPriceID, mRecID As String
+        Dim mReturn As New DataTable
+        Dim mFound As Boolean
+        Dim mPriceListDetail As New List(Of String)
         '^_^20230203 add by 7643 -e-
 
-        If Not FDeletePower AndAlso MsgBox("This row had used in CalcPrice, will be add new stage!", vbYesNo) = vbNo Then Exit Sub
-
         If dgvMain.SelectedRows.Count < 2 Then  '^_^20230203 add by 7643
+            mPriceID = dgvMain.CurrentRow.Cells("PriceID").Value
+            mRecID = dgvMain.CurrentRow.Cells("RecID").Value
+            If Not FDeletePower Then
+                If MsgBox("This row had used in CalcPrice, will be add new stage!", vbYesNo) = vbNo Then
+                    Exit Sub
+                Else
+                    mPriceID = ""
+                    'mRecID = ""
+                    tpInput.Tag = "Edit2"
+                End If
+            End If
             TabPageChange(tpInput)
             'LoadCustomer(False)
             DefaultValue(FAction.Edit)
+            'txtRecID.Text = mRecID
+            txtPriceID.Text = mPriceID
+            tpInput.Tag = "Edit"
             '^_^20230203 add by 7643 -b-
         Else
             mMultiEdit = New frmSecoOffer_MultiEdit
             mMultiEdit.FdgvTemp = dgvMain
+
+            mMultiEdit.FLstCalcPrice.Clear()
+            For i = 0 To dgvMain.SelectedRows.Count - 1
+                mCust = dgvMain.SelectedRows(i).Cells("Customer").Value
+                mSQL = String.Format("select cpd.RecID,cp.CPMonth " &
+                                     "from DATA1A_CalcPriceDetail cpd left join DATA1A_CalcPrice cp on cpd.CPID=cp.CPID And cp.Status='OK' and cp.City=cpd.City " &
+                                     "where cpd.Status='OK' and cpd.City='{0}' and cpd.Customer='{1}' and cp.CPMonth between '{2}' and '{3}' and cpd.PriceID={4}",
+                                     {pobjUser.City, mCust, Format(dgvMain.SelectedRows(i).Cells("EffDate").Value, "yyyyMMdd"),
+                                        Format(dgvMain.SelectedRows(i).Cells("ExpDate").Value, "yyyyMMdd"), dgvMain.SelectedRows(i).Cells("PriceID").Value})
+                mReturn = GetDataTable(mSQL, pobjSql.Connection)
+                For j = 0 To mReturn.Rows.Count - 1
+                    mFound = False
+                    mCPMonth = Format(mReturn.Rows(j)("CPMonth"), "yyyyMMdd")
+                    For t = 0 To mMultiEdit.FLstCalcPrice.Count - 1
+                        If mMultiEdit.FLstCalcPrice(t).Split(vbTab)(0) = mCPMonth Then
+                            mMultiEdit.FLstCalcPrice(t) = mMultiEdit.FLstCalcPrice(t) & "," & mCust
+                            mFound = True
+                            Exit For
+                        End If
+                    Next
+
+                    If Not mFound Then mMultiEdit.FLstCalcPrice.Add(mCPMonth & vbTab & mCust)
+                Next
+            Next
+            mMultiEdit.FLstCalcPrice.Sort()
+
+            mCusts = ""
+            For i = 0 To mMultiEdit.FLstCalcPrice.Count - 1
+                mStr = mMultiEdit.FLstCalcPrice(i).Split(vbTab)(1)
+                For j = 0 To mStr.Split(",").Length - 1
+                    mCust = mStr.Split(",")(j)
+                    If Not mCusts.Contains(mCust) Then mCusts &= IIf(mCusts <> "", ",", "") & mCust
+                Next
+            Next
+            If mCusts <> "" Then
+                MsgBox(mCusts & " has been calculated price, can not edit SecoOfferDetail!")
+                mMultiEdit.dgvDetail.Visible = False
+            End If
+
             mMultiEdit.ShowDialog()
             If mMultiEdit.DialogResult = DialogResult.OK Then
                 Try
@@ -661,19 +717,50 @@ Public Class frmSecoOffer
 
                     ReDim mMainPara(11)
                     ReDim mDetailPara(11)
+                    mDate = Format(Now, "yyyyMMdd hh:mm:ss")
                     For i = 0 To dgvMain.SelectedRows.Count - 1
                         'Delete detail
-                        cmd.CommandText = String.Format("select RecID from DATA1A_PriceListDetail where Status='OK' and PriceID={0} and City='{1}'",
-                                             {CStr(dgvMain.SelectedRows(i).Cells("PriceID").Value), pobjUser.City})
+                        cmd.CommandText = String.Format("select RecID,FstDate,FstUser,PriceID,FromTheUser,ToTheUser,PricePerUser,PriceCombo,City," &
+                                                            "ChangeNum " &
+                                                        "from DATA1A_PriceListDetail " &
+                                                        "where Status='OK' and PriceID={0} and City='{1}' and ChangeNum={2}",
+                                             {CStr(dgvMain.SelectedRows(i).Cells("PriceID").Value), pobjUser.City, dgvMain.SelectedRows(i).Cells("ChangeNum").Value})
                         mDetail = cmd.ExecuteReader
 
                         mDetailRecIDs = ""
+                        mPriceListDetail.Clear()
                         While mDetail.Read
                             mDetailRecIDs &= IIf(mDetailRecIDs = "", "", ",") & mDetail(0)
+
+                            If mMultiEdit.FLstCalcPrice.Count > 0 Then
+                                mPriceListDetail.Add(mDetail(1) & vbLf & mDetail(2) & vbLf & mDetail(3) & vbLf & mDetail(4) & vbLf & mDetail(5) & vbLf & mDetail(6) &
+                                                     vbLf & mDetail(7) & vbLf & mDetail(8) & vbLf & mDetail(9))
+                            End If
                         End While
                         mDetail.Close()
-                        cmd.CommandText = String.Format("update DATA1A_PriceListDetail set Status='MO' where RecID in ({0})", {mDetailRecIDs})
-                        cmd.ExecuteNonQuery()
+
+                        For j = 0 To mPriceListDetail.Count - 1
+                            mDetailPara(0) = mPriceListDetail(j).Split(vbLf)(0)
+                            mDetailPara(1) = mPriceListDetail(j).Split(vbLf)(1)
+                            mDetailPara(2) = mDate
+                            mDetailPara(3) = pobjUser.UserName
+                            mDetailPara(4) = mPriceListDetail(j).Split(vbLf)(2)
+                            mDetailPara(5) = mPriceListDetail(j).Split(vbLf)(3)
+                            mDetailPara(6) = mPriceListDetail(j).Split(vbLf)(4)
+                            mDetailPara(7) = mPriceListDetail(j).Split(vbLf)(5)
+                            mDetailPara(8) = mPriceListDetail(j).Split(vbLf)(6)
+                            mDetailPara(9) = mPriceListDetail(j).Split(vbLf)(7)
+                            mDetailPara(10) = mPriceListDetail(j).Split(vbLf)(8) + 1
+                            cmd.CommandText = String.Format("insert into DATA1A_PriceListDetail(FstDate,FstUser,LstDate,LstUser,PriceID,FromTheUser,ToTheUser," &
+                                                                "PricePerUser,PriceCombo,City,ChangeNum) " &
+                                                            "values('{0}','{1}','{2}','{3}',{4},{5},{6},{7},{8},'{9}',{10})", mDetailPara)
+                            cmd.ExecuteNonQuery()
+                        Next
+
+                        If mDetailRecIDs <> "" Then
+                            cmd.CommandText = String.Format("update DATA1A_PriceListDetail set Status='MO' where RecID in ({0})", {mDetailRecIDs})
+                            cmd.ExecuteNonQuery()
+                        End If
 
                         'Delete main
                         cmd.CommandText = String.Format("update DATA1A_PriceList set Status='MO' where RecID={0}",
@@ -683,7 +770,7 @@ Public Class frmSecoOffer
                         'Insert main
                         mMainPara(0) = Format(dgvMain.SelectedRows(i).Cells("FstDate").Value, "yyyyMMdd hh:mm:ss")
                         mMainPara(1) = dgvMain.SelectedRows(i).Cells("FstUser").Value
-                        mMainPara(2) = Format(Now, "yyyyMMdd hh:mm:ss")
+                        mMainPara(2) = mDate
                         mMainPara(3) = pobjUser.UserName
                         mMainPara(4) = CStr(dgvMain.SelectedRows(i).Cells("PriceID").Value)
                         mMainPara(5) = dgvMain.SelectedRows(i).Cells("Customer").Value
@@ -698,23 +785,25 @@ Public Class frmSecoOffer
                         cmd.ExecuteNonQuery()
 
                         'Insert detaill
-                        For j = 0 To mMultiEdit.dgvDetail.Rows.Count - 2
-                            mDetailPara(0) = mMainPara(0)
-                            mDetailPara(1) = mMainPara(1)
-                            mDetailPara(2) = mMainPara(2)
-                            mDetailPara(3) = mMainPara(3)
-                            mDetailPara(4) = mMainPara(4)
-                            mDetailPara(5) = CStr(CInt(mMultiEdit.dgvDetail.Rows(j).Cells(0).Value))
-                            mDetailPara(6) = CStr(CInt(mMultiEdit.dgvDetail.Rows(j).Cells(1).Value))
-                            mDetailPara(7) = CStr(CInt(mMultiEdit.dgvDetail.Rows(j).Cells(2).Value))
-                            mDetailPara(8) = CStr(CInt(mMultiEdit.dgvDetail.Rows(j).Cells(3).Value))
-                            mDetailPara(9) = mMainPara(7)
-                            mDetailPara(10) = mMainPara(10)
-                            cmd.CommandText = String.Format("insert into DATA1A_PriceListDetail(FstDate,FstUser,LstDate,LstUser,PriceID,FromTheUser,ToTheUser," &
-                                                                "PricePerUser,PriceCombo,City,ChangeNum) " &
-                                                            "values('{0}','{1}','{2}','{3}',{4},{5},{6},{7},{8},'{9}',{10})", mDetailPara)
-                            cmd.ExecuteNonQuery()
-                        Next
+                        If mMultiEdit.FLstCalcPrice.Count = 0 Then
+                            For j = 0 To mMultiEdit.dgvDetail.Rows.Count - 2
+                                mDetailPara(0) = mMainPara(0)
+                                mDetailPara(1) = mMainPara(1)
+                                mDetailPara(2) = mMainPara(2)
+                                mDetailPara(3) = mMainPara(3)
+                                mDetailPara(4) = mMainPara(4)
+                                mDetailPara(5) = CStr(CInt(mMultiEdit.dgvDetail.Rows(j).Cells(0).Value))
+                                mDetailPara(6) = CStr(CInt(mMultiEdit.dgvDetail.Rows(j).Cells(1).Value))
+                                mDetailPara(7) = CStr(CInt(mMultiEdit.dgvDetail.Rows(j).Cells(2).Value))
+                                mDetailPara(8) = CStr(CInt(mMultiEdit.dgvDetail.Rows(j).Cells(3).Value))
+                                mDetailPara(9) = mMainPara(7)
+                                mDetailPara(10) = mMainPara(10)
+                                cmd.CommandText = String.Format("insert into DATA1A_PriceListDetail(FstDate,FstUser,LstDate,LstUser,PriceID,FromTheUser,ToTheUser," &
+                                                                    "PricePerUser,PriceCombo,City,ChangeNum) " &
+                                                                "values('{0}','{1}','{2}','{3}',{4},{5},{6},{7},{8},'{9}',{10})", mDetailPara)
+                                cmd.ExecuteNonQuery()
+                            Next
+                        End If
                     Next
 
                     CommitTrans()
@@ -837,10 +926,15 @@ Public Class frmSecoOffer
         dgvIntSort(e)
     End Sub
 
+    Private Sub cboCustomer_2_Validated(sender As Object, e As EventArgs) Handles cboCustomer_2.Validated
+        cboValidated(sender)
+    End Sub
+
     Private Sub llbCopy_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles llbCopy.LinkClicked
         TabPageChange(tpInput)
         LoadCustomer(True)
         DefaultValue(FAction.Copy)
+        tpInput.Tag = "Copy"
     End Sub
 
     Private Sub llbHistory_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles llbHistory.LinkClicked

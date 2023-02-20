@@ -29,6 +29,7 @@ Public Class frmSignIn
             If MsgBox("Use Son.NguyenViet", MsgBoxStyle.YesNo) = vbYes Then
                 intStaffId = 4029
                 'intStaffId = 522
+                'intStaffId = 375
                 GoTo ByPassSignIn
             End If
         End If

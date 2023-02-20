@@ -643,10 +643,10 @@
     <Compile Include="frmSecoInfo.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmSecoOffer1.Designer.vb">
-      <DependentUpon>frmSecoOffer1.vb</DependentUpon>
+    <Compile Include="frmSecoOffer.Designer.vb">
+      <DependentUpon>frmSecoOffer.vb</DependentUpon>
     </Compile>
-    <Compile Include="frmSecoOffer1.vb">
+    <Compile Include="frmSecoOffer.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmSecoOffer_MultiEdit.Designer.vb">
@@ -1117,8 +1117,8 @@
     <EmbeddedResource Include="frmSecoInfo.resx">
       <DependentUpon>frmSecoInfo.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frmSecoOffer1.resx">
-      <DependentUpon>frmSecoOffer1.vb</DependentUpon>
+    <EmbeddedResource Include="frmSecoOffer.resx">
+      <DependentUpon>frmSecoOffer.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmSecoOffer_MultiEdit.resx">
       <DependentUpon>frmSecoOffer_MultiEdit.vb</DependentUpon>

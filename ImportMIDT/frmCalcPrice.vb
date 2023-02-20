@@ -241,7 +241,7 @@ Public Class frmCalcPrice
         '^_^20221109 modi by 7643 -b-
         mSQL = "select RecID,CPID,Customer,UserNum,Amount,CPCode," &
                       "ErrDesc,FstDate,FstUser,LstDate,LstUser," &
-                      "Status,City,FreeUser " &  '^_^20221123 add FreeUser by 7643 
+                      "Status,City,FreeUser,PriceID " &  '^_^20221123 add FreeUser by 7643 
                "from DATA1A_CalcPriceDetail cpd " &
                "where CPID='" & xID & "' and Status='OK' and City='" & pobjUser.City & "' "
         '^_^20221109 modi by 7643 -e-
@@ -382,7 +382,7 @@ Public Class frmCalcPrice
     Private Sub CalcPrice()
         Dim mSQL, mCPMonth, mErrDesc, mShortName, mUser As String
         Dim mReturn, mReturn2 As New DataTable
-        Dim i, j, mUserNum, mRowCount, mToTheUser, mFromTheUser, mFreeUser As Integer  '^_^20221123 add mFreeUser by 7643
+        Dim i, j, mUserNum, mRowCount, mToTheUser, mFromTheUser, mFreeUser, mPriceID As Integer  '^_^20221123 add mFreeUser by 7643
         Dim mAmount, mPricePerUser, mPriceCombo As Double
         Dim mDate As DateTime
         Dim mMsg As New frmShowMessage
@@ -423,6 +423,7 @@ Public Class frmCalcPrice
             mFreeUser = mUserNum  '^_^20221123 add by 7643
             mErrDesc = ""
             mFromTheUser = 0
+            mPriceID = 0
 
             If mShortName = "" Then
                 mSQL = "select SUR.UserID " &
@@ -442,7 +443,7 @@ Public Class frmCalcPrice
                     mErrDesc &= " not in any Customer"
                 End If
             Else
-                mSQL = "select ToTheUser,PricePerUser,PriceCombo " &
+                mSQL = "select ToTheUser,PricePerUser,PriceCombo,pld.PriceID " &
                        "from DATA1A_PriceListDetail PLD " &
                          "left join DATA1A_PriceList PL on PLD.PriceID=PL.PriceID and PL.status='OK' " &
                        "where PL.Customer='" & mShortName & "' " &
@@ -463,6 +464,7 @@ Public Class frmCalcPrice
                         mPricePerUser = mReturn2.Rows(j)("PricePerUser")
                         mPriceCombo = mReturn2.Rows(j)("PriceCombo")
                         mFromTheUser = mFromTheUser + 1
+                        mPriceID = mReturn2.Rows(j)("PriceID")
 
                         If mUserNum >= mToTheUser Then
                             If mPriceCombo <> 0 Then
@@ -490,7 +492,7 @@ Public Class frmCalcPrice
             mCPCode = IIf(mShortName = "", "", "SC" & mShortName & Format(mDate, "yyMMdd"))  '^_^20221109 add by 7643
 
             FDsBody.Tables(0).Rows.Add(Nothing, Integer.Parse(txtCPID.Text), mShortName, mUserNum, mAmount, mCPCode, mErrDesc,  '^_^20221109 add mCPCode by 7643
-                             mDate, mUser, Nothing, "", "OK", pobjUser.City, mFreeUser)  '^_^20221123 add mFreeUser by 7643
+                             mDate, mUser, Nothing, "", "OK", pobjUser.City, mFreeUser, mPriceID)  '^_^20221123 add mFreeUser by 7643
 
             If (mErrDesc <> "") And (Not mErr) Then
                 mErr = True
@@ -562,7 +564,7 @@ Public Class frmCalcPrice
                 "where PL.Customer='" & mShortName & "' " &
                     "and format(PL.EffDate,'yyyyMM')<='" & xCPMonth & "' " &
                     "and format(PL.ExpDate,'yyyyMM')>='" & xCPMonth & "' and PLD.status='OK' " &
-                    "and PL.City='" & pobjUser.City & "' " &
+                    "and PL.City='" & pobjUser.City & "' and pld.PriceID=" & dgvBody.CurrentRow.Cells("PriceID").Value & " " &
                 "order by ToTheUser"
         mReturn = pobjSql.GetDataTable(mSQL)
         For i = 0 To mReturn.Rows.Count - 1
@@ -841,7 +843,7 @@ Public Class frmCalcPrice
                            "where PL.Customer='" & dgvBody.Rows(i).Cells("Customer").Value.ToString & "' " &
                              "and format(PL.EffDate,'yyyyMM')<='" & mCPMonth & "' " &
                              "and format(PL.ExpDate,'yyyyMM')>='" & mCPMonth & "' and PLD.status='OK' " &
-                             "and PL.City='" & pobjUser.City & "' " &
+                             "and PL.City='" & pobjUser.City & "' and pld.PriceID=" & dgvBody.Rows(i).Cells("PriceID").Value & " " &
                            "order by ToTheUser"
             mReturn2 = pobjSql.GetDataTable(mSQL)
             For j = 0 To mReturn2.Rows.Count - 1
