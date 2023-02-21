@@ -631,6 +631,12 @@
     <Compile Include="frmIncentiveOfferEdit.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="frmRptAtc2.Designer.vb">
+      <DependentUpon>frmRptAtc2.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmRptAtc2.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmSecoFOP.Designer.vb">
       <DependentUpon>frmSecoFOP.vb</DependentUpon>
     </Compile>
@@ -1110,6 +1116,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmIncentiveOfferEdit.resx">
       <DependentUpon>frmIncentiveOfferEdit.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmRptAtc2.resx">
+      <DependentUpon>frmRptAtc2.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmSecoFOP.resx">
       <DependentUpon>frmSecoFOP.vb</DependentUpon>

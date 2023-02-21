@@ -38,7 +38,7 @@ Partial Class frmSecoOffer_MultiEdit
         Me.dgvDetail = New System.Windows.Forms.DataGridView()
         Me.FromTheUser = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.ToTheUser = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.PricerPerUser = New System.Windows.Forms.DataGridViewComboBoxColumn()
+        Me.PricePerUser = New System.Windows.Forms.DataGridViewComboBoxColumn()
         Me.PriceCombo = New System.Windows.Forms.DataGridViewTextBoxColumn()
         CType(Me.dgvDetail, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -113,7 +113,7 @@ Partial Class frmSecoOffer_MultiEdit
         '
         Me.dgvDetail.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells
         Me.dgvDetail.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.dgvDetail.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.FromTheUser, Me.ToTheUser, Me.PricerPerUser, Me.PriceCombo})
+        Me.dgvDetail.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.FromTheUser, Me.ToTheUser, Me.PricePerUser, Me.PriceCombo})
         Me.dgvDetail.Location = New System.Drawing.Point(12, 90)
         Me.dgvDetail.Name = "dgvDetail"
         DataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
@@ -148,17 +148,17 @@ Partial Class frmSecoOffer_MultiEdit
         Me.ToTheUser.Name = "ToTheUser"
         Me.ToTheUser.Width = 86
         '
-        'PricerPerUser
+        'PricePerUser
         '
         DataGridViewCellStyle3.Format = "N0"
         DataGridViewCellStyle3.NullValue = "0"
-        Me.PricerPerUser.DefaultCellStyle = DataGridViewCellStyle3
-        Me.PricerPerUser.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.ComboBox
-        Me.PricerPerUser.HeaderText = "PricePerUser"
-        Me.PricerPerUser.Name = "PricerPerUser"
-        Me.PricerPerUser.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.PricerPerUser.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic
-        Me.PricerPerUser.Width = 94
+        Me.PricePerUser.DefaultCellStyle = DataGridViewCellStyle3
+        Me.PricePerUser.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.ComboBox
+        Me.PricePerUser.HeaderText = "PricePerUser"
+        Me.PricePerUser.Name = "PricePerUser"
+        Me.PricePerUser.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.PricePerUser.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic
+        Me.PricePerUser.Width = 94
         '
         'PriceCombo
         '
@@ -201,6 +201,6 @@ Partial Class frmSecoOffer_MultiEdit
     Friend WithEvents dgvDetail As DataGridView
     Friend WithEvents FromTheUser As DataGridViewTextBoxColumn
     Friend WithEvents ToTheUser As DataGridViewTextBoxColumn
-    Friend WithEvents PricerPerUser As DataGridViewComboBoxColumn
+    Friend WithEvents PricePerUser As DataGridViewComboBoxColumn
     Friend WithEvents PriceCombo As DataGridViewTextBoxColumn
 End Class

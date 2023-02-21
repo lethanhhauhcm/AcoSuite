@@ -356,7 +356,7 @@ Public Class frmSecoOffer
         mEditPower = False
         FDeletePower = False
         If dgvMain.Rows.Count > 0 Then
-            mEditPower = pobjUser.Role <> "User"
+            mEditPower = pobjUser.Role <> "User" OrElse pobjUser.HasRight("Action", "Seco", "EditSecoOffer")
 
             If mEditPower Then
                 mEffDate = Format(dgvMain.CurrentRow.Cells("EffDate").Value, "yyyyMM")
@@ -641,9 +641,8 @@ Public Class frmSecoOffer
     Private Sub llbEdit_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles llbEdit.LinkClicked
         '^_^20230203 add by 7643 -b-
         Dim mMultiEdit As frmSecoOffer_MultiEdit
-        Dim i, j As Integer
-        Dim mDetail As SqlClient.SqlDataReader
-        Dim mSQL, mDetailRecIDs, mMainPara(), mDetailPara(), mCust, mCPMonth, mCusts, mStr, mDate, mPriceID, mRecID As String
+        Dim i, j, mPriceID As Integer
+        Dim mSQL, mCust, mCPMonth, mCusts, mStr, mDate, mRecID, mEffDate, mUser As String
         Dim mReturn As New DataTable
         Dim mFound As Boolean
         Dim mPriceListDetail As New List(Of String)
@@ -707,6 +706,10 @@ Public Class frmSecoOffer
             Next
             If mCusts <> "" Then
                 MsgBox(mCusts & " has been calculated price, can not edit SecoOfferDetail!")
+                mMultiEdit.lblEffDate.Visible = False
+                mMultiEdit.dtpEffDate.Visible = False
+                mMultiEdit.dtpEffDate.Value = Date.ParseExact(mMultiEdit.FLstCalcPrice(0).Split(vbTab)(0), "yyyyMMdd", Nothing)
+                mMultiEdit.dtpExpDate.MinDate = Date.ParseExact(mMultiEdit.FLstCalcPrice(mMultiEdit.FLstCalcPrice.Count - 1).Split(vbTab)(0), "yyyyMMdd", Nothing)
                 mMultiEdit.dgvDetail.Visible = False
             End If
 
@@ -715,95 +718,55 @@ Public Class frmSecoOffer
                 Try
                     BeginTrans()
 
-                    ReDim mMainPara(11)
-                    ReDim mDetailPara(11)
                     mDate = Format(Now, "yyyyMMdd hh:mm:ss")
+                    mUser = pobjUser.UserName
                     For i = 0 To dgvMain.SelectedRows.Count - 1
-                        'Delete detail
-                        cmd.CommandText = String.Format("select RecID,FstDate,FstUser,PriceID,FromTheUser,ToTheUser,PricePerUser,PriceCombo,City," &
-                                                            "ChangeNum " &
-                                                        "from DATA1A_PriceListDetail " &
-                                                        "where Status='OK' and PriceID={0} and City='{1}' and ChangeNum={2}",
-                                             {CStr(dgvMain.SelectedRows(i).Cells("PriceID").Value), pobjUser.City, dgvMain.SelectedRows(i).Cells("ChangeNum").Value})
-                        mDetail = cmd.ExecuteReader
-
-                        mDetailRecIDs = ""
-                        mPriceListDetail.Clear()
-                        While mDetail.Read
-                            mDetailRecIDs &= IIf(mDetailRecIDs = "", "", ",") & mDetail(0)
-
-                            If mMultiEdit.FLstCalcPrice.Count > 0 Then
-                                mPriceListDetail.Add(mDetail(1) & vbLf & mDetail(2) & vbLf & mDetail(3) & vbLf & mDetail(4) & vbLf & mDetail(5) & vbLf & mDetail(6) &
-                                                     vbLf & mDetail(7) & vbLf & mDetail(8) & vbLf & mDetail(9))
-                            End If
-                        End While
-                        mDetail.Close()
-
-                        For j = 0 To mPriceListDetail.Count - 1
-                            mDetailPara(0) = mPriceListDetail(j).Split(vbLf)(0)
-                            mDetailPara(1) = mPriceListDetail(j).Split(vbLf)(1)
-                            mDetailPara(2) = mDate
-                            mDetailPara(3) = pobjUser.UserName
-                            mDetailPara(4) = mPriceListDetail(j).Split(vbLf)(2)
-                            mDetailPara(5) = mPriceListDetail(j).Split(vbLf)(3)
-                            mDetailPara(6) = mPriceListDetail(j).Split(vbLf)(4)
-                            mDetailPara(7) = mPriceListDetail(j).Split(vbLf)(5)
-                            mDetailPara(8) = mPriceListDetail(j).Split(vbLf)(6)
-                            mDetailPara(9) = mPriceListDetail(j).Split(vbLf)(7)
-                            mDetailPara(10) = mPriceListDetail(j).Split(vbLf)(8) + 1
-                            cmd.CommandText = String.Format("insert into DATA1A_PriceListDetail(FstDate,FstUser,LstDate,LstUser,PriceID,FromTheUser,ToTheUser," &
-                                                                "PricePerUser,PriceCombo,City,ChangeNum) " &
-                                                            "values('{0}','{1}','{2}','{3}',{4},{5},{6},{7},{8},'{9}',{10})", mDetailPara)
-                            cmd.ExecuteNonQuery()
-                        Next
-
-                        If mDetailRecIDs <> "" Then
-                            cmd.CommandText = String.Format("update DATA1A_PriceListDetail set Status='MO' where RecID in ({0})", {mDetailRecIDs})
-                            cmd.ExecuteNonQuery()
-                        End If
-
-                        'Delete main
-                        cmd.CommandText = String.Format("update DATA1A_PriceList set Status='MO' where RecID={0}",
-                                                        {CStr(dgvMain.SelectedRows(i).Cells("RecID").Value)})
-                        cmd.ExecuteNonQuery()
-
                         'Insert main
-                        mMainPara(0) = Format(dgvMain.SelectedRows(i).Cells("FstDate").Value, "yyyyMMdd hh:mm:ss")
-                        mMainPara(1) = dgvMain.SelectedRows(i).Cells("FstUser").Value
-                        mMainPara(2) = mDate
-                        mMainPara(3) = pobjUser.UserName
-                        mMainPara(4) = CStr(dgvMain.SelectedRows(i).Cells("PriceID").Value)
-                        mMainPara(5) = dgvMain.SelectedRows(i).Cells("Customer").Value
-                        mMainPara(6) = mMultiEdit.txtNote.Text
-                        mMainPara(7) = pobjUser.City
-                        mMainPara(8) = mMultiEdit.FEffDate
-                        mMainPara(9) = mMultiEdit.FExpDate
-                        mMainPara(10) = CStr(dgvMain.SelectedRows(i).Cells("ChangeNum").Value + 1)
+                        mEffDate = IIf(mMultiEdit.FLstCalcPrice.Count > 0, Format(dgvMain.SelectedRows(i).Cells("EffDate").Value, "yyyyMM01"), mMultiEdit.FEffDate)
+                        mRecID = dgvMain.SelectedRows(i).Cells("RecID").Value
+                        mPriceID = dgvMain.SelectedRows(i).Cells("PriceID").Value
                         cmd.CommandText = String.Format("insert into DATA1A_PriceList(FstDate,FstUser,LstDate,LstUser,PriceID,Customer,Note,City,EffDate,ExpDate," &
                                                             "ChangeNum) " &
-                                                        "values('{0}','{1}','{2}','{3}',{4},'{5}','{6}','{7}','{8}','{9}',{10})", mMainPara)
+                                                        "select FstDate,FstUser,'{0}','{1}',PriceID,Customer,'{2}',City,'{3}','{4}',ChangeNum+1 " &
+                                                        "from DATA1A_PriceList " &
+                                                        "where RecID={5}",
+                                                        {mDate, mUser, mMultiEdit.txtNote.Text, mEffDate, mMultiEdit.FExpDate, mRecID})
+                        cmd.ExecuteNonQuery()
+
+                        'Delete main
+                        cmd.CommandText = String.Format("update DATA1A_PriceList set Status='MO' where RecID={0}", {mRecID})
                         cmd.ExecuteNonQuery()
 
                         'Insert detaill
-                        If mMultiEdit.FLstCalcPrice.Count = 0 Then
+                        If mMultiEdit.FLstCalcPrice.Count > 0 Then
+                            cmd.CommandText = String.Format("insert into DATA1A_PriceListDetail(FstDate,FstUser,LstDate,LstUser,PriceID,FromTheUser,ToTheUser," &
+                                                                "PricePerUser,PriceCombo,City,ChangeNum) " &
+                                                            "select FstDate,FstUser,'{0}','{1}',PriceID,FromTheUser,ToTheUser,PricePerUser,PriceCombo,City," &
+                                                                "ChangeNum+1 " &
+                                                            "from DATA1A_PriceListDetail " &
+                                                            "where Status='OK' and PriceID={2}",
+                                                            {mDate, mUser, mPriceID})
+                            cmd.ExecuteNonQuery()
+                        Else
                             For j = 0 To mMultiEdit.dgvDetail.Rows.Count - 2
-                                mDetailPara(0) = mMainPara(0)
-                                mDetailPara(1) = mMainPara(1)
-                                mDetailPara(2) = mMainPara(2)
-                                mDetailPara(3) = mMainPara(3)
-                                mDetailPara(4) = mMainPara(4)
-                                mDetailPara(5) = CStr(CInt(mMultiEdit.dgvDetail.Rows(j).Cells(0).Value))
-                                mDetailPara(6) = CStr(CInt(mMultiEdit.dgvDetail.Rows(j).Cells(1).Value))
-                                mDetailPara(7) = CStr(CInt(mMultiEdit.dgvDetail.Rows(j).Cells(2).Value))
-                                mDetailPara(8) = CStr(CInt(mMultiEdit.dgvDetail.Rows(j).Cells(3).Value))
-                                mDetailPara(9) = mMainPara(7)
-                                mDetailPara(10) = mMainPara(10)
                                 cmd.CommandText = String.Format("insert into DATA1A_PriceListDetail(FstDate,FstUser,LstDate,LstUser,PriceID,FromTheUser,ToTheUser," &
                                                                     "PricePerUser,PriceCombo,City,ChangeNum) " &
-                                                                "values('{0}','{1}','{2}','{3}',{4},{5},{6},{7},{8},'{9}',{10})", mDetailPara)
+                                                                "values('{0}','{1}','{2}','{3}',{4},{5},{6},{7},{8},'{9}',{10})",
+                                                                {Format(dgvMain.SelectedRows(i).Cells("FstDate").Value, "yyyyMMdd hh:mm:ss"),
+                                                                    dgvMain.SelectedRows(i).Cells("FstUser").Value,
+                                                                    mDate, mUser, mPriceID, CInt(mMultiEdit.dgvDetail.Rows(j).Cells("FromTheUser").Value),
+                                                                    CInt(mMultiEdit.dgvDetail.Rows(j).Cells("ToTheUser").Value),
+                                                                    CInt(mMultiEdit.dgvDetail.Rows(j).Cells("PricePerUser").Value),
+                                                                    CInt(mMultiEdit.dgvDetail.Rows(j).Cells("PriceCombo").Value),
+                                                                    pobjUser.City, dgvMain.SelectedRows(i).Cells("ChangeNum").Value + 1})
                                 cmd.ExecuteNonQuery()
                             Next
                         End If
+
+                        'Delete detail
+                        cmd.CommandText = String.Format("update DATA1A_PriceListDetail set Status='MO' where PriceID={0} And Status='OK' and LstDate<'{1}'",
+                                                        {mPriceID, mDate})
+                        cmd.ExecuteNonQuery()
                     Next
 
                     CommitTrans()

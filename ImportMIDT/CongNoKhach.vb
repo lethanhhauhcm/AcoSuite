@@ -923,17 +923,32 @@ ErrHandler:
     Private Sub LoadGridPendingPmt()
         Me.LblUpdateCFM_VAT.Visible = False
         Try
-            Dim StrSQL As String = "select RecID, InvCurr as Curr, InvAmt, ConNo, InvDate, DueDate, CfmDate, VATDate, CustShortName, CustID, FstUpdate " &
-                "from DATA1A_GhiNoKhach where status<>'XX' and ConNo<>0"
-            If Me.ChkSelectCustOnly.Checked Then StrSQL = StrSQL & " and CustID=" & Me.CmbCustomer.SelectedValue
-            StrSQL &= " order by RecID"
+            '^_^20230221 mark by 7643 -b-
+            'Dim StrSQL As String = "select RecID, InvCurr as Curr, InvAmt, ConNo, InvDate, DueDate, CfmDate, VATDate, CustShortName, CustID, FstUpdate " &
+            '    "from DATA1A_GhiNoKhach where status<>'XX' and ConNo<>0"
+            '^_^20230221 mark by 7643 -e-
+            '^_^20230221 modi by 7643 -b-
+            Dim StrSQL As String = "select RecID, InvCurr as Curr, InvAmt, ConNo, InvDate, DueDate, CfmDate, VATDate, CustShortName, CustID, FstUpdate,'Invoice' Type " &
+                "from DATA1A_GhiNoKhach where status<>'XX'"
+            Dim StrSQL2 As String = "select RecID,OrgCurr as Curr,Used InvAmt,ConLai*-1 ConNo,LstPmt InvDate,null DueDate,OrgDate CfmDate,null VATDate,CustShortName," &
+                                        "CustID,FstUpdate,'Payment' Type " &
+                                    "from DATA1A_KhachTra where status<>'XX'"
+            '^_^20230221 modi by 7643 -e-
+            If Me.ChkSelectCustOnly.Checked Then
+                StrSQL = StrSQL & " and CustID=" & Me.CmbCustomer.SelectedValue
+                StrSQL2 = StrSQL2 & " and CustID=" & Me.CmbCustomer.SelectedValue  '^_^20230221 add by 7643
+            End If
+            StrSQL &= " union all " & StrSQL2  '^_^20230221 add by 7643
+            'StrSQL &= " order by RecID"  '^_^20230221 mark by 7643
+            StrSQL &= " order by CustID,Type,RecID"  '^_^20230221 modi by 7643
             Me.GridPendingINV.DataSource = GetDataTable(StrSQL)
         Catch ex As Exception
             Exit Sub
         End Try
 
         For r As Int16 = 0 To Me.GridPendingINV.RowCount - 1
-            If Me.GridPendingINV.Item("DueDate", r).Value < Now.Date Then
+            'If Me.GridPendingINV.Item("DueDate", r).Value < Now.Date Then  '^_^20230221 mark by 7643
+            If GridPendingINV.Item("Type", r).Value = "Invoice" AndAlso Me.GridPendingINV.Item("DueDate", r).Value < Now.Date Then  '^_^20230221 modi by 7643
                 Me.GridPendingINV.Rows(r).DefaultCellStyle.ForeColor = Color.Red
             End If
         Next

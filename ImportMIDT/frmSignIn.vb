@@ -27,9 +27,9 @@ Public Class frmSignIn
         'If My.Computer.Name = "5-247" Then  '^_^20221024 mark by 7643
         If My.Computer.Name = "5-247" Or My.Computer.Name = "7-111" Then  '^_^20221024 modi by 7643
             If MsgBox("Use Son.NguyenViet", MsgBoxStyle.YesNo) = vbYes Then
-                intStaffId = 4029
+                'intStaffId = 4029
                 'intStaffId = 522
-                'intStaffId = 375
+                intStaffId = 1620
                 GoTo ByPassSignIn
             End If
         End If

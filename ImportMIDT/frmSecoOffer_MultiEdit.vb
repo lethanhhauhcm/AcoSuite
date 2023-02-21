@@ -6,8 +6,9 @@
         Dim mSQL As String
         Dim mPricePerUser As DataGridViewComboBoxColumn
 
-        dtpEffDate.Value = DateSerial(Now.Year, Now.Month, 1)
-        dtpExpDate.Value = DateSerial(Now.Year, Now.Month, 1)
+        dtpEffDate.Value = DateSerial(dtpEffDate.Value.Year, dtpEffDate.Value.Month, 1)
+        dtpExpDate.MinDate = DateSerial(dtpExpDate.MinDate.Year, dtpExpDate.MinDate.Month, 1)
+        dtpExpDate.Value = DateSerial(dtpExpDate.Value.Year, dtpExpDate.Value.Month, 1)
 
         mPricePerUser = dgvDetail.Columns(2)
         mSQL = String.Format("select Price Value from DATA1A_PricePerUser where Status='OK' and City='{0}' order by Price", {pobjUser.City})
@@ -21,15 +22,16 @@
 
         If DialogResult <> DialogResult.OK Then Exit Sub
 
+        FEffDate = Format(dtpEffDate.Value, "yyyyMM01")
+        FExpDate = Format(dtpExpDate.Value, "yyyyMM" & Date.DaysInMonth(dtpExpDate.Value.Year, dtpExpDate.Value.Month))
+
         'Check value
-        If dtpEffDate.Value > dtpExpDate.Value Then
+        If FEffDate > FExpDate Then
             MsgBox("EffDate can not be later than ExpDate!")
             e.Cancel = True
             Exit Sub
         End If
 
-        FEffDate = Format(dtpEffDate.Value, "yyyyMM01")
-        FExpDate = Format(dtpExpDate.Value, "yyyyMM" & CStr(Date.DaysInMonth(dtpExpDate.Value.Year, dtpExpDate.Value.Month)))
         mReturn = New DataTable
 
         If FLstCalcPrice.Count > 0 Then
