@@ -584,7 +584,7 @@ Public Class frmSecoOffer
         '^_^20220815 mark by 7643 -e-
         '^_^20220815 modi by 7643 -b-
         If lstCustomer.Visible = False Then
-            mPriceID = CInt(IIf(txtPriceID.Text <> "", txtPriceID.Text, DefaultID("PriceID", "DATA1A_PriceList", pobjSql)))
+            mPriceID = CInt(IIf(txtPriceID.Text <> "" And txtPriceID.Text <> "0", txtPriceID.Text, DefaultID("PriceID", "DATA1A_PriceList", pobjSql)))
 
             LTrans = pobjSql.Connection.BeginTransaction
             cmd.Transaction = LTrans
@@ -655,7 +655,7 @@ Public Class frmSecoOffer
                 If MsgBox("This row had used in CalcPrice, will be add new stage!", vbYesNo) = vbNo Then
                     Exit Sub
                 Else
-                    mPriceID = ""
+                    mPriceID = 0
                     'mRecID = ""
                     tpInput.Tag = "Edit2"
                 End If

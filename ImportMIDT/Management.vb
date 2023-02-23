@@ -1213,7 +1213,11 @@ Quit:
     End Sub
 
     Private Sub barATC2_Click(sender As Object, e As EventArgs) Handles barATC2.Click
-        Process.Start(Application.StartupPath & "\ATCBilling2.xltm")  '^_^20230110 add by 7643
+        'Process.Start(Application.StartupPath & "\ATCBilling2.xltm")  '^_^20230110 add by 7643  '^_^20230222 mark by 7643
+        '^_^20230222 modi by 7643 -b-
+        Dim mRptAtc2 As New frmRptAtc2
+        mRptAtc2.Show()
+        '^_^20230222 modi by 7643 -e-
     End Sub
 
     Private Sub barSecoPpd_Click(sender As Object, e As EventArgs) Handles barSecoPpd.Click
