@@ -150,11 +150,11 @@ Partial Class Management
         Me.barSeco2 = New System.Windows.Forms.ToolStripMenuItem()
         Me.barCalcPrice = New System.Windows.Forms.ToolStripMenuItem()
         Me.barSecoOffer = New System.Windows.Forms.ToolStripMenuItem()
+        Me.barSecoPpd = New System.Windows.Forms.ToolStripMenuItem()
         Me.barUnitPrice = New System.Windows.Forms.ToolStripMenuItem()
         Me.pacAtcFunc = New System.Windows.Forms.ToolStripMenuItem()
         Me.barAtcOffer = New System.Windows.Forms.ToolStripMenuItem()
         Me.BarAtcCalcPrice = New System.Windows.Forms.ToolStripMenuItem()
-        Me.barSecoPpd = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -959,6 +959,12 @@ Partial Class Management
         Me.barSecoOffer.Size = New System.Drawing.Size(180, 22)
         Me.barSecoOffer.Text = "SecoOffer"
         '
+        'barSecoPpd
+        '
+        Me.barSecoPpd.Name = "barSecoPpd"
+        Me.barSecoPpd.Size = New System.Drawing.Size(180, 22)
+        Me.barSecoPpd.Text = "SecoPpd"
+        '
         'barUnitPrice
         '
         Me.barUnitPrice.Name = "barUnitPrice"
@@ -975,20 +981,14 @@ Partial Class Management
         'barAtcOffer
         '
         Me.barAtcOffer.Name = "barAtcOffer"
-        Me.barAtcOffer.Size = New System.Drawing.Size(141, 22)
+        Me.barAtcOffer.Size = New System.Drawing.Size(180, 22)
         Me.barAtcOffer.Text = "AtcOffer"
         '
         'BarAtcCalcPrice
         '
         Me.BarAtcCalcPrice.Name = "BarAtcCalcPrice"
-        Me.BarAtcCalcPrice.Size = New System.Drawing.Size(141, 22)
+        Me.BarAtcCalcPrice.Size = New System.Drawing.Size(180, 22)
         Me.BarAtcCalcPrice.Text = "AtcCalcPrice"
-        '
-        'barSecoPpd
-        '
-        Me.barSecoPpd.Name = "barSecoPpd"
-        Me.barSecoPpd.Size = New System.Drawing.Size(180, 22)
-        Me.barSecoPpd.Text = "SecoPpd"
         '
         'Management
         '

@@ -123,7 +123,7 @@ Public Class frmAtcCalcPriceEdit
         If dgvAtcCalcPriceDetail.Rows.Count > 0 Then
             llbExportAbnormalData.Enabled = True
         Else
-            dgvReissueTicketPriceDetail.Rows.Clear()
+            dgvAtcCalcPriceDetail_D.Rows.Clear()
             llbExportAbnormalData.Enabled = False
         End If
     End Sub
@@ -132,7 +132,7 @@ Public Class frmAtcCalcPriceEdit
         If dgvAtcCalcPriceDetail.CurrentRow.Cells("ReissueAmount").Value > 0 Then
             LoadReissueTicketPriceDetail()
         Else
-            dgvReissueTicketPriceDetail.Rows.Clear()
+            dgvAtcCalcPriceDetail_D.Rows.Clear()
         End If
     End Sub
 
@@ -141,11 +141,11 @@ Public Class frmAtcCalcPriceEdit
         Dim mArrStr() As String
         Dim mReturn As New DataTable
 
-        dgvReissueTicketPriceDetail.Rows.Clear()
+        dgvAtcCalcPriceDetail_D.Rows.Clear()
         For i = 0 To FReissueTicketPriceDetail.Count - 1
             mArrStr = FReissueTicketPriceDetail(i).Split(vbLf)
             If mArrStr(1) = dgvAtcCalcPriceDetail.CurrentRow.Cells("CustID").Value Then
-                dgvReissueTicketPriceDetail.Rows.Add(CInt(mArrStr(2)), CInt(mArrStr(3)), CInt(mArrStr(4)))
+                dgvAtcCalcPriceDetail_D.Rows.Add(CInt(mArrStr(2)), CInt(mArrStr(3)), CInt(mArrStr(4)))
             End If
         Next
     End Sub

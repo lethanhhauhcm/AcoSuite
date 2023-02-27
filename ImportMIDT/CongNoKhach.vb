@@ -1049,4 +1049,8 @@ ErrHandler:
         mReturn = GetDataTable(FPurchaseSource, pobjSql.Connection)
         ExportExcel(mReturn)
     End Sub
+
+    Private Sub CmbCustomer_Validated(sender As Object, e As EventArgs) Handles CmbCustomer.Validated
+        cboValidated(sender)  '^_^20230227 add by 7643
+    End Sub
 End Class

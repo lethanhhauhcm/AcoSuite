@@ -33,10 +33,10 @@ Partial Class frmAtcCalcPrice
         Me.dtpCPMonthTo = New System.Windows.Forms.DateTimePicker()
         Me.llbReset = New System.Windows.Forms.LinkLabel()
         Me.llbConfirm = New System.Windows.Forms.LinkLabel()
-        Me.dgvReissueTicketPriceDetail = New System.Windows.Forms.DataGridView()
+        Me.dgvAtcCalcPriceDetail_D = New System.Windows.Forms.DataGridView()
         CType(Me.dgvAtcCalcPrice, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.dgvAtcCalcPriceDetail, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.dgvReissueTicketPriceDetail, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.dgvAtcCalcPriceDetail_D, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'llbAdd
@@ -161,26 +161,26 @@ Partial Class frmAtcCalcPrice
         Me.llbConfirm.TabStop = True
         Me.llbConfirm.Text = "Confirm/UnConfirm"
         '
-        'dgvReissueTicketPriceDetail
+        'dgvAtcCalcPriceDetail_D
         '
-        Me.dgvReissueTicketPriceDetail.AllowUserToAddRows = False
-        Me.dgvReissueTicketPriceDetail.AllowUserToDeleteRows = False
-        Me.dgvReissueTicketPriceDetail.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
+        Me.dgvAtcCalcPriceDetail_D.AllowUserToAddRows = False
+        Me.dgvAtcCalcPriceDetail_D.AllowUserToDeleteRows = False
+        Me.dgvAtcCalcPriceDetail_D.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.dgvReissueTicketPriceDetail.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells
-        Me.dgvReissueTicketPriceDetail.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.dgvReissueTicketPriceDetail.Location = New System.Drawing.Point(12, 363)
-        Me.dgvReissueTicketPriceDetail.Name = "dgvReissueTicketPriceDetail"
-        Me.dgvReissueTicketPriceDetail.ReadOnly = True
-        Me.dgvReissueTicketPriceDetail.Size = New System.Drawing.Size(776, 150)
-        Me.dgvReissueTicketPriceDetail.TabIndex = 10
+        Me.dgvAtcCalcPriceDetail_D.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells
+        Me.dgvAtcCalcPriceDetail_D.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.dgvAtcCalcPriceDetail_D.Location = New System.Drawing.Point(12, 363)
+        Me.dgvAtcCalcPriceDetail_D.Name = "dgvAtcCalcPriceDetail_D"
+        Me.dgvAtcCalcPriceDetail_D.ReadOnly = True
+        Me.dgvAtcCalcPriceDetail_D.Size = New System.Drawing.Size(776, 150)
+        Me.dgvAtcCalcPriceDetail_D.TabIndex = 10
         '
         'frmAtcCalcPrice
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(800, 525)
-        Me.Controls.Add(Me.dgvReissueTicketPriceDetail)
+        Me.Controls.Add(Me.dgvAtcCalcPriceDetail_D)
         Me.Controls.Add(Me.llbConfirm)
         Me.Controls.Add(Me.llbReset)
         Me.Controls.Add(Me.dtpCPMonthTo)
@@ -197,7 +197,7 @@ Partial Class frmAtcCalcPrice
         Me.WindowState = System.Windows.Forms.FormWindowState.Maximized
         CType(Me.dgvAtcCalcPrice, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.dgvAtcCalcPriceDetail, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.dgvReissueTicketPriceDetail, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.dgvAtcCalcPriceDetail_D, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -214,5 +214,5 @@ Partial Class frmAtcCalcPrice
     Friend WithEvents dtpCPMonthTo As DateTimePicker
     Friend WithEvents llbReset As LinkLabel
     Friend WithEvents llbConfirm As LinkLabel
-    Friend WithEvents dgvReissueTicketPriceDetail As DataGridView
+    Friend WithEvents dgvAtcCalcPriceDetail_D As DataGridView
 End Class

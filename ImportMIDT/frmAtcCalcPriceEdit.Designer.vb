@@ -22,9 +22,8 @@ Partial Class frmAtcCalcPriceEdit
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim DataGridViewCellStyle7 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle8 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle9 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.dtpCPMonth = New System.Windows.Forms.DateTimePicker()
         Me.lblCPMonth = New System.Windows.Forms.Label()
         Me.txtRecID = New System.Windows.Forms.TextBox()
@@ -51,12 +50,13 @@ Partial Class frmAtcCalcPriceEdit
         Me.dgvAtcCalcPriceDetail = New System.Windows.Forms.DataGridView()
         Me.llbExportAbnormalData = New System.Windows.Forms.LinkLabel()
         Me.llbSave = New System.Windows.Forms.LinkLabel()
-        Me.dgvReissueTicketPriceDetail = New System.Windows.Forms.DataGridView()
-        Me.NumberOfTicket = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.PricePerTicket = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Amount = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.dgvAtcCalcPriceDetail_D = New System.Windows.Forms.DataGridView()
+        Me.txtTotalFreeReissueTicket = New System.Windows.Forms.TextBox()
+        Me.lblTotalFreeReissueTicket = New System.Windows.Forms.Label()
+        Me.Booking = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.FreeTicket = New System.Windows.Forms.DataGridViewTextBoxColumn()
         CType(Me.dgvAtcCalcPriceDetail, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.dgvReissueTicketPriceDetail, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.dgvAtcCalcPriceDetail_D, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'dtpCPMonth
@@ -184,11 +184,11 @@ Partial Class frmAtcCalcPriceEdit
         'txtTotalAmount
         '
         Me.txtTotalAmount.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.txtTotalAmount.Location = New System.Drawing.Point(960, 456)
+        Me.txtTotalAmount.Location = New System.Drawing.Point(963, 456)
         Me.txtTotalAmount.Name = "txtTotalAmount"
         Me.txtTotalAmount.ReadOnly = True
         Me.txtTotalAmount.Size = New System.Drawing.Size(100, 20)
-        Me.txtTotalAmount.TabIndex = 15
+        Me.txtTotalAmount.TabIndex = 16
         Me.txtTotalAmount.Text = "0"
         Me.txtTotalAmount.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
@@ -196,7 +196,7 @@ Partial Class frmAtcCalcPriceEdit
         '
         Me.lblTotalAmount.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.lblTotalAmount.AutoSize = True
-        Me.lblTotalAmount.Location = New System.Drawing.Point(887, 459)
+        Me.lblTotalAmount.Location = New System.Drawing.Point(890, 459)
         Me.lblTotalAmount.Name = "lblTotalAmount"
         Me.lblTotalAmount.Size = New System.Drawing.Size(67, 13)
         Me.lblTotalAmount.TabIndex = 37
@@ -333,57 +333,70 @@ Partial Class frmAtcCalcPriceEdit
         Me.llbSave.TabStop = True
         Me.llbSave.Text = "Save"
         '
-        'dgvReissueTicketPriceDetail
+        'dgvAtcCalcPriceDetail_D
         '
-        Me.dgvReissueTicketPriceDetail.AllowUserToAddRows = False
-        Me.dgvReissueTicketPriceDetail.AllowUserToDeleteRows = False
-        Me.dgvReissueTicketPriceDetail.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
+        Me.dgvAtcCalcPriceDetail_D.AllowUserToAddRows = False
+        Me.dgvAtcCalcPriceDetail_D.AllowUserToDeleteRows = False
+        Me.dgvAtcCalcPriceDetail_D.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.dgvReissueTicketPriceDetail.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells
-        Me.dgvReissueTicketPriceDetail.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.dgvReissueTicketPriceDetail.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.NumberOfTicket, Me.PricePerTicket, Me.Amount})
-        Me.dgvReissueTicketPriceDetail.Location = New System.Drawing.Point(12, 223)
-        Me.dgvReissueTicketPriceDetail.Name = "dgvReissueTicketPriceDetail"
-        Me.dgvReissueTicketPriceDetail.ReadOnly = True
-        Me.dgvReissueTicketPriceDetail.Size = New System.Drawing.Size(1138, 179)
-        Me.dgvReissueTicketPriceDetail.TabIndex = 5
+        Me.dgvAtcCalcPriceDetail_D.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells
+        Me.dgvAtcCalcPriceDetail_D.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.dgvAtcCalcPriceDetail_D.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Booking, Me.FreeTicket})
+        Me.dgvAtcCalcPriceDetail_D.Location = New System.Drawing.Point(12, 223)
+        Me.dgvAtcCalcPriceDetail_D.Name = "dgvAtcCalcPriceDetail_D"
+        Me.dgvAtcCalcPriceDetail_D.ReadOnly = True
+        Me.dgvAtcCalcPriceDetail_D.Size = New System.Drawing.Size(1138, 179)
+        Me.dgvAtcCalcPriceDetail_D.TabIndex = 5
         '
-        'NumberOfTicket
+        'txtTotalFreeReissueTicket
         '
-        DataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        DataGridViewCellStyle7.Format = "N0"
-        Me.NumberOfTicket.DefaultCellStyle = DataGridViewCellStyle7
-        Me.NumberOfTicket.HeaderText = "NumberOfTicket"
-        Me.NumberOfTicket.Name = "NumberOfTicket"
-        Me.NumberOfTicket.ReadOnly = True
-        Me.NumberOfTicket.Width = 110
+        Me.txtTotalFreeReissueTicket.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.txtTotalFreeReissueTicket.Location = New System.Drawing.Point(1013, 430)
+        Me.txtTotalFreeReissueTicket.Name = "txtTotalFreeReissueTicket"
+        Me.txtTotalFreeReissueTicket.ReadOnly = True
+        Me.txtTotalFreeReissueTicket.Size = New System.Drawing.Size(50, 20)
+        Me.txtTotalFreeReissueTicket.TabIndex = 15
+        Me.txtTotalFreeReissueTicket.Text = "0"
+        Me.txtTotalFreeReissueTicket.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
-        'PricePerTicket
+        'lblTotalFreeReissueTicket
         '
-        DataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        DataGridViewCellStyle8.Format = "N0"
-        Me.PricePerTicket.DefaultCellStyle = DataGridViewCellStyle8
-        Me.PricePerTicket.HeaderText = "PricePerTicket"
-        Me.PricePerTicket.Name = "PricePerTicket"
-        Me.PricePerTicket.ReadOnly = True
-        Me.PricePerTicket.Width = 102
+        Me.lblTotalFreeReissueTicket.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.lblTotalFreeReissueTicket.AutoSize = True
+        Me.lblTotalFreeReissueTicket.Location = New System.Drawing.Point(887, 433)
+        Me.lblTotalFreeReissueTicket.Name = "lblTotalFreeReissueTicket"
+        Me.lblTotalFreeReissueTicket.Size = New System.Drawing.Size(120, 13)
+        Me.lblTotalFreeReissueTicket.TabIndex = 50
+        Me.lblTotalFreeReissueTicket.Text = "TotalFreeReissueTicket"
         '
-        'Amount
+        'Booking
         '
-        DataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        DataGridViewCellStyle9.Format = "N0"
-        Me.Amount.DefaultCellStyle = DataGridViewCellStyle9
-        Me.Amount.HeaderText = "Amount"
-        Me.Amount.Name = "Amount"
-        Me.Amount.ReadOnly = True
-        Me.Amount.Width = 68
+        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        DataGridViewCellStyle1.Format = "N0"
+        Me.Booking.DefaultCellStyle = DataGridViewCellStyle1
+        Me.Booking.HeaderText = "Booking"
+        Me.Booking.Name = "Booking"
+        Me.Booking.ReadOnly = True
+        Me.Booking.Width = 71
+        '
+        'FreeTicket
+        '
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        DataGridViewCellStyle2.Format = "N0"
+        Me.FreeTicket.DefaultCellStyle = DataGridViewCellStyle2
+        Me.FreeTicket.HeaderText = "FreeTicket"
+        Me.FreeTicket.Name = "FreeTicket"
+        Me.FreeTicket.ReadOnly = True
+        Me.FreeTicket.Width = 83
         '
         'frmAtcCalcPriceEdit
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1162, 500)
-        Me.Controls.Add(Me.dgvReissueTicketPriceDetail)
+        Me.Controls.Add(Me.txtTotalFreeReissueTicket)
+        Me.Controls.Add(Me.lblTotalFreeReissueTicket)
+        Me.Controls.Add(Me.dgvAtcCalcPriceDetail_D)
         Me.Controls.Add(Me.llbSave)
         Me.Controls.Add(Me.llbExportAbnormalData)
         Me.Controls.Add(Me.txtTotalReissueAmount)
@@ -414,7 +427,7 @@ Partial Class frmAtcCalcPriceEdit
         Me.Text = "AtcCalcPriceEdit"
         Me.WindowState = System.Windows.Forms.FormWindowState.Maximized
         CType(Me.dgvAtcCalcPriceDetail, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.dgvReissueTicketPriceDetail, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.dgvAtcCalcPriceDetail_D, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -446,8 +459,9 @@ Partial Class frmAtcCalcPriceEdit
     Friend WithEvents dgvAtcCalcPriceDetail As DataGridView
     Friend WithEvents llbExportAbnormalData As LinkLabel
     Friend WithEvents llbSave As LinkLabel
-    Friend WithEvents dgvReissueTicketPriceDetail As DataGridView
-    Friend WithEvents NumberOfTicket As DataGridViewTextBoxColumn
-    Friend WithEvents PricePerTicket As DataGridViewTextBoxColumn
-    Friend WithEvents Amount As DataGridViewTextBoxColumn
+    Friend WithEvents dgvAtcCalcPriceDetail_D As DataGridView
+    Friend WithEvents Booking As DataGridViewTextBoxColumn
+    Friend WithEvents FreeTicket As DataGridViewTextBoxColumn
+    Friend WithEvents txtTotalFreeReissueTicket As TextBox
+    Friend WithEvents lblTotalFreeReissueTicket As Label
 End Class

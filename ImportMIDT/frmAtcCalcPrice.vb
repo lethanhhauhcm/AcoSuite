@@ -12,7 +12,8 @@ Public Class frmAtcCalcPrice
         Dim mNumberCols As New List(Of String)
 
         mSQL = String.Format("select RecID,format(CPMonth,'MMM yyyy') CPMonth,TotalExcessiveTrx,TotalExcessiveAmount,TotalRefundTrx,TotalRefundAmount," &
-                             "TotalInvolTrx,TotalInvolAmount,TotalReissueTicket,TotalReissueAmount,TotalAmount,Confirm,FstUpdate,FstUser,LstUpdate,LstUser " &
+                                "TotalInvolTrx,TotalInvolAmount,TotalReissueTicket,TotalFreeReissueTicket,TotalReissueAmount,TotalAmount,Confirm,FstUpdate,FstUser," &
+                                "LstUpdate,LstUser " &
                              "from DATA1A_AtcCalcPrice " &
                              "where status='OK' and City='{0}' ", {pobjUser.City})
         If dtpCPMonthFrom.Checked Then mSQL &= String.Format("and CPMonth>='{0}' ", {Format(dtpCPMonthFrom.Value, "yyyyMMdd")})
@@ -51,8 +52,8 @@ Public Class frmAtcCalcPrice
         Dim mNumCols As New List(Of String)
 
         mSQL = "select cpd.RecID,cpd.CustID,cus.ShortName,cpd.AtcOfferID,cpd.ExcessiveTrx,cpd.ExcessiveTrxPrice,cpd.ExcessiveAmount,cpd.RefundTrx," &
-                    "cpd.RefundTrxPrice,cpd.RefundAmount,cpd.InvolTrx,cpd.InvolTrxPrice,cpd.InvolAmount,cpd.ReissueTicket,cpd.ReissueAmount,cpd.Amount," &
-                    "cpd.ErrDesc,cpd.AtcCpCode "
+                    "cpd.RefundTrxPrice,cpd.RefundAmount,cpd.InvolTrx,cpd.InvolTrxPrice,cpd.InvolAmount,cpd.ReissueTicket,cpd.FreeReissueTicket," &
+                    "cpd.ReissueTicketPrice,cpd.ReissueAmount,cpd.Amount,cpd.ErrDesc,cpd.AtcCpCode "
         If xHaveSysCol Then mSQL = mSQL & ",cpd.FstUpdate,cpd.FstUser,cpd.LstUpdate,cpd.LstUser "
         mSQL = mSQL & String.Format("from DATA1A_AtcCalcPriceDetail cpd " &
                                         "left join DATA1A_Customers cus on cpd.CustID=cus.RecID And cus.Status='OK' and cus.Region='{0}' " &
@@ -220,27 +221,28 @@ Public Class frmAtcCalcPrice
         Dim mAtcCalcPriceDetailID As Integer
 
         If dgvAtcCalcPriceDetail.Rows.Count > 0 Then mAtcCalcPriceDetailID = dgvAtcCalcPriceDetail.CurrentRow.Cells("RecID").Value
-        LoadReissueTicketPriceDetail(mAtcCalcPriceDetailID)
+        LoadAtcCalcPriceDetail_D(mAtcCalcPriceDetailID)
     End Sub
 
     Private Sub dgvAtcCalcPriceDetail_SelectionChanged(sender As Object, e As EventArgs) Handles dgvAtcCalcPriceDetail.SelectionChanged
-        LoadReissueTicketPriceDetail(dgvAtcCalcPriceDetail.CurrentRow.Cells("Recid").Value)
+        LoadAtcCalcPriceDetail_D(dgvAtcCalcPriceDetail.CurrentRow.Cells("Recid").Value)
     End Sub
 
-    Private Sub LoadReissueTicketPriceDetail(xAtcCalcPriceDetailID As Integer)
+    Private Sub LoadAtcCalcPriceDetail_D(xAtcCalcPriceDetailID As Integer)
         Dim mSQL As String
         Dim i As Integer
-        Dim mNumberCols As New List(Of String)
 
-        mSQL = String.Format("select RecID,NumberOfTicket,PricePerTicket,Amount,FstUpdate,FstUser,LstUpdate,LstUser " &
-                             "from DATA1A_ReissueTicketPriceDetail " &
+        mSQL = String.Format("select RecID,Booking,FreeTicket,FstUpdate,FstUser,LstUpdate,LstUser " &
+                             "from DATA1A_ReissueTicketPriceDetail_D " &
                              "where AtcCalcPriceDetailID={0} And Status='OK' and City='{1}'",
                              {xAtcCalcPriceDetailID, pobjUser.City})
-        pobjSql.LoadDataGridView(dgvReissueTicketPriceDetail, mSQL)
+        pobjSql.LoadDataGridView(dgvAtcCalcPriceDetail_D, mSQL)
 
-        For i = 0 To 3
-            mNumberCols.Add(dgvReissueTicketPriceDetail.Columns(i).Name)
+        For i = 0 To dgvAtcCalcPriceDetail_D.Columns.Count - 1
+            Select Case dgvAtcCalcPriceDetail_D.Columns(i).Name
+                Case "RecID", "Booking", "FreeTicket"
+                    dgvAtcCalcPriceDetail_D.Columns(i).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
+            End Select
         Next
-        FormatNumber(dgvReissueTicketPriceDetail, mNumberCols)
     End Sub
 End Class

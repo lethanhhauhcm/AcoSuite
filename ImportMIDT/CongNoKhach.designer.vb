@@ -810,7 +810,6 @@ Partial Class frmDC_Pax
         '
         'CmbCustomer
         '
-        Me.CmbCustomer.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CmbCustomer.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.CmbCustomer.FormattingEnabled = True
         Me.CmbCustomer.Location = New System.Drawing.Point(234, 22)
@@ -850,25 +849,25 @@ Partial Class frmDC_Pax
         '
         Me.BarInvoiceDate.CheckOnClick = True
         Me.BarInvoiceDate.Name = "BarInvoiceDate"
-        Me.BarInvoiceDate.Size = New System.Drawing.Size(180, 22)
+        Me.BarInvoiceDate.Size = New System.Drawing.Size(153, 22)
         Me.BarInvoiceDate.Text = "Invoice Date"
         '
         'BarPurchaseDate
         '
         Me.BarPurchaseDate.Name = "BarPurchaseDate"
-        Me.BarPurchaseDate.Size = New System.Drawing.Size(180, 22)
+        Me.BarPurchaseDate.Size = New System.Drawing.Size(153, 22)
         Me.BarPurchaseDate.Text = "Purchase Date"
         '
         'BarPaymentDate
         '
         Me.BarPaymentDate.Name = "BarPaymentDate"
-        Me.BarPaymentDate.Size = New System.Drawing.Size(180, 22)
+        Me.BarPaymentDate.Size = New System.Drawing.Size(153, 22)
         Me.BarPaymentDate.Text = "Payment Date"
         '
         'BarNego
         '
         Me.BarNego.Name = "BarNego"
-        Me.BarNego.Size = New System.Drawing.Size(180, 22)
+        Me.BarNego.Size = New System.Drawing.Size(153, 22)
         Me.BarNego.Text = "Nego"
         '
         'PadAction
@@ -911,25 +910,25 @@ Partial Class frmDC_Pax
         Me.BarDueOnly.Checked = True
         Me.BarDueOnly.CheckState = System.Windows.Forms.CheckState.Checked
         Me.BarDueOnly.Name = "BarDueOnly"
-        Me.BarDueOnly.Size = New System.Drawing.Size(180, 22)
+        Me.BarDueOnly.Size = New System.Drawing.Size(172, 22)
         Me.BarDueOnly.Text = "Wz Due Only"
         '
         'ToolStripSeparator1
         '
         Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
-        Me.ToolStripSeparator1.Size = New System.Drawing.Size(177, 6)
+        Me.ToolStripSeparator1.Size = New System.Drawing.Size(169, 6)
         '
         'BarIncludeFullyUsed
         '
         Me.BarIncludeFullyUsed.Name = "BarIncludeFullyUsed"
-        Me.BarIncludeFullyUsed.Size = New System.Drawing.Size(180, 22)
+        Me.BarIncludeFullyUsed.Size = New System.Drawing.Size(172, 22)
         Me.BarIncludeFullyUsed.Text = "Include Fully Used"
         '
         'BarAllPaymentType
         '
         Me.BarAllPaymentType.CheckOnClick = True
         Me.BarAllPaymentType.Name = "BarAllPaymentType"
-        Me.BarAllPaymentType.Size = New System.Drawing.Size(180, 22)
+        Me.BarAllPaymentType.Size = New System.Drawing.Size(172, 22)
         Me.BarAllPaymentType.Text = "All Payment Type"
         '
         'Timer1
