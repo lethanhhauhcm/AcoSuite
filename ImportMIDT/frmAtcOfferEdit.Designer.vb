@@ -41,12 +41,12 @@ Partial Class frmAtcOfferEdit
         Me.lblRecID = New System.Windows.Forms.Label()
         Me.llbSave = New System.Windows.Forms.LinkLabel()
         Me.dgvAtcOfferDetail = New System.Windows.Forms.DataGridView()
-        Me.lstCustomer = New System.Windows.Forms.ListBox()
-        Me.txtTicketPrice = New System.Windows.Forms.TextBox()
-        Me.lblTicketPrice = New System.Windows.Forms.Label()
         Me.RecID = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.BookingRequest = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.FreeTicket = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.lstCustomer = New System.Windows.Forms.ListBox()
+        Me.txtReissueTktPrice = New System.Windows.Forms.TextBox()
+        Me.lblReissueTktPrice = New System.Windows.Forms.Label()
         CType(Me.dgvAtcOfferDetail, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -201,39 +201,6 @@ Partial Class frmAtcOfferEdit
         Me.dgvAtcOfferDetail.Size = New System.Drawing.Size(503, 150)
         Me.dgvAtcOfferDetail.TabIndex = 10
         '
-        'lstCustomer
-        '
-        Me.lstCustomer.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.lstCustomer.FormattingEnabled = True
-        Me.lstCustomer.Location = New System.Drawing.Point(16, 116)
-        Me.lstCustomer.MultiColumn = True
-        Me.lstCustomer.Name = "lstCustomer"
-        Me.lstCustomer.ScrollAlwaysVisible = True
-        Me.lstCustomer.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
-        Me.lstCustomer.Size = New System.Drawing.Size(507, 30)
-        Me.lstCustomer.TabIndex = 5
-        Me.lstCustomer.Visible = False
-        '
-        'txtTicketPrice
-        '
-        Me.txtTicketPrice.Location = New System.Drawing.Point(334, 90)
-        Me.txtTicketPrice.Name = "txtTicketPrice"
-        Me.txtTicketPrice.Size = New System.Drawing.Size(100, 20)
-        Me.txtTicketPrice.TabIndex = 9
-        Me.txtTicketPrice.Text = "0"
-        Me.txtTicketPrice.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        '
-        'lblTicketPrice
-        '
-        Me.lblTicketPrice.AutoSize = True
-        Me.lblTicketPrice.Location = New System.Drawing.Point(267, 93)
-        Me.lblTicketPrice.Name = "lblTicketPrice"
-        Me.lblTicketPrice.Size = New System.Drawing.Size(61, 13)
-        Me.lblTicketPrice.TabIndex = 61
-        Me.lblTicketPrice.Text = "TicketPrice"
-        '
         'RecID
         '
         DataGridViewCellStyle1.Format = "N0"
@@ -264,13 +231,46 @@ Partial Class frmAtcOfferEdit
         Me.FreeTicket.Name = "FreeTicket"
         Me.FreeTicket.Width = 83
         '
+        'lstCustomer
+        '
+        Me.lstCustomer.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.lstCustomer.FormattingEnabled = True
+        Me.lstCustomer.Location = New System.Drawing.Point(16, 116)
+        Me.lstCustomer.MultiColumn = True
+        Me.lstCustomer.Name = "lstCustomer"
+        Me.lstCustomer.ScrollAlwaysVisible = True
+        Me.lstCustomer.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
+        Me.lstCustomer.Size = New System.Drawing.Size(507, 30)
+        Me.lstCustomer.TabIndex = 5
+        Me.lstCustomer.Visible = False
+        '
+        'txtReissueTktPrice
+        '
+        Me.txtReissueTktPrice.Location = New System.Drawing.Point(334, 90)
+        Me.txtReissueTktPrice.Name = "txtReissueTktPrice"
+        Me.txtReissueTktPrice.Size = New System.Drawing.Size(100, 20)
+        Me.txtReissueTktPrice.TabIndex = 9
+        Me.txtReissueTktPrice.Text = "0"
+        Me.txtReissueTktPrice.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        '
+        'lblReissueTktPrice
+        '
+        Me.lblReissueTktPrice.AutoSize = True
+        Me.lblReissueTktPrice.Location = New System.Drawing.Point(243, 93)
+        Me.lblReissueTktPrice.Name = "lblReissueTktPrice"
+        Me.lblReissueTktPrice.Size = New System.Drawing.Size(85, 13)
+        Me.lblReissueTktPrice.TabIndex = 61
+        Me.lblReissueTktPrice.Text = "ReissueTktPrice"
+        '
         'frmAtcOfferEdit
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(534, 327)
-        Me.Controls.Add(Me.txtTicketPrice)
-        Me.Controls.Add(Me.lblTicketPrice)
+        Me.Controls.Add(Me.txtReissueTktPrice)
+        Me.Controls.Add(Me.lblReissueTktPrice)
         Me.Controls.Add(Me.lstCustomer)
         Me.Controls.Add(Me.dgvAtcOfferDetail)
         Me.Controls.Add(Me.llbSave)
@@ -314,8 +314,8 @@ Partial Class frmAtcOfferEdit
     Friend WithEvents llbSave As LinkLabel
     Friend WithEvents dgvAtcOfferDetail As DataGridView
     Friend WithEvents lstCustomer As ListBox
-    Friend WithEvents txtTicketPrice As TextBox
-    Friend WithEvents lblTicketPrice As Label
+    Friend WithEvents txtReissueTktPrice As TextBox
+    Friend WithEvents lblReissueTktPrice As Label
     Friend WithEvents RecID As DataGridViewTextBoxColumn
     Friend WithEvents BookingRequest As DataGridViewTextBoxColumn
     Friend WithEvents FreeTicket As DataGridViewTextBoxColumn

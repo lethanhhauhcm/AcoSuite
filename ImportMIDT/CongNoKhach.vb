@@ -137,6 +137,12 @@ Public Class frmDC_Pax
 
     Private Sub InsertIntoGhiNoKhach(ByVal parInvStatus As String)
         Dim invAmt As Decimal, strSQL As String = "", InvID As Integer, DocNo As String
+        '^_^20221126 add by 7643 -b-
+        Dim mUserNum As Integer
+        Dim mIsSeco As Boolean
+        Dim mUsers, mPeriods, mTo, mTable As String
+        Dim mAmt As Double
+        '^_^20221126 add by 7643 -e-
         Try
             For i As Int16 = 0 To Me.GridNo.Rows.Count - 1
                 If Me.GridNo.Item("S", i).Value = True Then
@@ -154,6 +160,26 @@ Public Class frmDC_Pax
                     cmd.ExecuteNonQuery()
                 End If
             Next
+
+            '^_^20221126 add by 7643 -b-
+            mIsSeco = False
+            For i As Int16 = 0 To GridNo.Rows.Count - 1
+                If GridNo.Item("S", i).Value And GridNo.Item("Nguon", i).Value = "SECO" Then
+                    If Not mIsSeco Then mIsSeco = True
+                    mUserNum = ScalarToInt("DATA1A_CalcPriceDetail", "UserNum-FreeUser UserNum", "RecID=" & GridNo.Item("RMK", i).Value, pobjSql.Connection)
+                    mUsers &= IIf(mUsers <> "", ", ", "") & GridNo.Item("Period", i).Value & ":" & mUserNum & " user"
+                    mPeriods &= IIf(mPeriods <> "", ", ", "") & GridNo.Item("Period", i).Value
+                    mAmt += GridNo.Item("InvAmt", i).Value
+                End If
+            Next
+
+            mTable = "(select distinct trim(BusinessEmail) BusinessEmail from DATA1A_Contacts " &
+                  "where Status='OK' and CustShortName='" & CmbCustomer.Text & "' and ReceiveINV=1)x"
+            mTo = ScalarToString(mTable, "isnull(STRING_AGG(BusinessEmail,'; '),'') BusinessEmail", "where 1=1", pobjSql.Connection)
+
+            If mIsSeco And mTo <> "" Then SendSecoINV(mUsers, mPeriods, mAmt, mTo)
+            '^_^20221126 add by 7643 -e-
+
             Me.GridNo.DataSource = Nothing
             Dim c As DataGridViewColumn = Me.GridNo.Columns("S").Clone
             Me.GridNo.Columns.Clear()
@@ -733,12 +759,6 @@ Public Class frmDC_Pax
     Private Sub CmdQuickInvUSD_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdQuickInvUSD.Click, CmdQuickInvVND.Click
         Dim btn As Button = CType(sender, Button)
         Dim MyAns As Int16
-        '^_^20221126 add by 7643 -b-
-        Dim i, mUserNum As Integer
-        Dim mIsSeco As Boolean
-        Dim mUsers, mPeriods, mTo, mTable As String
-        Dim mAmt As Double
-        '^_^20221126 add by 7643 -e-
         Me.CmdQuickInvUSD.Enabled = False
         Me.CmdQuickInvVND.Enabled = False
         Me.BarPurchaseDate.PerformClick()
@@ -746,25 +766,6 @@ Public Class frmDC_Pax
         iCounter = 0
         CalcAmt()
         InsertIntoGhiNoKhach("IV")
-
-        '^_^20221126 add by 7643 -b-
-        mIsSeco = False
-        For i = 0 To GridNo.Rows.Count - 1
-            If GridNo.Item("S", i).Value And GridNo.Item("Nguon", i).Value = "SECO" Then
-                If Not mIsSeco Then mIsSeco = True
-                mUserNum = ScalarToInt("DATA1A_CalcPriceDetail", "UserNum-FreeUser UserNum", "RecID=" & GridNo.Item("RMK", i).Value, pobjSql.Connection)
-                mUsers &= IIf(mUsers <> "", ", ", "") & GridNo.Item("Period", i).Value & ":" & mUserNum & " user"
-                mPeriods &= IIf(mPeriods <> "", ", ", "") & GridNo.Item("Period", i).Value
-                mAmt += GridNo.Item("InvAmt", i).Value
-            End If
-        Next
-
-        mTable = "(select distinct trim(BusinessEmail) BusinessEmail from DATA1A_Contacts " &
-                  "where Status='OK' and CustShortName='" & CmbCustomer.Text & "' and ReceiveINV=1)x"
-        mTo = ScalarToString(mTable, "isnull(STRING_AGG(BusinessEmail,'; '),'') BusinessEmail", "where 1=1", pobjSql.Connection)
-
-        If mIsSeco And mTo <> "" Then SendSecoINV(mUsers, mPeriods, mAmt, mTo)
-        '^_^20221126 add by 7643 -e-
 
         LoadGridNo()
     End Sub

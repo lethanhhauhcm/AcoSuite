@@ -24,8 +24,14 @@ Public Class DateTimeReport
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         Dim cmdSql As SqlClient.SqlCommand = pobjSql.Connection.CreateCommand
         Dim query As String = ""
-        Dim ToMonth As Date = Date.Parse(Month(FromDate.Value).ToString() & "/1/" + Year(FromDate.Value).ToString())
-        Dim EndMonth As Date = DateAdd(DateInterval.Day, -1, DateAdd(DateInterval.Month, 1, Date.Parse(Month(ToDate.Value).ToString() & "/1/" + Year(ToDate.Value).ToString())))
+        '^_^20230308 mark by 7643 -b-
+        'Dim ToMonth As Date = Date.Parse(Month(FromDate.Value).ToString() & "/1/" + Year(FromDate.Value).ToString())  
+        'Dim EndMonth As Date = DateAdd(DateInterval.Day, -1, DateAdd(DateInterval.Month, 1, Date.Parse(Month(ToDate.Value).ToString() & "/1/" + Year(ToDate.Value).ToString())))  
+        '^_^20230308 mark by 7643 -e-
+        '^_^20230308 modi by 7643 -b-
+        Dim ToMonth As Date = New Date(FromDate.Value.Year, FromDate.Value.Month, 1)
+        Dim EndMonth As Date = DateAdd(DateInterval.Day, -1, DateAdd(DateInterval.Month, 1, New Date(ToDate.Value.Year, ToDate.Value.Month, 1)))
+        '^_^20230308 modi by 7643 -e-
         Dim RunMonth = ToMonth
         Dim MangTime As Date() = New Date(40) {}
         Dim status As String = ", '' as Status "
@@ -128,10 +134,20 @@ Public Class DateTimeReport
             WkBook = AppXls.Workbooks.Open(Application.StartupPath & "\MasterPricerBuylling.xltm")
 
         ElseIf TenReport = "ATC" Then
-            query = "delete ATC_billingItems where cast(cast(Year as varchar) + '-' + cast(Month as varchar) + '-1' as date)  " &
-                "between cast('" & ToMonth & "' as date) and cast('" & EndMonth & "' as date) and isnull(status,'') <> 'RR'; " &
-                "delete ATC_billing where cast(cast(Year as varchar) + '-' + cast(Month as varchar) + '-1' as date)  " &
-                "between cast('" & ToMonth & "' as date) and cast('" & EndMonth & "' as date) and isnull(status,'') <> 'RR'; "
+            '^_^20230309 mark by 7643 -b-
+            'query = "delete ATC_billingItems where cast(cast(Year as varchar) + '-' + cast(Month as varchar) + '-1' as date)  " &
+            '    "between cast('" & ToMonth & "' as date) and cast('" & EndMonth & "' as date) and isnull(status,'') <> 'RR'; " &
+            '    "delete ATC_billing where cast(cast(Year as varchar) + '-' + cast(Month as varchar) + '-1' as date)  " &
+            '    "between cast('" & ToMonth & "' as date) and cast('" & EndMonth & "' as date) and isnull(status,'') <> 'RR'; "
+            '^_^20230309 mark by 7643 -e-
+            '^_^20230309 modi by 7643 -b-
+            mFrom = Format(FromDate.Value, "yyyyMM01")
+            mTo = Format(ToDate.Value, "yyyyMM" & Date.DaysInMonth(ToDate.Value.Year, ToDate.Value.Month))
+            query = "delete from ATC_billingItems " &
+                    "where format(Year,'0000')+format(Month,'00') between '" & Strings.Left(mFrom, 6) & "' and '" & Strings.Left(mTo, 6) & "' and isnull(status,'') <> 'RR'; " &
+                    "delete from ATC_billing " &
+                    "where format(Year,'0000')+format(Month,'00') between '" & Strings.Left(mFrom, 6) & "' and '" & Strings.Left(mTo, 6) & "' and isnull(status,'') <> 'RR'; "
+            '^_^20230309 modi by 7643 -e-
             cmdSql.CommandText = query
             cmdSql.ExecuteNonQuery()
 
@@ -160,27 +176,54 @@ Public Class DateTimeReport
                 '        "and not exists (select 1 from ATC_billingItems b where b.OffcID = u.OffcId and b.month = u.TrxMonth and b.year = u.TrxYear)"
                 '^_^20230213 mark by 7643 -e-
                 '^_^20230213 modi by 7643 -b-
-                mFrom = "cast('" & Year(MangTime(i)) & "' + '-' + '" & Month(MangTime(i)) & "' + '-1' as date)"
-                mTo = "dateadd(day,-1,dateadd(month,1,cast('" & Year(MangTime(i)) & "' + '-' + '" & Month(MangTime(i)) & "' + '-1' as date)))"
-                query = "insert into ATC_billingItems(ShortName, OffcID, Tkno, Trx, month, year, DateImport, Status,Booking ) " &
-                        "select c.ShortName,u.OffcId, u.Tkno, u.Trx, u.TrxMonth, u.TrxYear, getdate() " & status &
-                            ",isnull(ass.Booking,0)+isnull(hx.Booking,0)+isnull(drr.Booking,0) Booking " &
-                        "from (select a.OffcId,count(distinct case when a.ProductCode in ('FRTRATM','FRTRATW') then Tkno else null end) as Tkno, sum(Trx) as Trx, " &
-                                "TrxMonth, TrxYear " &
+                '^_^20230308 mark by 7643 -b-
+                'mFrom = "cast('" & Year(MangTime(i)) & "' + '-' + '" & Month(MangTime(i)) & "' + '-1' as date)"
+                'mTo = "dateadd(day,-1,dateadd(month,1,cast('" & Year(MangTime(i)) & "' + '-' + '" & Month(MangTime(i)) & "' + '-1' as date)))"
+                'query = "insert into ATC_billingItems(ShortName, OffcID, Tkno, Trx, month, year, DateImport, Status,Booking ) " &
+                '        "select c.ShortName,u.OffcId, u.Tkno, u.Trx, u.TrxMonth, u.TrxYear, getdate() " & status &
+                '            ",isnull(ass.Booking,0)+isnull(hx.Booking,0)+isnull(drr.Booking,0) Booking " &
+                '        "from (select a.OffcId,count(distinct case when a.ProductCode in ('FRTRATM','FRTRATW') then Tkno else null end) as Tkno, sum(Trx) as Trx, " &
+                '                "TrxMonth, TrxYear " &
+                '              "from DATA1A_ATC2 a " &
+                '              "where cast(cast(TrxDate as varchar) as date) between " & mFrom & " and " & mTo & " " &
+                '              "group by a.OffcId,TrxMonth, TrxYear having sum(Trx) > 0 ) u left join DATA1A_OIDs c on u.OffcId=c.OffcId and c.Status<>'XX' " &
+                '            "outer apply (select sum(add1-Can1) Booking " &
+                '                         "from AllstatsSI ass " &
+                '                         "where u.OffcID=ass.Office And ass.BookDate between " & mFrom & " and " & mTo & " And ass.NoIncentive ='N')ass " &
+                '            "outer apply (select sum(can1*-1) Booking " &
+                '                         "from HX " &
+                '                         "where u.OffcID=hx.Office And hx.BookDate between " & mFrom & " and " & mTo & " And hx.Incentified='true')hx " &
+                '            "outer apply (select sum(can1*-1) Booking " &
+                '                         "from Data1a_DeductBkgRuleResult drr " &
+                '                         "where u.OffcID=drr.Office And drr.BookDate between " & mFrom & " and " & mTo & ")drr " &
+                '        "where Not exists (select 1 from ExceptForReportNonSECO e where u.OffcId = e.OffcId And c.ShortName = e.ShortName) " &
+                '            "And Not exists (select 1 from ATC_billingItems b where b.OffcID = u.OffcId And b.month = u.TrxMonth And b.year = u.TrxYear)"
+                '^_^20230308 mark by 7643 -e-
+                '^_^20230308 modi by 7643 -b-
+                query = "insert into ATC_billingItems(ShortName,OffcID,Tkno,Trx,month,year,DateImport,Status,Booking,ReissueTkt,RefundTrx,InvolTrx) " &
+                        "select c.ShortName,u.OffcId,u.Tkno,u.Trx,u.TrxMonth,u.TrxYear,getdate()" & status & ",isnull(ass.Booking,0)+isnull(hx.Booking,0)+isnull(drr.Booking,0) Booking," &
+                               "u.ReissueTkt,u.RefundTrx,u.InvolTrx " &
+                        "from (select a.OffcId,count(distinct a.Tkno) as Tkno,sum(a.Trx) Trx,a.TrxMonth,a.TrxYear," &
+                                     "count(distinct case when apc.Product='Reissue' then a.Tkno else null end) ReissueTkt," &
+                                     "sum(case when apc.Product='Refund' then a.Trx else 0 end) RefundTrx,sum(case when apc.Product='Invol' then a.Trx else 0 end) as InvolTrx " &
                               "from DATA1A_ATC2 a " &
-                              "where cast(cast(TrxDate as varchar) as date) between " & mFrom & " and " & mTo & " " &
-                              "group by a.OffcId,TrxMonth, TrxYear having sum(Trx) > 0 ) u left join DATA1A_OIDs c on u.OffcId=c.OffcId and c.Status<>'XX' " &
-                            "outer apply (select sum(add1-Can1) Booking " &
-                                         "from AllstatsSI ass " &
-                                         "where u.OffcID=ass.Office And ass.BookDate between " & mFrom & " and " & mTo & " And ass.NoIncentive ='N')ass " &
-                            "outer apply (select sum(can1*-1) Booking " &
-                                         "from HX " &
-                                         "where u.OffcID=hx.Office And hx.BookDate between " & mFrom & " and " & mTo & " And hx.Incentified='true')hx " &
-                            "outer apply (select sum(can1*-1) Booking " &
-                                         "from Data1a_DeductBkgRuleResult drr " &
-                                         "where u.OffcID=drr.Office And drr.BookDate between " & mFrom & " and " & mTo & ")drr " &
+                              "left join DATA1A_ATCProductCode apc on a.ProductCode=apc.ProductCode And apc.Status='OK' " &
+                              "where a.TrxDate between '" & mFrom & "' and '" & mTo & "' " &
+                              "group by a.OffcId,a.TrxMonth,a.TrxYear " &
+                              "having sum(Trx) > 0 ) u " &
+                        "left join DATA1A_OIDs c on u.OffcId=c.OffcId And c.Status<>'XX' " &
+                        "outer apply (select sum(add1-Can1) Booking " &
+                                     "from AllstatsSI ass " &
+                                     "where u.OffcID=ass.Office And ass.BookDate between '" & mFrom & "' and '" & mTo & " 23:59:59' And ass.NoIncentive ='N')ass " &
+                        "outer apply (select sum(can1*-1) Booking " &
+                                     "from HX " &
+                                     "where u.OffcID=hx.Office And hx.BookDate between '" & mFrom & "' and '" & mTo & " 23:59' And hx.Incentified='true')hx " &
+                        "outer apply (select sum(can1*-1) Booking " &
+                                     "from Data1a_DeductBkgRuleResult drr " &
+                                     "where u.OffcID=drr.Office And drr.BookDate between '" & mFrom & "' and '" & mTo & " 23:59')drr " &
                         "where Not exists (select 1 from ExceptForReportNonSECO e where u.OffcId = e.OffcId And c.ShortName = e.ShortName) " &
-                            "And Not exists (select 1 from ATC_billingItems b where b.OffcID = u.OffcId And b.month = u.TrxMonth And b.year = u.TrxYear)"
+                          "And Not exists (select 1 from ATC_billingItems b where b.OffcID = u.OffcId And b.month = u.TrxMonth And b.year = u.TrxYear)"
+                '^_^20230308 modi by 7643 -e-
                 '^_^20230213 modi by 7643 -e-
                 cmdSql.CommandText = query
                 cmdSql.ExecuteNonQuery()
@@ -202,26 +245,64 @@ Public Class DateTimeReport
                 '        "group by c.ShortName, b.Formula, b.AmountForAfter, b.Amount, b1.Amount, b.NbrOfUnit,b1.MinAmount, c.month, c.year "
                 '^_^20230213 mark by 7643 -e-
                 '^_^20230213 modi by 7643 -b-
-                query = "insert into ATC_billing(ShortName, TKNo, TktPrice, Trx, TrxPrice, tktFree, tktBlock, TrxFreeOn1tkt, month, year, DateImport, Status,Booking) " &
-                        "select c.ShortName,c.TKno,c.TicketPrice,c.Trx,c.ExcessiveTrxPrice,isnull(aod.FreeTicket,0) FreeTicket,c.tktBlock,c.TrxFreeOn1tkt,c.month," &
-                            "c.year,c.DateImport,c.Status,c.Booking " &
-                        "from (select c.ShortName,sum(TKno) TKno,ao.TicketPrice,sum(Trx) Trx,ao.ExcessiveTrxPrice,1 tktBlock,10 TrxFreeOn1tkt,c.month," &
-                                "c.year,getdate() DateImport,'' Status,sum(c.Booking) Booking,ao.RecID AtcOfferID " &
+                '^_^20230308 mark by 7643 -b-
+                'query = "insert into ATC_billing(ShortName, TKNo, TktPrice, Trx, TrxPrice, tktFree, tktBlock, TrxFreeOn1tkt, month, year, DateImport, Status,Booking) " &
+                '        "select c.ShortName,c.TKno,c.TicketPrice,c.Trx,c.ExcessiveTrxPrice,isnull(aod.FreeTicket,0) FreeTicket,c.tktBlock,c.TrxFreeOn1tkt,c.month," &
+                '            "c.year,c.DateImport,c.Status,c.Booking " &
+                '        "from (select c.ShortName,sum(TKno) TKno,ao.TicketPrice,sum(Trx) Trx,ao.ExcessiveTrxPrice,1 tktBlock,10 TrxFreeOn1tkt,c.month," &
+                '                "c.year,getdate() DateImport,'' Status,sum(c.Booking) Booking,ao.RecID AtcOfferID " &
+                '              "from ATC_billingItems c " &
+                '                "left join Data1A_ProductOffer po on c.ShortName=po.ShortName And po.Status<>'XX' and po.ProductName='ATC' " &
+                '                "left join (select m.VAL " &
+                '                           "from DATA1A_MISC m left join DATA1A_ProductCosts pc on pc.CostPrice='PRICE' and pc.RecID=m.VAL1 " &
+                '                           "where m.CAT='ProductOfferPrice' and pc.Unit='Ticket')b on b.Val=po.OfferId " &
+                '                "outer apply (select top 1 RecID " &
+                '                             "from DATA1A_Customers cus " &
+                '                             "where c.ShortName=cus.ShortName And cus.Status='OK' order by RecID desc)cus " &
+                '                "left join DATA1A_AtcOffer ao on cus.RecID=ao.CustID And ao.ExpDate>=" & mFrom & " and ao.EffDate<=" & mTo & " And ao.Status='OK' " &
+                '              "where cast(cast(c.year as char)+'-'+cast(c.month as char)+'-1' as date) between " & mFrom & " and " & mTo & " " &
+                '                "And Not exists (select 1 from ATC_billing b where b.ShortName=c.ShortName And b.month=c.month And b.year=c.year) " &
+                '              "group by c.ShortName,ao.TicketPrice,ao.ExcessiveTrxPrice,c.month,c.year,ao.RecID)c " &
+                '        "outer apply(select top 1 FreeTicket " &
+                '                    "from DATA1A_AtcOfferDetail aod " &
+                '                    "where c.AtcOfferID=aod.AtcOfferID And aod.BookingRequest<=c.Booking And aod.Status='OK' order by BookingRequest desc)aod"
+                '^_^20230308 mark by 7643 -e-
+                '^_^20230308 modi by 7643 -b-
+                query = "insert into ATC_billing(ShortName,TKNo,TktPrice,Trx,TrxPrice,tktFree,tktBlock,TrxFreeOn1tkt,month,year,DateImport,Status,Booking,ReissueTkt,ReissueTktPrice," &
+                                                "ReissueTktCharge,ExcessiveTrx,ExcessiveTrxPrice,ExcessiveTrxCharge,RefundTrx,RefundTrxPrice,RefundTrxCharge,InvolTrx,InvolTrxPrice," &
+                                                "InvolTrxCharge) " &
+                        "select c.ShortName,c.TKno,c.tktPrice,c.Trx,c.Amount,aod.FreeTicket,c.tktBlock,c.MinAmount,c.month,c.year,c.DateImport,c.Status,c.Booking,c.ReissueTkt," &
+                               "c.ReissueTktPrice," &
+                               "case when aod.FreeTicket>=c.ReissueTkt then 0 else (isnull(c.ReissueTkt,0)-isnull(aod.FreeTicket,0))*isnull(c.ReissueTktPrice,0) end ReissueTktCharge," &
+                               "c.ExcessiveTrx,c.ExcessiveTrxPrice,c.ExcessiveTrx*c.ExcessiveTrxPrice ExcessiveTrxCharge,c.RefundTrx,c.RefundTrxPrice,c.RefundTrxCharge,c.InvolTrx," &
+                               "c.InvolTrxPrice,c.InvolTrxCharge " &
+                        "from (select c.ShortName,sum(c.TKno) as TKno,case when b.Formula='First' then b.AmountForAfter else b.Amount end tktPrice,sum(c.Trx) Trx,b1.Amount," &
+                                     "aof.RecID AtcOfferID,case when b.Formula='Block' then b.NbrOfUnit else 0 end tktBlock,b1.MinAmount,c.month,c.year," &
+                                     "getdate() DateImport" & status & ",sum(c.Booking) Booking,sum(c.ReissueTkt) ReissueTkt,aof.ReissueTktPrice," &
+                                     "case when sum(c.ReissueTkt)*10>=sum(c.Trx) then 0 else sum(c.Trx)-(sum(c.ReissueTkt)*10) end ExcessiveTrx,aof.ExcessiveTrxPrice," &
+                                     "sum(c.RefundTrx) RefundTrx,aof.RefundTrxPrice,isnull(sum(c.RefundTrx),0)*isnull(aof.RefundTrxPrice,0) RefundTrxCharge,sum(c.InvolTrx) InvolTrx," &
+                                     "aof.InvolTrxPrice,isnull(sum(c.InvolTrx),0)*isnull(aof.InvolTrxPrice,0) InvolTrxCharge " &
                               "from ATC_billingItems c " &
-                                "left join Data1A_ProductOffer po on c.ShortName=po.ShortName And po.Status<>'XX' and po.ProductName='ATC' " &
-                                "left join (select m.VAL " &
-                                           "from DATA1A_MISC m left join DATA1A_ProductCosts pc on pc.CostPrice='PRICE' and pc.RecID=m.VAL1 " &
-                                           "where m.CAT='ProductOfferPrice' and pc.Unit='Ticket')b on b.Val=po.OfferId " &
-                                "outer apply (select top 1 RecID " &
-                                             "from DATA1A_Customers cus " &
-                                             "where c.ShortName=cus.ShortName And cus.Status='OK' order by RecID desc)cus " &
-                                "left join DATA1A_AtcOffer ao on cus.RecID=ao.CustID And ao.ExpDate>=" & mFrom & " and ao.EffDate<=" & mTo & " And ao.Status='OK' " &
-                              "where cast(cast(c.year as char)+'-'+cast(c.month as char)+'-1' as date) between " & mFrom & " and " & mTo & " " &
-                                "And Not exists (select 1 from ATC_billing b where b.ShortName=c.ShortName And b.month=c.month And b.year=c.year) " &
-                              "group by c.ShortName,ao.TicketPrice,ao.ExcessiveTrxPrice,c.month,c.year,ao.RecID)c " &
-                        "outer apply(select top 1 FreeTicket " &
-                                    "from DATA1A_AtcOfferDetail aod " &
-                                    "where c.AtcOfferID=aod.AtcOfferID And aod.BookingRequest<=c.Booking And aod.Status='OK' order by BookingRequest desc)aod"
+                              "left join Data1A_ProductOffer po on c.ShortName=po.ShortName And po.Status<>'XX' and po.ProductName='ATC' " &
+                              "left join (select m.VAL,pc.Amount,pc.AmountForAfter,pc.Formula,pc.NbrOfUnit " &
+                                         "from DATA1A_MISC m " &
+                                         "left join DATA1A_ProductCosts pc on pc.CostPrice='PRICE' and pc.RecID=m.VAL1 " &
+                                         "where m.CAT='ProductOfferPrice' and pc.Unit='Ticket') b on b.Val = po.OfferId " &
+                              "left join (select m.VAL,pc.Amount, pc.MinAmount " &
+                                         "from DATA1A_MISC m " &
+                                         "left join DATA1A_ProductCosts pc on pc.CostPrice='PRICE' and pc.RecID=m.VAL1 " &
+                                         "where m.CAT='ProductOfferPrice' and pc.Unit='Transaction') b1 on b1.Val = po.OfferId " &
+                              "left join DATA1A_Customers cust on c.ShortName=cust.ShortName And cust.Status='OK' " &
+                              "left join DATA1A_AtcOffer aof on cust.RecID=aof.CustID And format(aof.ExpDate,'yyyyMM')>=format(c.year,'0000') + format(c.month,'00') " &
+                                                           "And format(aof.EffDate,'yyyyMM')<=format(c.year,'0000') + format(c.month,'00') and aof.Status='OK' " &
+                              "where format(year,'0000') + format(month,'00') between '" & Strings.Left(mFrom, 6) & "' and '" & Strings.Left(mTo, 6) & "' " &
+                                "And Not exists (select 1 from ATC_billing b where b.ShortName = c.ShortName And b.month = c.month And b.year = c.year) " &
+                              "group by c.ShortName,b.Formula,b.AmountForAfter,b.Amount,b1.Amount,b.NbrOfUnit,b1.MinAmount,c.month,c.year,aof.ReissueTktPrice,aof.ExcessiveTrxPrice," &
+                                       "aof.RecID,aof.RefundTrxPrice,aof.InvolTrxPrice) c " &
+                        "outer apply (select max(aod.FreeTicket) FreeTicket " &
+                                     "from DATA1A_AtcOfferDetail aod " &
+                                     "where c.AtcOfferID=aod.AtcOfferID And aod.BookingRequest<=c.Booking And aod.Status='OK') aod"
+                '^_^20230308 modi by 7643 -e-
                 '^_^20230213 modi by 7643 -e-
                 cmdSql.CommandText = query
                 cmdSql.ExecuteNonQuery()

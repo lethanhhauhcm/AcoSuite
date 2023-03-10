@@ -451,6 +451,8 @@ Public Class frmSecoOffer
 
             FChangeNum = 0
         End If
+        dtpEffDate.Value = New Date(dtpEffDate.Value.Year, dtpEffDate.Value.Month, 1)
+        dtpExpDate.Value = New Date(dtpExpDate.Value.Year, dtpExpDate.Value.Month, 1)
     End Sub
 
     Private Sub AddDgvCbo(xDgv As DataGridView)

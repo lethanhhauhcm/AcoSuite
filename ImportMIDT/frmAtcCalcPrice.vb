@@ -53,7 +53,7 @@ Public Class frmAtcCalcPrice
 
         mSQL = "select cpd.RecID,cpd.CustID,cus.ShortName,cpd.AtcOfferID,cpd.ExcessiveTrx,cpd.ExcessiveTrxPrice,cpd.ExcessiveAmount,cpd.RefundTrx," &
                     "cpd.RefundTrxPrice,cpd.RefundAmount,cpd.InvolTrx,cpd.InvolTrxPrice,cpd.InvolAmount,cpd.ReissueTicket,cpd.FreeReissueTicket," &
-                    "cpd.ReissueTicketPrice,cpd.ReissueAmount,cpd.Amount,cpd.ErrDesc,cpd.AtcCpCode "
+                    "cpd.ReissueTktPrice,cpd.ReissueAmount,cpd.Amount,cpd.ErrDesc,cpd.AtcCpCode "
         If xHaveSysCol Then mSQL = mSQL & ",cpd.FstUpdate,cpd.FstUser,cpd.LstUpdate,cpd.LstUser "
         mSQL = mSQL & String.Format("from DATA1A_AtcCalcPriceDetail cpd " &
                                         "left join DATA1A_Customers cus on cpd.CustID=cus.RecID And cus.Status='OK' and cus.Region='{0}' " &
@@ -204,7 +204,7 @@ Public Class frmAtcCalcPrice
             mPara(0) = pobjUser.UserName
             mPara(1) = Format(Now, "yyyyMMdd hh:mm:ss")
             mPara(2) = dgvAtcCalcPrice.CurrentRow.Cells("RecID").Value
-            cmd.CommandText = String.Format("update DATA1A_ReissueTicketPriceDetail set Status='XX',LstUser='{0}',LstUpdate='{1}' where AtcCalcPriceID={2}", mPara)
+            cmd.CommandText = String.Format("update DATA1A_AtcCalcPriceDetail_D set Status='XX',LstUser='{0}',LstUpdate='{1}' where AtcCalcPriceID={2}", mPara)
             cmd.ExecuteNonQuery()
 
             t.Commit()
@@ -233,7 +233,7 @@ Public Class frmAtcCalcPrice
         Dim i As Integer
 
         mSQL = String.Format("select RecID,Booking,FreeTicket,FstUpdate,FstUser,LstUpdate,LstUser " &
-                             "from DATA1A_ReissueTicketPriceDetail_D " &
+                             "from DATA1A_AtcCalcPriceDetail_D " &
                              "where AtcCalcPriceDetailID={0} And Status='OK' and City='{1}'",
                              {xAtcCalcPriceDetailID, pobjUser.City})
         pobjSql.LoadDataGridView(dgvAtcCalcPriceDetail_D, mSQL)

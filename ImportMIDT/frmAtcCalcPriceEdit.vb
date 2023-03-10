@@ -14,7 +14,7 @@ Public Class frmAtcCalcPriceEdit
     Private Sub CalcPrice()
         Dim mSQL, mCPMonthFrom, mCPMonthTo As String
         Dim mReturn As New DataTable
-        Dim i, j, mTotalExcessiveTrx, mTotalRefundTrx, mTotalInvolTrx, mTotalReissueTicket, mNumberOfTicket As Integer
+        Dim i, j, mTotalExcessiveTrx, mTotalRefundTrx, mTotalInvolTrx, mTotalReissueTicket, mNumberOfTicket, mTotalFreeReissueTicket As Integer
         Dim mReissueAmount, mTotalExcessiveAmount, mTotalRefundAmount, mTotalInvolAmount, mTotalReissueAmount, mTotalAmount, mAmount As Double
         Dim mNumberCols As New List(Of String)
 
@@ -61,30 +61,30 @@ Public Class frmAtcCalcPriceEdit
             If dgvAtcCalcPriceDetail.Rows(i).Cells("AtcOfferID").Value = 0 Then
                 dgvAtcCalcPriceDetail.Rows(i).Cells("ErrDesc").Value = "Do Not have AtcOffer data!"
             Else
-                mSQL = String.Format("select FromTheTicket,ToTheTicket,PricePerTicket " &
-                                     "from DATA1A_ReissueTicketPrice " &
-                                     "where AtcOfferID={0} And Status='OK' and City='{1}' " &
-                                     "order by FromTheTicket,ToTheTicket",
-                                     {dgvAtcCalcPriceDetail.Rows(i).Cells("AtcOfferID").Value, pobjUser.City})
-                mReturn = pobjSql.GetDataTable(mSQL)
-                If dgvAtcCalcPriceDetail.Rows(i).Cells("ReissueTicket").Value > mReturn.Rows(mReturn.Rows.Count - 1)("ToTheTicket") Then
-                    dgvAtcCalcPriceDetail.Rows(i).Cells("ErrDesc").Value = "From the ReissueTicket " & mReturn.Rows(mReturn.Rows.Count - 1)("ToTheTicket") + 1 &
-                                                                            " do not have price!"
-                Else
-                    For j = 0 To mReturn.Rows.Count - 1
-                        If dgvAtcCalcPriceDetail.Rows(i).Cells("ReissueTicket").Value < mReturn.Rows(j)("FromTheTicket") Then Exit For
-                        If dgvAtcCalcPriceDetail.Rows(i).Cells("ReissueTicket").Value >= mReturn.Rows(j)("ToTheTicket") Then
-                            mNumberOfTicket = mReturn.Rows(j)("ToTheTicket") - mReturn.Rows(j)("FromTheTicket") + 1
-                        Else
-                            mNumberOfTicket = dgvAtcCalcPriceDetail.Rows(i).Cells("ReissueTicket").Value - mReturn.Rows(j)("FromTheTicket") + 1
-                        End If
+                'mSQL = String.Format("select FromTheTicket,ToTheTicket,PricePerTicket " &
+                '                     "from DATA1A_ReissueTicketPrice " &
+                '                     "where AtcOfferID={0} And Status='OK' and City='{1}' " &
+                '                     "order by FromTheTicket,ToTheTicket",
+                '                     {dgvAtcCalcPriceDetail.Rows(i).Cells("AtcOfferID").Value, pobjUser.City})
+                'mReturn = pobjSql.GetDataTable(mSQL)
+                'If dgvAtcCalcPriceDetail.Rows(i).Cells("ReissueTicket").Value > mReturn.Rows(mReturn.Rows.Count - 1)("ToTheTicket") Then
+                '    dgvAtcCalcPriceDetail.Rows(i).Cells("ErrDesc").Value = "From the ReissueTicket " & mReturn.Rows(mReturn.Rows.Count - 1)("ToTheTicket") + 1 &
+                '                                                            " do not have price!"
+                'Else
+                '    For j = 0 To mReturn.Rows.Count - 1
+                '        If dgvAtcCalcPriceDetail.Rows(i).Cells("ReissueTicket").Value < mReturn.Rows(j)("FromTheTicket") Then Exit For
+                '        If dgvAtcCalcPriceDetail.Rows(i).Cells("ReissueTicket").Value >= mReturn.Rows(j)("ToTheTicket") Then
+                '            mNumberOfTicket = mReturn.Rows(j)("ToTheTicket") - mReturn.Rows(j)("FromTheTicket") + 1
+                '        Else
+                '            mNumberOfTicket = dgvAtcCalcPriceDetail.Rows(i).Cells("ReissueTicket").Value - mReturn.Rows(j)("FromTheTicket") + 1
+                '        End If
 
-                        mAmount = mNumberOfTicket * mReturn.Rows(j)("PricePerTicket")
-                        mReissueAmount = mReissueAmount + mAmount
-                        FReissueTicketPriceDetail.Add("0" & vbLf & dgvAtcCalcPriceDetail.Rows(i).Cells("CustID").Value & vbLf & mNumberOfTicket & vbLf &
-                                                      mReturn.Rows(j)("PricePerTicket") & vbLf & mAmount)
-                    Next
-                End If
+                '        mAmount = mNumberOfTicket * mReturn.Rows(j)("PricePerTicket")
+                '        mReissueAmount = mReissueAmount + mAmount
+                '        FReissueTicketPriceDetail.Add("0" & vbLf & dgvAtcCalcPriceDetail.Rows(i).Cells("CustID").Value & vbLf & mNumberOfTicket & vbLf &
+                '                                      mReturn.Rows(j)("PricePerTicket") & vbLf & mAmount)
+                '    Next
+                'End If
             End If
 
             dgvAtcCalcPriceDetail.Rows(i).Cells("ReissueAmount").Value = mReissueAmount

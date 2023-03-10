@@ -1,4 +1,5 @@
 ﻿'20220518 modi by 7643
+'^_^20230306 modi by 7643
 Imports Microsoft.Office.Interop
 Imports Microsoft.Office.Interop.Excel
 Imports System.IO
@@ -19,13 +20,16 @@ Public Class frmImportMIDT
         Dim strArray As String() = strLine.Split(",")
         Dim tblMidt As System.Data.DataTable = New System.Data.DataTable()
         Dim row As DataRow
+        'Dim mStrArr() As String  '^_^20230306 add by 7643
 
-        If strArray.Length <> 15 Then
+        If strArray.Length <> 15 Then  '^_^20230306 mark by 7643
+            'If strArray.Length <> 22 Then  '^_^20230306 modi by 7643
             MsgBox("Invalid format")
             Return False
         End If
 
-        For Each s As String In strArray
+        For Each s As String In strArray  '^_^20230306 mark by 7643
+            'For i = 0 To 14  '^_^20230306 modi by 7643
             tblMidt.Columns.Add(New DataColumn())
         Next
 
@@ -35,7 +39,11 @@ Public Class frmImportMIDT
                 i = i + 1
                 If i > 0 Then
                     row = tblMidt.NewRow()
-                    row.ItemArray = Split(Mid(strLine, 2, strLine.Length - 2), Chr(34) & "," & Chr(34))
+                    row.ItemArray = Split(Mid(strLine, 2, strLine.Length - 2), Chr(34) & "," & Chr(34))  '^_^20230306 mark by 7643
+                    '^_^20230306 modi by 7643 -b-
+                    'mStrArr = Split(Mid(strLine, 2, strLine.Length - 2), Chr(34) & "," & Chr(34))
+                    'row.ItemArray = {mStrArr(1), mStrArr(2), mStrArr(0), mStrArr(4), mStrArr(8), mStrArr(7), mStrArr(4), mStrArr(14), mStrArr(3)}
+                    '^_^20230306 modi by 7643 -e-
                     If IsDBNull(row.Item(2)) Then
                         MsgBox("")
                     End If

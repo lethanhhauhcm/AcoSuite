@@ -11,12 +11,11 @@
         pobjSql.LoadListboxVal(lstCustomer, mSQL)
     End Sub
 
-    Private Sub txtExcessiveTrxPrice_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtExcessiveTrxPrice.KeyPress, txtRefundTrxPrice.KeyPress, txtInvolTrxPrice.KeyPress, txtTicketPrice.KeyPress
-        'If Asc(e.KeyChar) <> 8 And (Asc(e.KeyChar) < 48 Or Asc(e.KeyChar) > 57) Then e.Handled = True
+    Private Sub txtExcessiveTrxPrice_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtExcessiveTrxPrice.KeyPress, txtRefundTrxPrice.KeyPress, txtInvolTrxPrice.KeyPress, txtReissueTktPrice.KeyPress
         PressInteger(e)
     End Sub
 
-    Private Sub txtExcessiveTrxPrice_Validated(sender As Object, e As EventArgs) Handles txtExcessiveTrxPrice.Validated, txtTicketPrice.Validated, txtRefundTrxPrice.Validated, txtInvolTrxPrice.Validated
+    Private Sub txtExcessiveTrxPrice_Validated(sender As Object, e As EventArgs) Handles txtExcessiveTrxPrice.Validated, txtReissueTktPrice.Validated, txtRefundTrxPrice.Validated, txtInvolTrxPrice.Validated
         If CType(sender, TextBox).Text = "" Then sender.text = "0"
     End Sub
 
@@ -25,8 +24,6 @@
     End Sub
 
     Private Sub dgvAtcOfferDetail_CellValidated(sender As Object, e As DataGridViewCellEventArgs) Handles dgvAtcOfferDetail.CellValidated
-        'If CType(sender, DataGridView).CurrentCell.Value Is Nothing Then Exit Sub
-
         If CStr(CType(sender, DataGridView).CurrentCell.Value) = "" Then dgvAtcOfferDetail.CurrentCell.Value = "0"
     End Sub
 
@@ -75,12 +72,12 @@
                     mAtcOfferPara(3) = txtExcessiveTrxPrice.Text
                     mAtcOfferPara(4) = txtRefundTrxPrice.Text
                     mAtcOfferPara(5) = txtInvolTrxPrice.Text
-                    mAtcOfferPara(6) = txtTicketPrice.Text
+                    mAtcOfferPara(6) = txtReissueTktPrice.Text
                     mAtcOfferPara(7) = pobjUser.City
                     mAtcOfferPara(8) = Format(Now, "yyyyMMdd hh:mm:ss")
                     mAtcOfferPara(9) = pobjUser.UserName
                     cmd.CommandText = String.Format("insert into DATA1A_AtcOffer(CustID,EffDate,ExpDate,ExcessiveTrxPrice,RefundTrxPrice,InvolTrxPrice," &
-                                                        "TicketPrice,City,FstUpdate,FstUser) " &
+                                                        "ReissueTktPrice,City,FstUpdate,FstUser) " &
                                                     "values({0},'{1}','{2}',{3},{4},{5},{6},'{7}','{8}','{9}')", mAtcOfferPara)
                     cmd.ExecuteNonQuery()
 
@@ -99,12 +96,12 @@
                 mAtcOfferPara(2) = txtExcessiveTrxPrice.Text
                 mAtcOfferPara(3) = txtRefundTrxPrice.Text
                 mAtcOfferPara(4) = txtInvolTrxPrice.Text
-                mAtcOfferPara(5) = txtTicketPrice.Text
+                mAtcOfferPara(5) = txtReissueTktPrice.Text
                 mAtcOfferPara(6) = Format(Now, "yyyyMMdd hh:mm:ss")
                 mAtcOfferPara(7) = pobjUser.UserName
                 mAtcOfferPara(8) = txtRecID.Text
                 cmd.CommandText = String.Format("update DATA1A_AtcOffer " &
-                                                "set EffDate='{0}',ExpDate='{1}',ExcessiveTrxPrice={2},RefundTrxPrice={3},InvolTrxPrice={4},TicketPrice={5}," &
+                                                "set EffDate='{0}',ExpDate='{1}',ExcessiveTrxPrice={2},RefundTrxPrice={3},InvolTrxPrice={4},ReissueTktPrice={5}," &
                                                     "LstUpdate='{6}',LstUser='{7}' " &
                                                 "where RecID={8}", mAtcOfferPara)
                 cmd.ExecuteNonQuery()

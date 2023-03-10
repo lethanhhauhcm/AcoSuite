@@ -843,7 +843,7 @@ Public Class frmCalcPrice
                            "where PL.Customer='" & dgvBody.Rows(i).Cells("Customer").Value.ToString & "' " &
                              "and format(PL.EffDate,'yyyyMM')<='" & mCPMonth & "' " &
                              "and format(PL.ExpDate,'yyyyMM')>='" & mCPMonth & "' and PLD.status='OK' " &
-                             "and PL.City='" & pobjUser.City & "' and pld.PriceID=" & dgvBody.Rows(i).Cells("PriceID").Value & " " &
+                             "and PL.City='" & pobjUser.City & "' and pld.PriceID='" & dgvBody.Rows(i).Cells("PriceID").Value & "' " &
                            "order by ToTheUser"
             mReturn2 = pobjSql.GetDataTable(mSQL)
             For j = 0 To mReturn2.Rows.Count - 1

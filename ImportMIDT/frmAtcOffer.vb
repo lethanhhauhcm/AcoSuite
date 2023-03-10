@@ -17,7 +17,7 @@ Public Class frmAtcOffer
         Dim mDayInMonth As Integer
 
         mSQL = String.Format("select aof.RecID,cus.ShortName,format(aof.EffDate,'MMM yyyy') EffDate,format(aof.ExpDate,'MMM yyyy') ExpDate,aof.ExcessiveTrxPrice," &
-                                "aof.RefundTrxPrice,aof.InvolTrxPrice,aof.TicketPrice,format(aof.FstUpdate,'dd MMM yyyy hh:mm:ss') FstUpdate,aof.FstUser," &
+                                "aof.RefundTrxPrice,aof.InvolTrxPrice,aof.ReissueTktPrice,format(aof.FstUpdate,'dd MMM yyyy hh:mm:ss') FstUpdate,aof.FstUser," &
                                 "format(aof.LstUpdate,'dd MMM yyyy hh:mm:ss') LstUpdate,aof.LstUser,aof.CustID Customer " &
                              "from DATA1A_AtcOffer aof inner join DATA1A_Customers cus on aof.CustID=cus.RecID And cus.Status='OK' and cus.Region='{0}' " &
                              "where aof.Status='OK' and aof.City='{1}' ", {pobjUser.Region, pobjUser.City})
@@ -33,7 +33,7 @@ Public Class frmAtcOffer
         'Format
         dgvAtcOffer.Columns("RecID").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
         dgvAtcOffer.Columns("Customer").Visible = False
-        FormatDgvNumber(dgvAtcOffer, {"ExcessiveTrxPrice", "RefundTrxPrice", "InvolTrxPrice", "TicketPrice"})
+        FormatDgvNumber(dgvAtcOffer, {"ExcessiveTrxPrice", "RefundTrxPrice", "InvolTrxPrice", "ReissueTktPrice"})
     End Sub
 
     Private Sub dgvAtcOffer_SelectionChanged(sender As Object, e As EventArgs) Handles dgvAtcOffer.SelectionChanged
@@ -92,7 +92,6 @@ Public Class frmAtcOffer
             Exit Sub
         End If
 
-        'DefaultAtcOfferEdit(mAtcOfferEdit)
         DefaultControldvalue(mAtcOfferEdit, dgvAtcOffer, dgvAtcOfferDetail)
         mAtcOfferEdit.cboCustomer.Enabled = False
         If mAtcOfferEdit.ShowDialog() = DialogResult.OK Then LoadAtcOffer()
@@ -107,26 +106,6 @@ Public Class frmAtcOffer
 
         Return True
     End Function
-
-    'Private Sub DefaultAtcOfferEdit(xFAtcOfferEdit As frmAtcOfferEdit)
-    '    Dim i As Integer
-
-    '    xFAtcOfferEdit.txtRecID.Text = dgvAtcOffer.CurrentRow.Cells("RecID").Value
-
-    '    xFAtcOfferEdit.cboCustomer.SelectedValue = dgvAtcOffer.CurrentRow.Cells("Customer").Value
-    '    xFAtcOfferEdit.cboCustomer.Enabled = False
-    '    xFAtcOfferEdit.dtpEffDate.Value = dgvAtcOffer.CurrentRow.Cells("EffDate").Value
-    '    xFAtcOfferEdit.dtpExpDate.Value = dgvAtcOffer.CurrentRow.Cells("ExpDate").Value
-    '    xFAtcOfferEdit.txtExcessiveTrxPrice.Text = dgvAtcOffer.CurrentRow.Cells("ExcessiveTrxPrice").Value
-    '    xFAtcOfferEdit.txtRefundTrxPrice.Text = dgvAtcOffer.CurrentRow.Cells("RefundTrxPrice").Value
-    '    xFAtcOfferEdit.txtInvolTrxPrice.Text = dgvAtcOffer.CurrentRow.Cells("InvolTrxPrice").Value
-    '    xFAtcOfferEdit.txtTicketPrice.Text = dgvAtcOffer.CurrentRow.Cells("TicketPrice").Value
-
-    '    For i = 0 To dgvAtcOfferDetail.Rows.Count - 1
-    '        xFAtcOfferEdit.dgvAtcOfferDetail.Rows.Add(dgvAtcOfferDetail.Rows(i).Cells("RecID").Value, dgvAtcOfferDetail.Rows(i).Cells("BookingRequest").Value,
-    '                                                  dgvAtcOfferDetail.Rows(i).Cells("FreeTicket").Value)
-    '    Next
-    'End Sub
 
     Private Sub llbDelete_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles llbDelete.LinkClicked
         Dim mDate As String
@@ -163,7 +142,6 @@ Public Class frmAtcOffer
         Dim mAtcOfferEdit As New frmAtcOfferEdit
         Dim i As Integer
 
-        'DefaultAtcOfferEdit(mForm)
         DefaultControldvalue(mAtcOfferEdit, dgvAtcOffer, dgvAtcOfferDetail)
         mAtcOfferEdit.WindowState = FormWindowState.Maximized
         mAtcOfferEdit.txtRecID.Text = "0"
